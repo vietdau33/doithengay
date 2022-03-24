@@ -1,87 +1,61 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{ env('APP_FULL_NAME', 'Laravel') }}</title>
-    <link rel="stylesheet" href="{{ asset('vendor/bs4/bootstrap.min.css') }}">
+@extends('layout')
+@section('contents')
+    <div id="slide-home" class="container-fluid pt-3 pb-3">
+        <div class="swiper">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <img class="w-100" src="{{ asset('image/slide_home/1.jpg') }}" alt="1">
+                </div>
+                <div class="swiper-slide">
+                    <img class="w-100" src="{{ asset('image/slide_home/2.jpg') }}" alt="2">
+                </div>
+            </div>
+            <!-- If we need pagination -->
+            <div class="swiper-pagination"></div>
 
-    <script src="{{ asset('vendor/jquery/jquery-3.6.0.min.js') }}"></script>
-    <script src="{{ asset('vendor/bs4/popper.min.js') }}"></script>
-    <script src="{{ asset('vendor/bs4/bootstrap.bundle.min.js') }}"></script>
-</head>
-<body>
+            <!-- If we need navigation buttons -->
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+        </div>
+    </div>
 
-<div class="jumbotron text-center" style="margin-bottom:0">
-    <h1>My First Bootstrap 4 Page</h1>
-    <p>Resize this responsive page to see the effect!</p>
-</div>
-
-<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-    <a class="navbar-brand" href="#">Navbar</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="collapsibleNavbar">
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
+    <div class="container">
+        <h2 class="text-center font-weight-bold">Đổi thẻ ngay !</h2>
+        <ul class="list-notif">
+            <li>
+                <img src="{{ asset('image/arrow-1.gif') }}" alt="Arrow">
+                <span class="font-weight-bold">Không nhận thẻ trộm cắp, lừa đảo. Phát hiện khóa tài khoản vĩnh viễn không cần báo trước.</span>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
+            <li>
+                <img src="{{ asset('image/arrow-1.gif') }}" alt="Arrow">
+                <span class="font-weight-bold">Hỗ trợ nạp / đổi nhiều loại thẻ: Viettel, Vina, Mobi, Vnmb, Gate, Zing, Vcoin, Garena. Xử lý tự động 100%</span>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
+            <li>
+                <img src="{{ asset('image/arrow-1.gif') }}" alt="Arrow">
+                <span class="font-weight-bold">Rút tiền về ATM/ Ví điện tử trong 30 phút</span>
             </li>
         </ul>
     </div>
-</nav>
+@endsection
+@section('script')
+    <script>
+        const swiper = new Swiper('.swiper', {
+            // Optional parameters
+            direction: 'horizontal',
+            loop: true,
+            autoplay: true,
+            autoheight: true,
 
-<div class="container" style="margin-top:30px">
-    <div class="row">
-        <div class="col-sm-4">
-            <h2>About Me</h2>
-            <h5>Photo of me:</h5>
-            <div class="fakeimg">Fake Image</div>
-            <p>Some text about me in culpa qui officia deserunt mollit anim..</p>
-            <h3>Some Links</h3>
-            <p>Lorem ipsum dolor sit ame.</p>
-            <ul class="nav nav-pills flex-column">
-                <li class="nav-item">
-                    <a class="nav-link active" href="#">Active</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#">Disabled</a>
-                </li>
-            </ul>
-            <hr class="d-sm-none">
-        </div>
-        <div class="col-sm-8">
-            <h2>TITLE HEADING</h2>
-            <h5>Title description, Dec 7, 2017</h5>
-            <div class="fakeimg">Fake Image</div>
-            <p>Some text..</p>
-            <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
-            <br>
-            <h2>TITLE HEADING</h2>
-            <h5>Title description, Sep 2, 2017</h5>
-            <div class="fakeimg">Fake Image</div>
-            <p>Some text..</p>
-            <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
-        </div>
-    </div>
-</div>
+            // If we need pagination
+            pagination: {
+                el: '.swiper-pagination',
+            },
 
-<div class="jumbotron text-center" style="margin-bottom:0">
-    <p>Footer</p>
-</div>
-
-</body>
-</html>
+            // Navigation arrows
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+        });
+    </script>
+@endsection
