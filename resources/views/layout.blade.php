@@ -70,10 +70,16 @@
 
 <div id="copyright">
     <hr class="m-0">
-    <p class="m-3 text-center">Bản quyền &copy; {{ request()->getHost() }} {{ date('Y') }}</p>
+    <p class="m-0 p-3 text-center">Bản quyền &copy; {{ request()->getHost() }} {{ date('Y') }}</p>
 </div>
 
 <script src="{{ asset('js/app.js') }}"></script>
+@section('script')
+    <script id="script_save_error">
+        window.errors = {!! json_encode($errors->toArray()) !!};
+        document.querySelector('#script_save_error').remove();
+    </script>
+@endsection
 @yield('script')
 </body>
 </html>

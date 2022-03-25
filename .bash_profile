@@ -12,10 +12,10 @@ art(){
     run "php artisan $1"
 }
 make(){
-    run "art make:$1 $2"
+    run "php artisan make:$1 $2"
 }
 migrate(){
-    run "art migrate"
+    run "php artisan migrate"
 }
 mix(){
     run "npm run production"

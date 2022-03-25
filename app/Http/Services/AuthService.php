@@ -20,4 +20,12 @@ class AuthService extends Service
     {
         return true;
     }
+
+    public function registerPost($registerRequest): mixed
+    {
+        $listKeyUser = array_keys($registerRequest->rules());
+        $params = $registerRequest->only($listKeyUser);
+        $params['password'] = bcrypt($params['password']);
+        return ModelService::insert('User', $params);
+    }
 }

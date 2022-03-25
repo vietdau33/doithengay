@@ -7,18 +7,20 @@
   \*****************************/
 /***/ (() => {
 
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
 window.App = {
   init: function init() {
-    this.setPositionCopyright();
     this.setSeePasswordInput();
+    this.setErrorsUIView();
+    this.setPositionCopyright();
   },
   setPositionCopyright: function setPositionCopyright() {
-    var wh = window.innerHeight;
-    var ch = $('html').height();
-
-    if (ch < wh) {
-      $('body').addClass('full-height');
-    }
+    var cprh = $('#copyright').height();
+    var hh = $('#header').height();
+    $('#main-contents').css({
+      'min-height': 'calc(100vh - ' + (cprh + hh) + 'px)'
+    });
   },
   setSeePasswordInput: function setSeePasswordInput() {
     var clsEyeShow = 'fa-eye';
@@ -42,6 +44,44 @@ window.App = {
       $(this).addClass('setted-see-password');
       $(this).parent().addClass('position-relative').append(elEyeCopy);
     });
+  },
+  setErrorsUIView: function setErrorsUIView() {
+    if (_typeof(window.errors) != 'object') {
+      return;
+    }
+
+    if (window.errors.length <= 0) {
+      return;
+    }
+
+    var errEl = $('<p />').addClass('error');
+
+    var _loop = function _loop(key) {
+      var error = window.errors[key];
+      var el = $('input[name="' + key + '"]');
+
+      if (el.length <= 0) {
+        return "continue";
+      }
+
+      el.off('input.remove_error');
+      el.on('input.remove_error', function () {
+        el.parent().find('.error').fadeOut(300, function () {
+          $(this).remove();
+        });
+      });
+      el.parent().find('.error').remove();
+
+      for (var i in error) {
+        el.before(errEl.clone().text(error[i]));
+      }
+    };
+
+    for (var key in window.errors) {
+      var _ret = _loop(key);
+
+      if (_ret === "continue") continue;
+    }
   }
 };
 window.addEventListener('DOMContentLoaded', function () {

@@ -11,27 +11,27 @@
                     @csrf
                     <div class="row m-0">
                         <label class="w-100 text-center" for="fullname">Họ và tên *</label>
-                        <input type="text" class="form-control" name="fullname" id="fullname" placeholder="Nguyễn Văn A">
+                        <input type="text" class="form-control" name="fullname" id="fullname" value="{{ old('fullname') }}" placeholder="Nguyễn Văn A">
                     </div>
                     <div class="row m-0 mt-3">
                         <label class="w-100 text-center" for="username">Tên đăng nhập *</label>
-                        <input type="text" class="form-control" name="username" id="username" placeholder="Tài khoản">
+                        <input type="text" class="form-control" name="username" id="username" value="{{ old('username') }}" placeholder="Tài khoản">
                     </div>
                     <div class="row m-0 mt-3">
                         <label class="w-100 text-center" for="password">Mật khẩu *</label>
                         <input type="password" class="form-control" name="password" id="password" placeholder="Mật khẩu">
                     </div>
                     <div class="row m-0 mt-3">
-                        <label class="w-100 text-center" for="re_password">Nhập lại mật khẩu *</label>
-                        <input type="password" class="form-control" name="re_password" id="re_password" placeholder="Nhập lại mật khẩu">
+                        <label class="w-100 text-center" for="password_confirmation">Nhập lại mật khẩu *</label>
+                        <input type="password" class="form-control" name="password_confirmation" id="password_confirmation" placeholder="Nhập lại mật khẩu">
                     </div>
                     <div class="row m-0 mt-3">
                         <label class="w-100 text-center" for="email">Email *</label>
-                        <input type="text" class="form-control" name="email" id="email" placeholder="abc@example.com">
+                        <input type="text" class="form-control" name="email" id="email" value="{{ old('email') }}" placeholder="abc@example.com">
                     </div>
                     <div class="row m-0 mt-3">
                         <label class="w-100 text-center" for="phone">Số điện thoại *</label>
-                        <input type="text" class="form-control" name="phone" id="phone" placeholder="0123456789">
+                        <input type="text" class="form-control" name="phone" id="phone" value="{{ old('phone') }}" placeholder="0123456789">
                     </div>
                     <div class="row m-0 mt-3 justify-content-center ">
                         <button class="btn btn-primary">ĐĂNG KÝ</button>

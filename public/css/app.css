@@ -46,6 +46,17 @@ body::-webkit-scrollbar {
   color: #6f768e;
 }
 
+.error {
+  color: #a71d2a;
+  font-style: italic;
+  font-size: 14px;
+  margin-bottom: 0;
+}
+.error:before {
+  content: "*";
+  margin-right: 3px;
+}
+
 #header {
   background: #fff;
 }
@@ -119,6 +130,7 @@ body::-webkit-scrollbar {
   color: #4b4b4b;
   border-radius: 7px;
   position: relative;
+  box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.2);
 }
 #main-contents .box-content:before {
   width: 0;

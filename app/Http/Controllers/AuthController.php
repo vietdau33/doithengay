@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RegisterRequest;
 use App\Http\Services\AuthService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class AuthController extends Controller
 {
@@ -31,8 +33,9 @@ class AuthController extends Controller
         return view('auth.register');
     }
 
-    public function registerPost()
+    public function registerPost(RegisterRequest $request): RedirectResponse
     {
-        return $this->authService->verify_login();
+        $this->authService->registerPost($request);
+        return redirect()->route('auth.view');
     }
 }

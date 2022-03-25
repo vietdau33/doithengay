@@ -1,14 +1,15 @@
 window.App = {
     init: function () {
-        this.setPositionCopyright();
         this.setSeePasswordInput();
+        this.setErrorsUIView();
+        this.setPositionCopyright();
     },
     setPositionCopyright: function () {
-        let wh = window.innerHeight;
-        let ch = $('html').height();
-        if (ch < wh) {
-            $('body').addClass('full-height');
-        }
+        let cprh = $('#copyright').height();
+        let hh = $('#header').height();
+        $('#main-contents').css({
+            'min-height': 'calc(100vh - ' + (cprh + hh) + 'px)'
+        });
     },
     setSeePasswordInput: function () {
         let clsEyeShow = 'fa-eye';
@@ -34,6 +35,32 @@ window.App = {
             $(this).addClass('setted-see-password');
             $(this).parent().addClass('position-relative').append(elEyeCopy);
         });
+    },
+    setErrorsUIView: function () {
+        if (typeof window.errors != 'object') {
+            return;
+        }
+        if (window.errors.length <= 0) {
+            return;
+        }
+        let errEl = $('<p />').addClass('error');
+        for (let key in window.errors) {
+            let error = window.errors[key];
+            let el = $('input[name="' + key + '"]');
+            if (el.length <= 0) {
+                continue;
+            }
+            el.off('input.remove_error');
+            el.on('input.remove_error', function () {
+                el.parent().find('.error').fadeOut(300, function () {
+                    $(this).remove();
+                })
+            })
+            el.parent().find('.error').remove();
+            for (let i in error) {
+                el.before(errEl.clone().text(error[i]));
+            }
+        }
     }
 }
 
