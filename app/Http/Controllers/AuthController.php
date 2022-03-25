@@ -25,4 +25,14 @@ class AuthController extends Controller
     {
         return $this->authService->verify_login();
     }
+
+    public function register(): Factory|View|Application
+    {
+        return view('auth.register');
+    }
+
+    public function registerPost()
+    {
+        return $this->authService->verify_login();
+    }
 }

@@ -10,11 +10,11 @@
                 <form action="{{ route('auth.post') }}" method="POST">
                     @csrf
                     <div class="row m-0">
-                        <label class="w-100 text-center" for="username">TÀI KHOẢN *</label>
-                        <input type="text" class="form-control" name="username" id="username" placeholder="Tài khoản">
+                        <label class="w-100 text-center" for="username">Tên đăng nhập *</label>
+                        <input type="text" class="form-control" name="username" id="username" placeholder="Tên đăng nhập">
                     </div>
                     <div class="row m-0 mt-3">
-                        <label class="w-100 text-center" for="password">MẬT KHẨU *</label>
+                        <label class="w-100 text-center" for="password">Mật khẩu *</label>
                         <input type="password" class="form-control" name="password" id="password" placeholder="Mật khẩu">
                     </div>
                     <div class="row m-0 mt-3 justify-content-center ">
@@ -24,7 +24,7 @@
                 <hr>
                 <div class="row pl-3 pr-3 justify-content-between">
                     <a href="#">Quên mật khẩu?</a>
-                    <a href="#">Đăng ký?</a>
+                    <a href="{{ route('auth.register.view') }}">Đăng ký?</a>
                 </div>
             </div>
         </div>
