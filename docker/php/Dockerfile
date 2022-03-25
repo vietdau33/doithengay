@@ -13,7 +13,8 @@ RUN apk update \
         libzip-dev \
         libjpeg-turbo-dev \
         zlib \
-        unzip
+        unzip \
+        npm
 
 RUN docker-php-ext-install mysqli pdo pdo_mysql gd bcmath zip
 
