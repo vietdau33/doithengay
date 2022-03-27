@@ -2,11 +2,8 @@
 
 namespace App\Http\Services;
 
-use App\Http\Services\Service;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
 
 class ModelService extends Service
 {
@@ -24,5 +21,19 @@ class ModelService extends Service
         }
         $model->save();
         return $model;
+    }
+
+    public static function update(Model $model, array $datas): bool
+    {
+        try {
+            foreach ($datas as $key => $data) {
+                $model->{$key} = $data;
+            }
+            $model->save();
+            return true;
+        } catch (Exception $exception) {
+            logger($exception->getMessage());
+            return false;
+        }
     }
 }

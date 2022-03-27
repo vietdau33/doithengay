@@ -29,7 +29,10 @@
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/"
-        }
+        },
+        "files": [
+            "global.php"
+        ]
     },
     "scripts": {
         "post-autoload-dump": [

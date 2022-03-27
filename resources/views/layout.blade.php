@@ -59,7 +59,11 @@
             </div>
             <div class="col-2 text-center">
                 <div class="header-auth">
-                    <a class="btn btn-success" href="{{ route('auth.view') }}">Đăng nhập</a>
+                    @if(!logined())
+                        <a class="btn btn-success" href="{{ route('auth.view') }}">Đăng nhập</a>
+                    @else
+                        <a class="font-weight-bold text-decoration-none" href="{{ route('profile.home') }}">{{ user()->fullname }}</a>
+                    @endif
                 </div>
             </div>
         </div>

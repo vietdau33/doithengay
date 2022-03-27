@@ -15,12 +15,22 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-Route::get('/', [PageController::class, 'home']);
+Route::middleware('guest')->name('auth.')->group(function () {
+    Route::get('/login', [AuthController::class, 'login'])->name('view');
+    Route::post('/login', [AuthController::class, 'loginPost'])->name('post');
 
-Route::middleware('guest')->group(function (){
-    Route::get('/login', [AuthController::class, 'login'])->name('auth.view');
-    Route::post('/login', [AuthController::class, 'loginPost'])->name('auth.post');
+    Route::get('/register', [AuthController::class, 'register'])->name('register.view');
+    Route::post('/register', [AuthController::class, 'registerPost'])->name('register.post');
+});
 
-    Route::get('/register', [AuthController::class, 'register'])->name('auth.register.view');
-    Route::post('/register', [AuthController::class, 'registerPost'])->name('auth.register.post');
+Route::middleware('authenticated')->group(function () {
+    Route::get('/', [PageController::class, 'home'])->name('home');
+
+    Route::prefix('profile')->name('profile.')->group(function () {
+        Route::get('/', [PageController::class, 'profile'])->name('home');
+        Route::get('change', [PageController::class, 'changeProfile'])->name('change');
+        Route::post('change', [PageController::class, 'changeProfilePost'])->name('change.post');
+        Route::get('password', [PageController::class, 'changePassword'])->name('password');
+        Route::post('password', [PageController::class, 'changePasswordPost'])->name('password.post');
+    });
 });
