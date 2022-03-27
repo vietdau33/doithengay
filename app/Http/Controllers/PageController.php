@@ -20,6 +20,11 @@ class PageController extends Controller
         $this->userService = $userService;
     }
 
+    public function showLogs(): Factory|View|Application
+    {
+        return view('logs');
+    }
+
     public function home(): Factory|View|Application
     {
         return view('welcome');

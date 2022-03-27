@@ -15,6 +15,8 @@ use App\Http\Controllers\AuthController;
 |
 */
 
+Route::get('/logs', [PageController::class, 'showLogs'])->name('logger');
+
 Route::middleware('guest')->name('auth.')->group(function () {
     Route::get('/login', [AuthController::class, 'login'])->name('view');
     Route::post('/login', [AuthController::class, 'loginPost'])->name('post');
