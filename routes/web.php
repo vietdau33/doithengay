@@ -17,8 +17,10 @@ use App\Http\Controllers\AuthController;
 
 Route::get('/', [PageController::class, 'home']);
 
-Route::get('/login', [AuthController::class, 'login'])->name('auth.view');
-Route::post('/login', [AuthController::class, 'loginPost'])->name('auth.post');
+Route::middleware('guest')->group(function (){
+    Route::get('/login', [AuthController::class, 'login'])->name('auth.view');
+    Route::post('/login', [AuthController::class, 'loginPost'])->name('auth.post');
 
-Route::get('/register', [AuthController::class, 'register'])->name('auth.register.view');
-Route::post('/register', [AuthController::class, 'registerPost'])->name('auth.register.post');
+    Route::get('/register', [AuthController::class, 'register'])->name('auth.register.view');
+    Route::post('/register', [AuthController::class, 'registerPost'])->name('auth.register.post');
+});

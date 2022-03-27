@@ -26,10 +26,19 @@ class RegisterRequest extends FormRequest
         return [
             'fullname' => 'required',
             'username' => 'required|regex:/^[A-Za-z0-9\.]{4,16}$/i|unique:users',
-            'password' =>  'required|min:5|confirmed',
+            'password' => 'required|confirmed',
             'email' => 'required|email:rfc|unique:users',
             'phone' => 'required|regex:/^(0)[0-9]{9,10}$/i|unique:users'
         ];
+    }
+
+    public function withValidator($validators)
+    {
+        $validators->after(function ($validator) {
+            if(strlen($this->password) < 6){
+                $validator->errors()->add('password', 'Mật khẩu phải chứa ít nhất 6 ký tự!');
+            }
+        });
     }
 
     public function messages(): array

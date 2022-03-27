@@ -11,7 +11,7 @@
                     @csrf
                     <div class="row m-0">
                         <label class="w-100 text-center" for="username">Tên đăng nhập *</label>
-                        <input type="text" class="form-control" name="username" id="username" placeholder="Tên đăng nhập">
+                        <input type="text" class="form-control" name="username" id="username" placeholder="Tên đăng nhập" value="{{ old('username') }}">
                     </div>
                     <div class="row m-0 mt-3">
                         <label class="w-100 text-center" for="password">Mật khẩu *</label>

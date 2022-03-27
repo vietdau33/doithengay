@@ -28,6 +28,8 @@
     <link rel="stylesheet" href="{{ asset('vendor/bs4/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/swiper/swiper.min.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/fontawesome/all.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/alertify/css/alertify.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/alertify/css/themes/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     @yield('style')
 
@@ -73,13 +75,25 @@
     <p class="m-0 p-3 text-center">Bản quyền &copy; {{ request()->getHost() }} {{ date('Y') }}</p>
 </div>
 
+<script src="{{ asset('vendor/alertify/alertify.min.js') }}"></script>
 <script src="{{ asset('js/app.js') }}"></script>
+
 @section('script')
     <script id="script_save_error">
+        //assign errors
         window.errors = {!! json_encode($errors->toArray()) !!};
+
+        //show notif
+        @if(session()->has('notif'))
+            alertify.alert('Notification', '{{session()->get('notif')}}');
+        @endif
+
+        //remove elm script
         document.querySelector('#script_save_error').remove();
     </script>
 @endsection
+
 @yield('script')
+
 </body>
 </html>

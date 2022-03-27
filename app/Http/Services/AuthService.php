@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
 
 class AuthService extends Service
 {
@@ -16,9 +17,10 @@ class AuthService extends Service
         parent::__construct($request);
     }
 
-    public function verify_login()
+    public function loginPost($loginRequest): bool
     {
-        return true;
+        $credentials = $loginRequest->only('username', 'password');
+        return Auth::attempt($credentials);
     }
 
     public function registerPost($registerRequest): mixed
