@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use GuzzleHttp\Client;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -11,7 +12,8 @@ class CardController extends Controller
 {
     public function checkRate()
     {
-        //
+        $client = new Client();
+
     }
 
     public function buyCard(): Factory|View|Application
