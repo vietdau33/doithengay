@@ -131,3 +131,78 @@ body {
         color: #fff;
     }
 }
+
+.box-pay-card {
+    text-align: left;
+
+    .form-header {
+        img {
+            margin-right: 7px;
+            height: 40px;
+            padding-bottom: 5px;
+        }
+    }
+
+    label {
+        height: 3.9em;
+        color: #434a54;
+        font-weight: 500;
+        border: 1px solid #dcdcdf;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        line-height: 3.5em;
+        display: block;
+        position: relative;
+        -webkit-transition: all 0.15s ease;
+        -o-transition: all 0.15s ease;
+        transition: all 0.15s ease;
+        font-size: 16px;
+        margin: 10px;
+        width: 115px;
+        cursor: pointer;
+
+        input[type='radio'] {
+            display: none;
+        }
+
+        img {
+            display: block;
+            position: absolute;
+            top: 50%;
+            -webkit-transform: translateY(-50%);
+            -ms-transform: translateY(-50%);
+            transform: translateY(-50%);
+            width: 100%;
+            max-width: 115px;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            pointer-events: none;
+        }
+    }
+}
+
+.checkbox-custom {
+    width: 17px;
+    height: 17px;
+    -webkit-border-radius: 9px;
+    border-radius: 9px;
+    border: 1px solid transparent;
+    -webkit-background-size: 10px 10px;
+    background: #2188C9 url(/image/check.svg) no-repeat center;
+    background-size: contain;
+    position: absolute;
+    right: 0.2em;
+    top: 0.2em;
+    display: none;
+    -webkit-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+input[type="radio"]:checked ~ .checkbox-custom {
+    -webkit-transform: scale(1);
+    -ms-transform: scale(1);
+    transform: scale(1);
+    display: block;
+}

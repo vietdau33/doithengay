@@ -1,3 +1,6 @@
+exec(){
+    docker exec -it $(docker ps -aqf "name=app") sh
+}
 run(){
     docker exec -it $(docker ps -aqf "name=app") sh -c $1
 }

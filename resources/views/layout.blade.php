@@ -53,7 +53,7 @@
                 <div class="header-menu">
                     <ul>
                         <li><a href="#">Đổi thẻ cào</a></li>
-                        <li><a href="#">Mua thẻ cào</a></li>
+                        <li id="menu-buy-card"><a href="{{ route('buy-card') }}">Mua thẻ cào</a></li>
                     </ul>
                 </div>
             </div>
@@ -82,20 +82,23 @@
 <script src="{{ asset('vendor/alertify/alertify.min.js') }}"></script>
 <script src="{{ asset('js/app.js') }}"></script>
 
-@section('script')
-    <script id="script_save_error">
-        //assign errors
-        window.errors = {!! json_encode($errors->toArray()) !!};
+<script id="script_save_error">
+    //assign errors
+    window.errors = {!! json_encode($errors->toArray()) !!};
 
-        //show notif
-        @if(session()->has('notif'))
-            alertify.alert('Notification', '{{session()->get('notif')}}');
-        @endif
+    //show notif
+    @if(session()->has('notif'))
+        alertify.alert('Notification', '{{session()->pull('notif')}}');
+    @endif
 
-        //remove elm script
-        document.querySelector('#script_save_error').remove();
-    </script>
-@endsection
+    //active menu
+    @if(session()->has('menu-active'))
+        $('#{{ session()->pull('menu-active') }}').addClass('active');
+    @endif
+
+    //remove elm script
+    document.querySelector('#script_save_error').remove();
+</script>
 
 @yield('script')
 

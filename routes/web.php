@@ -1,8 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PageController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PageController;
+use App\Http\Controllers\CardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,6 +17,7 @@ use App\Http\Controllers\AuthController;
 */
 
 Route::get('/logs', [PageController::class, 'showLogs'])->name('logger');
+Route::get('/check-rate', [CardController::class, 'checkRate'])->name('check-rate');
 
 Route::middleware('guest')->name('auth.')->group(function () {
     Route::get('/login', [AuthController::class, 'login'])->name('view');
@@ -27,6 +29,9 @@ Route::middleware('guest')->name('auth.')->group(function () {
 
 Route::middleware('authenticated')->group(function () {
     Route::get('/', [PageController::class, 'home'])->name('home');
+    Route::get('/buy-card', [CardController::class, 'buyCard'])->name('buy-card');
+    Route::get('/trade-card', [CardController::class, 'tradeCard'])->name('trade-card');
+    Route::get('/check-trade-card', [CardController::class, 'checkTradeCard'])->name('check-trade-card');
 
     Route::prefix('profile')->name('profile.')->group(function () {
         Route::get('/', [PageController::class, 'profile'])->name('home');

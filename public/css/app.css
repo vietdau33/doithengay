@@ -97,8 +97,10 @@ body::-webkit-scrollbar {
 #header .header-menu ul li a:hover:before {
   width: 75%;
 }
-#header .header-menu ul.active a {
+#header .header-menu ul li.active a {
   color: #2188C9;
+  box-shadow: 0 0 4px 1px;
+  border-radius: 15px;
 }
 
 #copyright {
@@ -153,4 +155,63 @@ body::-webkit-scrollbar {
   background-repeat: no-repeat;
   background-position: top;
   color: #fff;
+}
+
+.box-pay-card {
+  text-align: left;
+}
+.box-pay-card .form-header img {
+  margin-right: 7px;
+  height: 40px;
+  padding-bottom: 5px;
+}
+.box-pay-card label {
+  height: 3.9em;
+  color: #434a54;
+  font-weight: 500;
+  border: 1px solid #dcdcdf;
+  border-radius: 5px;
+  line-height: 3.5em;
+  display: block;
+  position: relative;
+  transition: all 0.15s ease;
+  font-size: 16px;
+  margin: 10px;
+  width: 115px;
+  cursor: pointer;
+}
+.box-pay-card label input[type=radio] {
+  display: none;
+}
+.box-pay-card label img {
+  display: block;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+  max-width: 115px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  pointer-events: none;
+}
+
+.checkbox-custom {
+  width: 17px;
+  height: 17px;
+  border-radius: 9px;
+  border: 1px solid transparent;
+  -webkit-background-size: 10px 10px;
+  background: #2188C9 url(/image/check.svg) no-repeat center;
+  background-size: contain;
+  position: absolute;
+  right: 0.2em;
+  top: 0.2em;
+  display: none;
+  transition: all 0.3s ease;
+}
+
+input[type=radio]:checked ~ .checkbox-custom {
+  transform: scale(1);
+  display: block;
 }

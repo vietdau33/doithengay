@@ -42,7 +42,7 @@ class PageController extends Controller
 
     public function changeProfilePost(ProfileRequest $request): RedirectResponse
     {
-        if(!$this->userService->changeProfile($request)) {
+        if (!$this->userService->changeProfile($request)) {
             session()->flash('notif', 'Đã có một vài lỗi xảy ra khi thay đổi thông tin. Hãy liên hệ với admin để kiểm tra!');
             return redirect()->back()->withInput();
         }
@@ -56,7 +56,7 @@ class PageController extends Controller
 
     public function changePasswordPost(PasswordRequest $request): RedirectResponse
     {
-        if(!$this->userService->changePassword($request)) {
+        if (!$this->userService->changePassword($request)) {
             session()->flash('notif', 'Không thể thay đổi mật khẩu. Hãy liên hệ với admin để kiểm tra!');
             return redirect()->back();
         }

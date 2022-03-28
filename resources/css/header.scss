@@ -34,8 +34,10 @@
                 width: 75%;
             }
         }
-    }
-    &.active a {
-        color: #2188C9;
+        &.active a {
+            color: #2188C9;
+            box-shadow: 0 0 4px 1px;
+            border-radius: 15px;
+        }
     }
 }
