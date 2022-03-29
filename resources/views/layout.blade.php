@@ -79,7 +79,7 @@
     <p class="m-0 p-3 text-center">Bản quyền &copy; {{ request()->getHost() }} {{ date('Y') }}</p>
 </div>
 
-<script src="{{ asset('vendor/alertify/alertify.min.js') }}"></script>
+<script src="{{ asset('vendor/alertify/alertify.js') }}"></script>
 <script src="{{ asset('js/app.js') }}"></script>
 
 <script id="script_save_error">
@@ -91,6 +91,11 @@
         alertify.alert('Notification', '{{session()->pull('notif')}}');
     @endif
 
+    //show error
+    @if(session()->has('mgs_error'))
+        alertify.alert('Error', '{{session()->pull('mgs_error')}}');
+        $('.alertify .ajs-header').addClass('alert-danger');
+    @endif
     //active menu
     @if(session()->has('menu-active'))
         $('#{{ session()->pull('menu-active') }}').addClass('active');

@@ -1,12 +1,15 @@
 <?php
 
 namespace App\Http\Services;
+
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\RequestOptions;
 
 class HttpService
 {
-    private static Client $client;
-    private static HttpService $ins;
+    private static Client|null $client = null;
+    private static HttpService|null $ins = null;
 
     public function __construct()
     {
@@ -21,14 +24,37 @@ class HttpService
         return self::$ins;
     }
 
-    private static function initClient (){
+    private static function initClient()
+    {
         if (self::$client == null) {
             self::$client = new Client();
         }
     }
 
-    public function get()
+    /**
+     * @throws GuzzleException
+     */
+    public function get(string $url): array
     {
-        //Code here
+        try {
+            $content = self::$client->get($url)->getBody()->getContents();
+            return json_decode($content, 1);
+        } catch (Exception $exception) {
+            logger($exception->getMessage());
+            return [];
+        }
+    }
+
+    /**
+     * @throws GuzzleException
+     */
+    public function post(string $url, array $param = [], string $type = RequestOptions::JSON){
+        try {
+            $content = self::$client->post($url, [$type => $param])->getBody()->getContents();
+            return json_decode($content, 1);
+        } catch (Exception $exception) {
+            logger($exception->getMessage());
+            return [];
+        }
     }
 }

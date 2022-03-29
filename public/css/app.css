@@ -38,6 +38,12 @@ body::-webkit-scrollbar {
   background-color: white;
 }
 
+.alertify .ajs-header,
+.alertify .ajs-body,
+.alertify .ajs-footer {
+  font-family: "Montserrat", sans-serif !important;
+}
+
 .show-hide-pwd {
   cursor: pointer;
   position: absolute;
@@ -51,14 +57,24 @@ body::-webkit-scrollbar {
   font-style: italic;
   font-size: 14px;
   margin-bottom: 0;
+  width: 100%;
 }
 .error:before {
   content: "*";
   margin-right: 3px;
 }
 
+.alert-danger {
+  color: #721c24 !important;
+  background-color: #f8d7da !important;
+}
+
 #header {
   background: #fff;
+  position: fixed;
+  width: 100%;
+  z-index: 99;
+  box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.2);
 }
 #header .header-logo {
   max-width: 100%;
@@ -172,13 +188,23 @@ body::-webkit-scrollbar {
   border: 1px solid #dcdcdf;
   border-radius: 5px;
   line-height: 3.5em;
-  display: block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: relative;
   transition: all 0.15s ease;
   font-size: 16px;
   margin: 10px;
   width: 115px;
   cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+.box-pay-card label.checked {
+  border-color: #2188C9 !important;
+  color: #2188C9 !important;
 }
 .box-pay-card label input[type=radio] {
   display: none;
@@ -207,11 +233,10 @@ body::-webkit-scrollbar {
   position: absolute;
   right: 0.2em;
   top: 0.2em;
-  display: none;
   transition: all 0.3s ease;
+  transform: scale(0);
 }
 
 input[type=radio]:checked ~ .checkbox-custom {
   transform: scale(1);
-  display: block;
 }

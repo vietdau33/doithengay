@@ -14,12 +14,16 @@ window.App = {
     this.setSeePasswordInput();
     this.setErrorsUIView();
     this.setPositionCopyright();
+    this.setClickCheckboxButton();
   },
   setPositionCopyright: function setPositionCopyright() {
     var cprh = $('#copyright').height();
     var hh = $('#header').height();
     $('#main-contents').css({
-      'min-height': 'calc(100vh - ' + (cprh + hh) + 'px)'
+      'min-height': 'calc(100vh - ' + cprh + 'px)'
+    });
+    $('#auth-content').css({
+      'padding-top': hh + 10 + 'px'
     });
   },
   setSeePasswordInput: function setSeePasswordInput() {
@@ -50,7 +54,7 @@ window.App = {
       return;
     }
 
-    if (window.errors.length <= 0) {
+    if (Object.keys(window.errors).length <= 0) {
       return;
     }
 
@@ -64,6 +68,10 @@ window.App = {
         return "continue";
       }
 
+      if (el.attr('type') == 'radio' || el.attr('type') == 'checkbox') {
+        return "continue";
+      }
+
       el.off('input.remove_error');
       el.on('input.remove_error', function () {
         el.parent().find('.error').fadeOut(300, function () {
@@ -72,9 +80,11 @@ window.App = {
       });
       el.parent().find('.error').remove();
 
-      for (var i in error) {
-        el.before(errEl.clone().text(error[i]));
+      for (var _i in error) {
+        el.before(errEl.clone().text(error[_i]));
       }
+
+      delete window.errors[key];
     };
 
     for (var key in window.errors) {
@@ -82,6 +92,38 @@ window.App = {
 
       if (_ret === "continue") continue;
     }
+
+    $('form').find('#area-error-ui-show').remove();
+
+    if (Object.keys(window.errors).length <= 0) {
+      return;
+    }
+
+    var errArea = $('<div />').addClass('alert alert-warning').attr('id', 'area-error-ui-show');
+    var pText = $('<p />').addClass('m-0');
+
+    for (var _key in window.errors) {
+      var error = window.errors[_key];
+
+      for (var i in error) {
+        errArea.append(pText.clone().text(error));
+      }
+
+      delete window.errors[_key];
+    }
+
+    $('form').prepend(errArea);
+  },
+  setClickCheckboxButton: function setClickCheckboxButton() {
+    var triggerChecked = function triggerChecked() {
+      $('form input[type="checkbox"]:checked, form input[type="radio"]:checked').closest('label').addClass('checked');
+      $('form input[type="checkbox"]:not(:checked), form input[type="radio"]:not(:checked)').closest('label').removeClass('checked');
+    };
+
+    setTimeout(triggerChecked, 0);
+    $('input[type="checkbox"], input[type="radio"]').on('click', function () {
+      setTimeout(triggerChecked, 50);
+    });
   }
 };
 window.addEventListener('DOMContentLoaded', function () {

@@ -3,6 +3,7 @@
 namespace App\Http\Services;
 
 use App\Http\Services\Service;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -28,6 +29,6 @@ class AuthService extends Service
         $listKeyUser = array_keys($registerRequest->rules());
         $params = $registerRequest->only($listKeyUser);
         $params['password'] = bcrypt($params['password']);
-        return ModelService::insert('User', $params);
+        return ModelService::insert(User::class, $params);
     }
 }

@@ -30,6 +30,7 @@ Route::middleware('guest')->name('auth.')->group(function () {
 Route::middleware('authenticated')->group(function () {
     Route::get('/', [PageController::class, 'home'])->name('home');
     Route::get('/buy-card', [CardController::class, 'buyCard'])->name('buy-card');
+    Route::post('/buy-card', [CardController::class, 'buyCardPost'])->name('buy-card.post');
     Route::get('/trade-card', [CardController::class, 'tradeCard'])->name('trade-card');
     Route::get('/check-trade-card', [CardController::class, 'checkTradeCard'])->name('check-trade-card');
 

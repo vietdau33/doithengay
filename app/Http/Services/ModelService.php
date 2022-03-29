@@ -15,7 +15,8 @@ class ModelService extends Service
 
     public static function insert(string $model, array $datas): mixed
     {
-        $model = app("App\Models\\$model");
+        !str_contains($model, 'App\Models') && $model = "App\Models\\$model";
+        $model = app($model);
         foreach ($datas as $key => $data) {
             $model->{$key} = $data;
         }
