@@ -50,7 +50,7 @@
                 </a>
             </div>
             <div class="col-8">
-                <div class="header-menu d-md-none d-lg-block">
+                <div class="header-menu d-none d-lg-block">
                     <ul>
                         <li data-id="menu-trade-card"><a href="{{ route('trade-card') }}">Đổi thẻ cào</a></li>
                         <li data-id="menu-buy-card"><a href="{{ route('buy-card') }}">Mua thẻ cào</a></li>
