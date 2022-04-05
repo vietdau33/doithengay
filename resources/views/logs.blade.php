@@ -42,6 +42,17 @@
         <li>Đăng nhập user</li>
         <li>Thay đổi thông tin user</li>
         <li>Thay đổi mật khẩu</li>
+        <h3 class="title">05/04/2022</h3>
+        <p style="font-weight: bold">Lưu ý: Test mua thẻ thì mua mệnh giá 10.000 và 20.000 thôi. Vì account test còn 100k :3</p>
+        <li>Đổi thẻ cào</li>
+        <li>Lịch sử đổi thẻ cào</li>
+        <li>Mua thẻ cào</li>
+        <li>Lịch sử mua thẻ cào</li>
+        <li>Nạp tiền (chưa phát triển app check tin nhắn nên đang xử lý accept bằng tay ở admin)</li>
+        <li>Rút tiền</li>
+        <li>Lịch sử rút tiền</li>
+        <li>Danh sách thẻ ngân hàng của user</li>
+        <li>Thêm mới thẻ ngân hàng</li>
     </ul>
 </body>
 </html>

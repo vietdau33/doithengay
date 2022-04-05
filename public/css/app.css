@@ -18,22 +18,23 @@ body.full-height #copyright {
   left: 0;
   width: 100%;
 }
-body::-webkit-scrollbar-track {
+
+.custom-scrollbar::-webkit-scrollbar-track {
   background-color: white;
 }
-body::-webkit-scrollbar-thumb {
+.custom-scrollbar::-webkit-scrollbar-thumb {
   border: 1px solid #B0BEC5;
   border-radius: 10px;
   background-color: #B0BEC5;
 }
-body::-webkit-scrollbar-corner {
+.custom-scrollbar::-webkit-scrollbar-corner {
   background-color: white;
 }
-body::-webkit-scrollbar {
+.custom-scrollbar::-webkit-scrollbar {
   height: 7px;
   width: 7px;
 }
-body::-webkit-scrollbar {
+.custom-scrollbar::-webkit-scrollbar {
   width: 10px;
   background-color: white;
 }
@@ -92,7 +93,7 @@ body::-webkit-scrollbar {
 #header .header-menu ul li a {
   text-decoration: none;
   font-size: 16px;
-  padding: 15px 20px;
+  padding: 8px 14px;
   display: inline-block;
   color: #434953;
   font-weight: bold;
@@ -117,6 +118,48 @@ body::-webkit-scrollbar {
   color: #2188C9;
   box-shadow: 0 0 4px 1px;
   border-radius: 15px;
+}
+#header .header-auth .bar-user-icon {
+  padding: 7px 22px;
+  cursor: pointer;
+  font-size: 20px;
+  transition: ease-in-out 0.2s;
+  border-radius: 7px;
+}
+#header .header-auth .bar-user-icon:hover {
+  box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);
+}
+#header .header-auth .bar-user-menu {
+  position: relative;
+}
+#header .header-auth .bar-user-menu .menu-user {
+  position: absolute;
+  top: calc(100% + 7px);
+  right: 0;
+  background: #fff;
+  padding: 15px 0;
+  box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.3);
+  border-radius: 7px;
+  font-family: "Montserrat", sans-serif;
+}
+#header .header-auth .bar-user-menu .menu-user ul {
+  list-style: none;
+  margin-bottom: 0;
+}
+#header .header-auth .bar-user-menu .menu-user ul li a {
+  text-decoration: none;
+  font-size: 16px;
+  padding: 8px 22px;
+  display: inline-block;
+  color: #434953;
+  font-weight: normal;
+  position: relative;
+  width: 300px;
+  word-break: break-all;
+  transition: all 0.2s;
+}
+#header .header-auth .bar-user-menu .menu-user ul li a:hover {
+  font-weight: bold;
 }
 
 #copyright {
@@ -163,6 +206,9 @@ body::-webkit-scrollbar {
   right: 0;
   margin: auto;
 }
+#main-contents .box-content.box-recharge ul {
+  list-style: decimal;
+}
 #main-contents #auth-content {
   text-align: center;
   padding-top: 10px;
@@ -181,7 +227,7 @@ body::-webkit-scrollbar {
   height: 40px;
   padding-bottom: 5px;
 }
-.box-pay-card label {
+.box-pay-card label:not(.ignore) {
   height: 3.9em;
   color: #434a54;
   font-weight: 500;
@@ -201,21 +247,22 @@ body::-webkit-scrollbar {
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
+  padding: 5px;
 }
-.box-pay-card label.checked {
+.box-pay-card label:not(.ignore).checked {
   border-color: #2188C9 !important;
   color: #2188C9 !important;
 }
-.box-pay-card label input[type=radio] {
+.box-pay-card label:not(.ignore) input[type=radio] {
   display: none;
 }
-.box-pay-card label img {
+.box-pay-card label:not(.ignore) img {
   display: block;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 100%;
-  max-width: 115px;
+  max-width: calc(100% - 10px);
+  max-height: calc(100% - 10px);
   left: 0;
   right: 0;
   margin: 0 auto;
@@ -239,4 +286,12 @@ body::-webkit-scrollbar {
 
 input[type=radio]:checked ~ .checkbox-custom {
   transform: scale(1);
+}
+
+.form-control:disabled, .form-control[readonly] {
+  background-color: #f1f1f1;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }

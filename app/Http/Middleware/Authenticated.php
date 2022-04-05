@@ -20,6 +20,7 @@ class Authenticated
     public function handle(Request $request, Closure $next): Response|RedirectResponse
     {
         if(!Auth::check()) {
+            session()->put('url-redirect', request()->fullUrl());
             return redirect()->to('/login');
         }
         return $next($request);

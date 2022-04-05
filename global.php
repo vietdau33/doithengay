@@ -34,4 +34,32 @@ if (!function_exists('is_admin')) {
     }
 }
 
+if (!function_exists('getNameBank')) {
+    function getNameBank($type, $name): string
+    {
+        $conf = config('withdraw');
+        return $conf[$type][$name] ?? '';
+    }
+}
 
+if (!function_exists('getTypeBank')) {
+    function getTypeBank($type): string
+    {
+        return match ($type) {
+            'wallet' => 'Ví điện tử',
+            'bank' => 'Thẻ ngân hàng',
+            default => 'Error!',
+        };
+    }
+}
+
+if (!function_exists('get_card_trade')) {
+    function get_card_trade()
+    {
+        $cardTrade = config('card.trade');
+        return array_reduce($cardTrade, function ($result, $item) {
+            $result[$item['id']] = $item;
+            return $result;
+        }, []);
+    }
+}

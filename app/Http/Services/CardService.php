@@ -2,36 +2,41 @@
 
 namespace App\Http\Services;
 
-use App\Http\Services\Service;
+use App\Http\Requests\TradeCardRequest;
 use App\Models\CardStore;
+use App\Models\TradeCard;
 use App\Models\User;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\RequestOptions;
-use Illuminate\Http\Request;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
 use Illuminate\Support\Str;
 
 class CardService extends Service
 {
     public static function getUrlApi(string $type, array $param = []): string
     {
-        $apiKey = env('API_KEY_AUTOCARD', '');
         $url = config("card.api.$type");
-        $url = str_replace('{apikey}', $apiKey, $url);
         foreach ($param as $key => $data) {
             $url = str_replace("{{$key}}", $data, $url);
         }
         return $url;
     }
 
-    protected static function generate_hash(): string
+    protected static function generate_hash_store(): string
     {
         do {
             $hash = Str::random(32);
         } while (
             CardStore::where('store_hash', $hash)->first() != null
+        );
+        return $hash;
+    }
+
+    protected static function generate_hash_trade(): string
+    {
+        do {
+            $hash = Str::random(32);
+        } while (
+            TradeCard::whereHash($hash)->first() != null
         );
         return $hash;
     }
@@ -54,43 +59,79 @@ class CardService extends Service
     /**
      * @throws GuzzleException
      */
-    public static function buyCardPost($request)
+    public static function buyCardPost($request, &$hash = ''): bool
     {
         $param = $request->validated();
-
-        if ($param['method_buy'] == CardStore::P_CASH) {
-            $money = (int)$param['money_buy'] * (int)$param['quantity'];
-            $user = User::whereId(user()->id)->first();
-            if ((int)$user->money < $money) {
-                session()->flash('mgs_error', 'Số tiền có trong tài khoản không đủ. Hãy nạp thêm và thử lại!');
-                return false;
-            }
-        }
-
-        $param['store_hash'] = self::generate_hash();
+        $param['store_hash'] = self::generate_hash_store();
         $param['user_id'] = user()->id;
 
-        ModelService::insert(CardStore::class, $param);
+        $hash = $param['store_hash'];
 
         if ($param['method_buy'] == CardStore::P_CASH) {
-            self::paymentCash($param['store_hash']);
+            return self::paymentCash($param);
         }
-    }
 
-    protected static function paymentCash($hash)
-    {
-        $store = CardStore::whereStoreHash($hash)->first();
-        $user = User::whereId($store->user_id)->first();
-
-        $statusBuy = self::CallApiBuyCard($store->card_buy, $store->money_buy, $store->quantity);
+        return false;
     }
 
     /**
      * @throws GuzzleException
      */
-    protected static function CallApiBuyCard($telco, $amount, $quantity)
+    protected static function paymentCash($param): bool
     {
-        $access_key = self::get_access_token();
+        $money = (int)$param['money_buy'] * (int)$param['quantity'];
+        $user = User::whereId(user()->id)->first();
 
+        if ((int)$user->money < $money) {
+            session()->flash('mgs_error', 'Số tiền có trong tài khoản không đủ. Hãy nạp thêm và thử lại!');
+            return false;
+        }
+
+        $url = self::getUrlApi('buy');
+        $result = HttpService::ins()->post($url, [
+            'ApiKey' => env('API_KEY_AUTOCARD', ''),
+            'Telco' => ucfirst($param['card_buy']),
+            'Amount' => (int)$param['money_buy'],
+            'Quantity' => (int)$param['quantity']
+        ]);
+
+        if($result['Code'] === 0){
+            session()->flash('mgs_error', 'Không thể mua thẻ ngay lúc này. Hãy liên hệ admin để được xử lý!');
+            return false;
+        }
+
+        $user->money = (int)$user->money - $money;
+        $user->save();
+
+        $param['results'] = json_encode($result['Data']);
+        return ModelService::insert(CardStore::class, $param) !== false;
+    }
+
+    /**
+     * @throws GuzzleException
+     */
+    public static function saveTradeCard(TradeCardRequest $request): bool
+    {
+        $params = $request->validated();
+        $params['user_id'] = user()->id;
+        $params['hash'] = self::generate_hash_trade();
+
+        $urlTrade = self::getUrlApi('trade');
+        $result = HttpService::ins()->post($urlTrade, [
+            'ApiKey' => env('API_KEY_AUTOCARD', ''),
+            'Pin' => $params['card_number'],
+            'Seri' => $params['card_serial'],
+            'CardType' => $params['card_type'],
+            'CardValue' => $params['card_money'],
+            'requestid' => $params['hash']
+        ]);
+
+        if($result['Code'] === 0) {
+            session()->flash('mgs_error', $result['Message']);
+            return false;
+        }
+
+        $params['task_id'] = $result['TaskId'];
+        return ModelService::insert(TradeCard::class, $params) !== false;
     }
 }

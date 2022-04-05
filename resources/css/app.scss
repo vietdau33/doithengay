@@ -19,7 +19,9 @@ body {
             width: 100%;
         }
     }
+}
 
+.custom-scrollbar {
     &::-webkit-scrollbar-track {
         background-color: white;
     }
@@ -137,6 +139,12 @@ body {
             right: 0;
             margin: auto;
         }
+
+        &.box-recharge {
+            ul {
+                list-style: decimal;
+            }
+        }
     }
 
     #auth-content {
@@ -161,7 +169,7 @@ body {
         }
     }
 
-    label {
+    label:not(.ignore) {
         height: 3.9em;
         color: #434a54;
         font-weight: 500;
@@ -181,6 +189,7 @@ body {
         width: 115px;
         cursor: pointer;
         user-select: none;
+        padding: 5px;
 
         &.checked {
             border-color: #2188C9 !important;
@@ -198,8 +207,8 @@ body {
             -webkit-transform: translateY(-50%);
             -ms-transform: translateY(-50%);
             transform: translateY(-50%);
-            width: 100%;
-            max-width: 115px;
+            max-width: calc(100% - 10px);
+            max-height: calc(100% - 10px);
             left: 0;
             right: 0;
             margin: 0 auto;
@@ -230,4 +239,12 @@ input[type="radio"]:checked ~ .checkbox-custom {
     -webkit-transform: scale(1);
     -ms-transform: scale(1);
     transform: scale(1);
+}
+
+.form-control:disabled, .form-control[readonly] {
+    background-color: #f1f1f1;
+}
+
+.cursor-pointer {
+    cursor: pointer;
 }

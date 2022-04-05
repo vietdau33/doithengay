@@ -9,6 +9,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -26,9 +27,10 @@ class AuthController extends Controller
 
     public function loginPost(LoginRequest $request): RedirectResponse
     {
-        if($this->authService->loginPost($request)){
+        if ($this->authService->loginPost($request)) {
             session()->flash('notif', 'Đăng nhập thành công!');
-            return redirect()->to('/');
+            $pathRedirect = session()->pull('url-redirect', '/');
+            return redirect()->to($pathRedirect);
         }
         session()->flash('notif', 'Thông tin tài khoản hoặc mật khẩu không chính xác!');
         return redirect()->back()->withInput();
@@ -43,6 +45,12 @@ class AuthController extends Controller
     {
         $this->authService->registerPost($request);
         session()->flash('notif', 'Tạo tài khoản thành công!');
+        return redirect()->route('auth.view');
+    }
+
+    public function logout(): RedirectResponse
+    {
+        Auth::logout();
         return redirect()->route('auth.view');
     }
 }

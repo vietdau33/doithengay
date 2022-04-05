@@ -15,6 +15,8 @@ window.App = {
     this.setErrorsUIView();
     this.setPositionCopyright();
     this.setClickCheckboxButton();
+    this.setAutoSize();
+    this.setEventClickMenu();
   },
   setPositionCopyright: function setPositionCopyright() {
     var cprh = $('#copyright').height();
@@ -62,7 +64,7 @@ window.App = {
 
     var _loop = function _loop(key) {
       var error = window.errors[key];
-      var el = $('input[name="' + key + '"]');
+      var el = $('[name="' + key + '"]');
 
       if (el.length <= 0) {
         return "continue";
@@ -123,6 +125,32 @@ window.App = {
     setTimeout(triggerChecked, 0);
     $('input[type="checkbox"], input[type="radio"]').on('click', function () {
       setTimeout(triggerChecked, 50);
+    });
+  },
+  setAutoSize: function setAutoSize() {
+    if (typeof autosize == 'function') {
+      autosize($('textarea.autosize'));
+    }
+  },
+  setEventClickMenu: function setEventClickMenu() {
+    $(document).on('click', function (event) {
+      if ($(event.target).closest('.bar-user-menu').length <= 0) {
+        $('.bar-user-icon').removeClass('show');
+        $('.bar-user-icon .menu-user').hide(300);
+      }
+    });
+    $('.bar-user-icon').on('click', function (event) {
+      if (!$(event.target).is('.bar-user-icon')) {
+        return;
+      }
+
+      if ($(this).hasClass('show')) {
+        $('.bar-user-icon').removeClass('show');
+        $('.bar-user-icon .menu-user').hide(300);
+      } else {
+        $('.bar-user-icon').addClass('show');
+        $('.bar-user-icon .menu-user').show(300);
+      }
     });
   }
 };

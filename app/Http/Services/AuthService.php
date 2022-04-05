@@ -2,12 +2,8 @@
 
 namespace App\Http\Services;
 
-use App\Http\Services\Service;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 
 class AuthService extends Service

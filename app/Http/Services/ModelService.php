@@ -15,13 +15,18 @@ class ModelService extends Service
 
     public static function insert(string $model, array $datas): mixed
     {
-        !str_contains($model, 'App\Models') && $model = "App\Models\\$model";
-        $model = app($model);
-        foreach ($datas as $key => $data) {
-            $model->{$key} = $data;
+        try {
+            !str_contains($model, 'App\Models') && $model = "App\Models\\$model";
+            $model = app($model);
+            foreach ($datas as $key => $data) {
+                $model->{$key} = $data;
+            }
+            $model->save();
+            return $model;
+        }catch (\Exception $exception) {
+            logger($exception->getMessage());
+            return false;
         }
-        $model->save();
-        return $model;
     }
 
     public static function update(Model $model, array $datas): bool

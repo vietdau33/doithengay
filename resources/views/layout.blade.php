@@ -39,7 +39,7 @@
     <script src="{{ asset('vendor/swiper/swiper.min.js') }}"></script>
     <script src="{{ asset('js/request.js') }}"></script>
 </head>
-<body>
+<body class="custom-scrollbar">
 
 <div id="header">
     <div class="container">
@@ -52,8 +52,10 @@
             <div class="col-8">
                 <div class="header-menu">
                     <ul>
-                        <li><a href="#">Đổi thẻ cào</a></li>
+                        <li id="menu-trade-card"><a href="{{ route('trade-card') }}">Đổi thẻ cào</a></li>
                         <li id="menu-buy-card"><a href="{{ route('buy-card') }}">Mua thẻ cào</a></li>
+                        <li id="menu-recharge"><a href="{{ route('recharge') }}">Nạp tiền</a></li>
+                        <li id="menu-withdraw"><a href="{{ route('withdraw') }}">Rút tiền</a></li>
                     </ul>
                 </div>
             </div>
@@ -62,7 +64,17 @@
                     @if(!logined())
                         <a class="btn btn-success" href="{{ route('auth.view') }}">Đăng nhập</a>
                     @else
-                        <a class="font-weight-bold text-decoration-none" href="{{ route('profile.home') }}">{{ user()->fullname }}</a>
+                        <div class="fas fa-bars bar-user-menu bar-user-icon">
+                            <div class="menu-user" style="display: none">
+                                <p class="text-center">{{ user()->fullname }}</p>
+                                <ul>
+                                    <li><a href="{{ route('profile.home') }}">Thông tin cá nhân</a></li>
+                                    <li><a href="{{ route('bank.list') }}">Thẻ ngân hàng</a></li>
+                                    <hr />
+                                    <li><a href="{{ route('auth.logout') }}">Đăng xuất</a></li>
+                                </ul>
+                            </div>
+                        </div>
                     @endif
                 </div>
             </div>
@@ -80,6 +92,7 @@
 </div>
 
 <script src="{{ asset('vendor/alertify/alertify.js') }}"></script>
+<script src="{{ asset('js/autosize.js') }}"></script>
 <script src="{{ asset('js/app.js') }}"></script>
 
 <script id="script_save_error">

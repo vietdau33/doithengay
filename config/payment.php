@@ -2,15 +2,16 @@
 
 return [
     'method' => [
-        'vnpay' => [
-            'alias' => 'vnpay',
-            'name' => 'VnPay',
-            'image' => ''
-        ],
+//        'vnpay' => [
+//            'alias' => 'vnpay',
+//            'name' => 'VnPay',
+//            'image' => ''
+//        ],
         'cash' => [
             'alias' => 'cash',
             'name' => 'Ví',
-            'image'
+            'image' => '',
+            'default' => true
         ]
     ]
 ];

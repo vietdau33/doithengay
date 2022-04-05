@@ -2,21 +2,25 @@
     max-width: 100%;
     width: 100px;
 }
+
 .header-menu ul {
     list-style: none;
     margin-bottom: 0;
     padding-left: 0;
+
     li {
         font-size: 0;
         display: inline-block;
+
         a {
             text-decoration: none;
             font-size: 16px;
-            padding: 15px 20px;
+            padding: 8px 14px;
             display: inline-block;
             color: #434953;
             font-weight: bold;
             position: relative;
+
             &:before {
                 content: " ";
                 position: absolute;
@@ -30,14 +34,67 @@
                 -webkit-transition: all .3s ease;
                 transition: all .3s ease;
             }
+
             &:hover:before {
                 width: 75%;
             }
         }
+
         &.active a {
             color: #2188C9;
             box-shadow: 0 0 4px 1px;
             border-radius: 15px;
+        }
+    }
+}
+
+.header-auth {
+    .bar-user-icon {
+        padding: 7px 22px;
+        cursor: pointer;
+        font-size: 20px;
+        transition: ease-in-out .2s;
+        border-radius: 7px;
+
+        &:hover {
+            box-shadow: 2px 2px 2px 2px rgb(0 0 0 / 20%);
+        }
+    }
+
+    .bar-user-menu {
+        position: relative;
+
+        .menu-user {
+            position: absolute;
+            top: calc(100% + 7px);
+            right: 0;
+            background: #fff;
+            padding: 15px 0;
+            box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.3);
+            border-radius: 7px;
+            font-family: "Montserrat", sans-serif;
+
+            ul {
+                list-style: none;
+                margin-bottom: 0;
+
+                li a {
+                    text-decoration: none;
+                    font-size: 16px;
+                    padding: 8px 22px;
+                    display: inline-block;
+                    color: #434953;
+                    font-weight: normal;
+                    position: relative;
+                    width: 300px;
+                    word-break: break-all;
+                    transition: all .2s;
+
+                    &:hover {
+                        font-weight: bold;
+                    }
+                }
+            }
         }
     }
 }
