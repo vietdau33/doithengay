@@ -161,6 +161,9 @@ body.full-height #copyright {
 #header .header-auth .bar-user-menu .menu-user ul li a:hover {
   font-weight: bold;
 }
+#header .header-auth .bar-user-menu .menu-user ul li.active a {
+  font-weight: bold;
+}
 
 #copyright {
   background: #fff;
@@ -172,6 +175,11 @@ body.full-height #copyright {
   height: auto;
 }
 
+#main-contents {
+  background-image: url("/image/banner-top1.jpg");
+  background-repeat: no-repeat;
+  background-position: top;
+}
 #main-contents .header-content img {
   height: 50px;
 }
@@ -213,9 +221,6 @@ body.full-height #copyright {
   text-align: center;
   padding-top: 10px;
   padding-bottom: 10px;
-  background-image: url("/image/banner-top1.jpg");
-  background-repeat: no-repeat;
-  background-position: top;
   color: #fff;
 }
 

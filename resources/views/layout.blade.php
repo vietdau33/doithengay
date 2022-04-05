@@ -50,12 +50,12 @@
                 </a>
             </div>
             <div class="col-8">
-                <div class="header-menu">
+                <div class="header-menu d-md-none d-lg-block">
                     <ul>
-                        <li id="menu-trade-card"><a href="{{ route('trade-card') }}">Đổi thẻ cào</a></li>
-                        <li id="menu-buy-card"><a href="{{ route('buy-card') }}">Mua thẻ cào</a></li>
-                        <li id="menu-recharge"><a href="{{ route('recharge') }}">Nạp tiền</a></li>
-                        <li id="menu-withdraw"><a href="{{ route('withdraw') }}">Rút tiền</a></li>
+                        <li data-id="menu-trade-card"><a href="{{ route('trade-card') }}">Đổi thẻ cào</a></li>
+                        <li data-id="menu-buy-card"><a href="{{ route('buy-card') }}">Mua thẻ cào</a></li>
+                        <li data-id="menu-recharge"><a href="{{ route('recharge') }}">Nạp tiền</a></li>
+                        <li data-id="menu-withdraw"><a href="{{ route('withdraw') }}">Rút tiền</a></li>
                     </ul>
                 </div>
             </div>
@@ -71,6 +71,13 @@
                                     <li><a href="{{ route('profile.home') }}">Thông tin cá nhân</a></li>
                                     <li><a href="{{ route('bank.list') }}">Thẻ ngân hàng</a></li>
                                     <hr />
+                                    <div class="d-lg-none">
+                                        <li data-id="menu-trade-card"><a href="{{ route('trade-card') }}">Đổi thẻ cào</a></li>
+                                        <li data-id="menu-buy-card"><a href="{{ route('buy-card') }}">Mua thẻ cào</a></li>
+                                        <li data-id="menu-recharge"><a href="{{ route('recharge') }}">Nạp tiền</a></li>
+                                        <li data-id="menu-withdraw"><a href="{{ route('withdraw') }}">Rút tiền</a></li>
+                                        <hr />
+                                    </div>
                                     <li><a href="{{ route('auth.logout') }}">Đăng xuất</a></li>
                                 </ul>
                             </div>
@@ -111,7 +118,7 @@
     @endif
     //active menu
     @if(session()->has('menu-active'))
-        $('#{{ session()->pull('menu-active') }}').addClass('active');
+        $('[data-id="{{ session()->pull('menu-active') }}"]').addClass('active');
     @endif
 
     //remove elm script

@@ -24,7 +24,7 @@ window.App = {
     $('#main-contents').css({
       'min-height': 'calc(100vh - ' + cprh + 'px)'
     });
-    $('#auth-content').css({
+    $('#main-contents').css({
       'padding-top': hh + 10 + 'px'
     });
   },

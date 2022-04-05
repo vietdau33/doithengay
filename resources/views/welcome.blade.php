@@ -21,7 +21,7 @@
 
     <div class="container">
         <h2 class="text-center font-weight-bold">Đổi thẻ ngay !</h2>
-        <ul class="list-notif">
+        <ul class="list-notif mb-4">
             <li>
                 <img src="{{ asset('image/arrow-1.gif') }}" alt="Arrow">
                 <span class="font-weight-bold">Không nhận thẻ trộm cắp, lừa đảo. Phát hiện khóa tài khoản vĩnh viễn không cần báo trước.</span>
