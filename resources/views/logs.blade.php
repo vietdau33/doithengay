@@ -53,6 +53,9 @@
         <li>Lịch sử rút tiền</li>
         <li>Danh sách thẻ ngân hàng của user</li>
         <li>Thêm mới thẻ ngân hàng</li>
+        <h3 class="title">08/04/2022</h3>
+        <li>Admin Panel: Tài khoản | Mật khẩu < admin | admin1 ></li>
+        <li>Admin Panel: Chấp nhận yêu cầu rút tiền</li>
     </ul>
 </body>
 </html>
