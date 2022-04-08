@@ -8,6 +8,7 @@
     <meta name="robots" content="index, follow'">
     <meta name="description" content="{{ config('meta.description') }}">
     <meta name="keywords" content="{{ config('meta.keywork') }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
 
     <!-- Open Graph data -->
     <meta property="og:title" content="{{ config('meta.title') }}">
@@ -44,13 +45,13 @@
 <div id="header">
     <div class="container">
         <div class="row align-items-center">
-            <div class="col-2">
+            <div class="col-6 col-lg-2">
                 <a href="{{ url('') }}" class="d-block">
                     <img src="{{ asset('image/logo.png') }}" alt="Logo" class="header-logo">
                 </a>
             </div>
-            <div class="col-8">
-                <div class="header-menu d-none d-lg-block">
+            <div class="d-none d-lg-block col-lg-8">
+                <div class="header-menu d-none {{ logined() ? 'd-lg-block' : '' }}">
                     <ul>
                         <li data-id="menu-trade-card"><a href="{{ route('trade-card') }}">Đổi thẻ cào</a></li>
                         <li data-id="menu-buy-card"><a href="{{ route('buy-card') }}">Mua thẻ cào</a></li>
@@ -59,15 +60,21 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-2 text-center">
+            <div class="col-6 col-lg-2 text-center">
                 <div class="header-auth">
                     @if(!logined())
                         <a class="btn btn-success" href="{{ route('auth.view') }}">Đăng nhập</a>
                     @else
                         <div class="fas fa-bars bar-user-menu bar-user-icon">
-                            <div class="menu-user" style="display: none">
+                            <div class="menu-user cursor-nomal" style="display: none">
                                 <p class="text-center">{{ user()->fullname }}</p>
+                                <p class="text-center font-weight-normal">{{ number_format(user()->money) }} đ</p>
+                                <hr />
                                 <ul>
+                                    @if(is_admin())
+                                        <li><a href="{{ route('admin.home') }}">Admin Panel</a></li>
+                                        <hr />
+                                    @endif
                                     <li><a href="{{ route('profile.home') }}">Thông tin cá nhân</a></li>
                                     <li><a href="{{ route('bank.list') }}">Thẻ ngân hàng</a></li>
                                     <hr />
@@ -101,6 +108,14 @@
 <script src="{{ asset('vendor/alertify/alertify.js') }}"></script>
 <script src="{{ asset('js/autosize.js') }}"></script>
 <script src="{{ asset('js/app.js') }}"></script>
+
+<script type="text/javascript">
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+</script>
 
 <script id="script_save_error">
     //assign errors

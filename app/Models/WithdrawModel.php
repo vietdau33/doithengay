@@ -17,13 +17,18 @@ class WithdrawModel extends Model
 
     protected $table = 'withdraw';
 
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
     public function getStatus(): string
     {
         return match ($this->status) {
-            self::CREATED => 'Vừa tạo',
-            self::CONFIRM => 'Đã xác nhận',
-            self::SUCCESS => 'Thành công',
-            self::CANCEL => 'Từ chối',
+            self::CREATED => '<span class="text-secondary">Vừa tạo</span>',
+            self::CONFIRM => '<span class="text-primary">Đã xác nhận</span>',
+            self::SUCCESS => '<span class="text-success">Thành công</span>',
+            self::CANCEL => '<span class="text-danger">Từ chối</span>',
             default => '',
         };
     }

@@ -17,6 +17,7 @@ window.App = {
     this.setClickCheckboxButton();
     this.setAutoSize();
     this.setEventClickMenu();
+    this.preventEnterSubmit();
   },
   setPositionCopyright: function setPositionCopyright() {
     var cprh = $('#copyright').height();
@@ -150,6 +151,13 @@ window.App = {
       } else {
         $('.bar-user-icon').addClass('show');
         $('.bar-user-icon .menu-user').show(300);
+      }
+    });
+  },
+  preventEnterSubmit: function preventEnterSubmit() {
+    $(document).on("keydown", ":input:not(textarea)", function (event) {
+      if (event.key == "Enter") {
+        event.preventDefault();
       }
     });
   }

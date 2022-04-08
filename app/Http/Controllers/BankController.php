@@ -31,4 +31,16 @@ class BankController extends Controller
         session()->flash('notif', $mgs);
         return redirect()->route('bank.list');
     }
+
+    public function remove($id){
+        $bank = BankModel::whereId($id)->first();
+        if($bank == null || $bank->user_id != user()->id){
+            session()->flash('mgs_error', "Ngân hàng không tồn tại!");
+            return back();
+        }
+
+        $bank->delete();
+        session()->flash('notif', "Đã xóa thành công!");
+        return back();
+    }
 }

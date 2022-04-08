@@ -25,6 +25,7 @@ class PasswordRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'password_current' => 'required',
             'password' => 'required|confirmed',
         ];
     }
@@ -32,17 +33,21 @@ class PasswordRequest extends FormRequest
     public function withValidator($validators)
     {
         $validators->after(function ($validator) {
-            if(Hash::check($this->password_current, user()->getAuthPassword())){
-                $validator->errors()->add('password_current', 'Mật khẩu hiện tại không chính xác!');
+            if(mb_strlen($this->password) < 6) {
+                return $validator->errors()->add('password', 'Mật khẩu mới phải chứa ít nhất 6 ký tự!');
             }
+            if(!empty($this->password_current) && !Hash::check($this->password_current, user()->getAuthPassword())){
+                return $validator->errors()->add('password_current', 'Mật khẩu hiện tại không chính xác!');
+            }
+            return true;
         });
     }
 
     public function messages(): array
     {
         return [
+            'password_current.required' => 'Mật khẩu cũ không được trống!',
             'password.required' => 'Mật khẩu không được trống!',
-            'password.min' => 'Mật khẩu phải chứa ít nhất :min ký tự!',
             'password.confirmed' => 'Mật khẩu không trùng khớp!'
         ];
     }

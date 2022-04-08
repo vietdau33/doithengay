@@ -29,6 +29,11 @@ class AuthController extends Controller
     {
         if ($this->authService->loginPost($request)) {
             session()->flash('notif', 'Đăng nhập thành công!');
+
+            if(is_admin()){
+                return redirect()->route('admin.home');
+            }
+
             $pathRedirect = session()->pull('url-redirect', '/');
             return redirect()->to($pathRedirect);
         }

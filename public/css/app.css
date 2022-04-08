@@ -300,3 +300,7 @@ input[type=radio]:checked ~ .checkbox-custom {
 .cursor-pointer {
   cursor: pointer;
 }
+
+.cursor-nomal {
+  cursor: default;
+}

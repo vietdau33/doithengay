@@ -6,6 +6,7 @@ window.App = {
         this.setClickCheckboxButton();
         this.setAutoSize();
         this.setEventClickMenu();
+        this.preventEnterSubmit();
     },
     setPositionCopyright: function () {
         let cprh = $('#copyright').height();
@@ -100,27 +101,34 @@ window.App = {
         });
     },
     setAutoSize: function () {
-        if(typeof autosize == 'function') {
+        if (typeof autosize == 'function') {
             autosize($('textarea.autosize'));
         }
     },
-    setEventClickMenu : function(){
-        $(document).on('click', function(event){
-            if($(event.target).closest('.bar-user-menu').length <= 0) {
+    setEventClickMenu: function () {
+        $(document).on('click', function (event) {
+            if ($(event.target).closest('.bar-user-menu').length <= 0) {
                 $('.bar-user-icon').removeClass('show');
                 $('.bar-user-icon .menu-user').hide(300);
             }
         });
-        $('.bar-user-icon').on('click', function(event) {
-            if(!$(event.target).is('.bar-user-icon')) {
+        $('.bar-user-icon').on('click', function (event) {
+            if (!$(event.target).is('.bar-user-icon')) {
                 return;
             }
-            if($(this).hasClass('show')){
+            if ($(this).hasClass('show')) {
                 $('.bar-user-icon').removeClass('show');
                 $('.bar-user-icon .menu-user').hide(300);
-            }else{
+            } else {
                 $('.bar-user-icon').addClass('show');
                 $('.bar-user-icon .menu-user').show(300);
+            }
+        });
+    },
+    preventEnterSubmit: function () {
+        $(document).on("keydown", ":input:not(textarea)", function (event) {
+            if (event.key == "Enter") {
+                event.preventDefault();
             }
         });
     }

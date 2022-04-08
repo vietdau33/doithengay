@@ -19,6 +19,7 @@
                             <th scope="col">Số thẻ</th>
                             <th scope="col">Tên chủ thẻ</th>
                             <th scope="col">Ngày thêm</th>
+                            <th scope="col">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -31,11 +32,14 @@
                                 <td>{{ $bank['account_number'] }}</td>
                                 <td style="min-width: 150px">{{ $bank['account_name'] }}</td>
                                 <td style="min-width: 130px;">{{ date('d/m/Y', strtotime($bank['created_at'])) }}</td>
+                                <td style="min-width: 100px;">
+                                    <a onclick="return confirm('Bạn chắc chắn muốn xóa thẻ này?')" href="{{ route('bank.remove', ['id' => $bank->id]) }}" class="btn btn-danger p-0 pl-2 pr-2">Xóa</a>
+                                </td>
                             </tr>
                         @endforeach
                         @if($banks->count() == 0)
                             <tr>
-                                <td colspan="6" style="min-width: 615px;">Chưa có thẻ ngân hàng nào</td>
+                                <td colspan="7" style="min-width: 615px;">Chưa có thẻ ngân hàng nào</td>
                             </tr>
                         @endif
                     </tbody>

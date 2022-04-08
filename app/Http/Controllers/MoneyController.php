@@ -30,6 +30,11 @@ class MoneyController extends Controller
     public function withdrawPost(WithdrawRequest $request): RedirectResponse
     {
         $user = User::whereId(user()->id)->first();
+        if((int)$request->money < 100000) {
+            session()->flash('mgs_error', 'Số tiền rút ít nhất là 100.000đ!');
+            return redirect()->back();
+        }
+
         if((int)$request->money > (int)$user->money) {
             session()->flash('mgs_error', 'Số tiền bạn muốn rút lớn hơn số tiền có trong tài khoản. Vui lòng kiểm tra lại số dư và tạo lại yêu cầu mới!');
             return redirect()->back();

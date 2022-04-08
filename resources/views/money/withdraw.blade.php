@@ -14,6 +14,8 @@
                         <a href="{{ route('withdraw.history') }}" class="btn btn-secondary">Xem lịch sử</a>
                     </div>
                     <hr>
+                    <div class="alert alert-warning">Khi thực hiện yêu cầu rút tiền, số tiền ít nhất là 100.000đ</div>
+                    <hr>
                     <div class="row m-0">
                         <label class="w-100 font-weight-bold" for="bank">Ngân hàng *</label>
                         @if($banks->count() == 0)

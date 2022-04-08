@@ -81,11 +81,16 @@ class CardController extends Controller
         return view('card.buy_history', compact('histories'));
     }
 
-    public function listCardBuy($hash): Factory|View|Application
+    public function listCardBuy($hash): RedirectResponse|Factory|View|Application
     {
         $cardStore = CardStore::whereStoreHash($hash)->first();
         if ($cardStore == null) {
             session()->flash('mgs_error', 'Đơn hàng không tồn tại hoặc đã bị xóa! Hãy quay về trang chủ để thao tác lại. Nếu có nhầm lẫn xảy ra, hãy liên hệ admin để được xử lý!');
+            return back();
+        }
+        if($cardStore->user-id != user()->id){
+            session()->flash('mgs_error', 'Bạn không phải người mua!');
+            return back();
         }
         $lists = json_decode($cardStore->results, 1);
         return view('card.list', compact('lists'));

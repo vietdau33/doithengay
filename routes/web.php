@@ -62,6 +62,7 @@ Route::middleware('authenticated')->group(function () {
         Route::get('/', [BankController::class, 'list'])->name('list');
         Route::get('/add', [BankController::class, 'add'])->name('add');
         Route::post('/add', [BankController::class, 'addPost'])->name('add.post');
+        Route::get('/remove/{id}', [BankController::class, 'remove'])->name('remove');
     });
 });
 
