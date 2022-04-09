@@ -7,6 +7,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class IsAdminLogin
 {
@@ -21,6 +22,11 @@ class IsAdminLogin
     {
         if(!is_admin()) {
             return redirect()->route('home');
+        }
+        if(user()->inactive === 1){
+            Auth::logout();
+            session()->flash('mgs_error', 'Tài khoản đã bị khóa.');
+            return redirect()->to('/login');
         }
         return $next($request);
     }

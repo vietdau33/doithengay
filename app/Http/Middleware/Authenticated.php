@@ -23,6 +23,11 @@ class Authenticated
             session()->put('url-redirect', request()->fullUrl());
             return redirect()->to('/login');
         }
+        if(user()->inactive === 1){
+            Auth::logout();
+            session()->flash('mgs_error', 'Tài khoản đã bị khóa.');
+            return redirect()->to('/login');
+        }
         return $next($request);
     }
 }

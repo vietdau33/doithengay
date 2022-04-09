@@ -17,6 +17,11 @@ class AuthService extends Service
     public function loginPost($loginRequest): bool
     {
         $credentials = $loginRequest->only('username', 'password');
+        $user = User::whereUsername($credentials['username'])->first();
+        if($user != null && $user->inactive === 1){
+            session()->flash('mgs_error', 'Tài khoản đã bị khóa.');
+            return false;
+        }
         return Auth::attempt($credentials);
     }
 
