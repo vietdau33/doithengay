@@ -176,6 +176,12 @@ window.App = {
     } catch (e) {
       console.log(e);
     }
+  },
+  objectFlip: function objectFlip(obj) {
+    return Object.keys(obj).reduce(function (ret, key) {
+      ret[obj[key]] = key;
+      return ret;
+    }, {});
   }
 };
 window.addEventListener('DOMContentLoaded', function () {

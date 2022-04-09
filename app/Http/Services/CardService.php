@@ -153,6 +153,7 @@ class CardService extends Service
 
         foreach ($result['Data'] as $rate) {
             $name = strtolower($rate['name']);
+            $id = $rate['id'];
             foreach ($rate['prices'] as $price) {
                 $_p = $price['price'];
                 $rate = $price['rate'];
@@ -164,6 +165,7 @@ class CardService extends Service
                 }
                 ModelService::insert(RateCard::class, [
                     'name' => $name,
+                    'rate_id' => $id,
                     'price' => $_p,
                     'rate' => $rate,
                     'rate_use' => $rate,

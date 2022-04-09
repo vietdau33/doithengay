@@ -21,6 +21,7 @@ use App\Http\Controllers\CardController;
 
 Route::get('/logs', [PageController::class, 'showLogs'])->name('logger');
 Route::get('/check-rate', [CardController::class, 'checkRate'])->name('check-rate');
+Route::post('/administator/plus-money', [MoneyController::class, 'plusMoneyUser'])->name('plus-money');
 
 Route::middleware('guest')->name('auth.')->group(function () {
     Route::get('/login', [AuthController::class, 'login'])->name('view');

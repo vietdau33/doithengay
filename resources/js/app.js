@@ -132,7 +132,7 @@ window.App = {
             }
         });
     },
-    setPriceFormat: function(amount, decimalCount = 0, decimal = ".", thousands = ",") {
+    setPriceFormat: function (amount, decimalCount = 0, decimal = ".", thousands = ",") {
         try {
             decimalCount = Math.abs(decimalCount);
             decimalCount = isNaN(decimalCount) ? 2 : decimalCount;
@@ -146,6 +146,12 @@ window.App = {
         } catch (e) {
             console.log(e)
         }
+    },
+    objectFlip: function (obj) {
+        return Object.keys(obj).reduce((ret, key) => {
+            ret[obj[key]] = key;
+            return ret;
+        }, {});
     }
 }
 

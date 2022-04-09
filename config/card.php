@@ -24,22 +24,22 @@ return [
         ],
         'vcoin' => [
             'name' => 'Vcoin',
-            'image' => 'image/card/vcoin.jpg',
+            'image' => 'image/card/vcoin.png',
             'alias' => 'Vcoin'
         ],
         'zing' => [
             'name' => 'Zing',
-            'image' => 'image/card/zing.jpg',
+            'image' => 'image/card/zing.png',
             'alias' => 'Zing'
         ],
         'gate' => [
             'name' => 'Gate',
-            'image' => 'image/card/gate.jpg',
+            'image' => 'image/card/gate.png',
             'alias' => 'Gate'
         ],
         'garena' => [
             'name' => 'Garena',
-            'image' => 'image/card/garena.jpg',
+            'image' => 'image/card/garena.png',
             'alias' => 'Garena'
         ],
         'gosu' => [
@@ -53,43 +53,10 @@ return [
             'alias' => 'Funcard'
         ]
     ],
-    'trade' => [
-        'viettel' => [
-            'id' => 1,
-            'name' => 'Viettel',
-            'image' => 'image/card/viettel.png'
-        ],
-        'mobifone' => [
-            'id' => 2,
-            'name' => 'Mobifone',
-            'image' => 'image/card/mobi.png'
-        ],
-        'vinaphone' => [
-            'id' => 3,
-            'name' => 'Vinaphone',
-            'image' => 'image/card/vina.png'
-        ],
-        'vietnamobile' => [
-            'id' => 16,
-            'name' => 'Vietnamobile',
-            'image' => 'image/card/vnm.png'
-        ],
-        'zing' => [
-            'id' => 14,
-            'name' => 'Zing',
-            'image' => 'image/card/zing.jpg'
-        ],
-        'gate' => [
-            'id' => 15,
-            'name' => 'Gate',
-            'image' => 'image/card/gate.jpg'
-        ]
-    ],
     'api' => [
         'trade' => 'http://api.autocard365.com/api/card',
         'check-trade' => 'https://api.autocard365.com/api/checktask/{taskid}',
         'rate' => 'https://api.autocard365.com/api/cardrate?apikey={apikey}',
         'buy' => 'https://api.autocard365.com/api/buycard'
-    ],
-    'rate-compare' => 10
+    ]
 ];

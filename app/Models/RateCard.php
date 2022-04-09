@@ -17,12 +17,24 @@ class RateCard extends Model
             return $result;
         }, []);
 
-        foreach ($rates as &$rate) {
+        foreach ($rates as $key => $rate) {
             uasort($rate, function($a, $b){
                 return (int)$a['price'] > (int)$b['price'];
             });
+            $rates[$key] = [];
+            foreach ($rate as $r) {
+                $rates[$key][$r['price']] = $r;
+            }
         }
 
         return $rates;
+    }
+
+    public static function getRateId(){
+        $rate_id = self::select('name', 'rate_id')->groupBy('name')->get()->toArray();
+        return array_reduce($rate_id, function($result, $rate){
+            $result[$rate['name']] = $rate['rate_id'];
+            return $result;
+        }, []);
     }
 }

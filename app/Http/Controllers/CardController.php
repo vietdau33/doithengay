@@ -50,7 +50,9 @@ class CardController extends Controller
     public function tradeCard(): Factory|View|Application
     {
         session()->flash('menu-active', 'menu-trade-card');
-        return view('card.trade');
+        $rates = RateCard::getRate();
+        $rateID = RateCard::getRateId();
+        return view('card.trade', compact('rates', 'rateID'));
     }
 
     /**
@@ -75,7 +77,9 @@ class CardController extends Controller
     public function tradeCardHistory(): Factory|View|Application
     {
         $histories = TradeCard::whereUserId(user()->id)->orderBy('created_at', 'DESC')->get();
-        return view('card.trade_history', compact('histories'));
+        $rates = RateCard::getRate();
+        $rateID = array_flip(RateCard::getRateId());
+        return view('card.trade_history', compact('histories', 'rates', 'rateID'));
     }
 
     public function buyCardHistory(): Factory|View|Application
@@ -91,7 +95,7 @@ class CardController extends Controller
             session()->flash('mgs_error', 'Đơn hàng không tồn tại hoặc đã bị xóa! Hãy quay về trang chủ để thao tác lại. Nếu có nhầm lẫn xảy ra, hãy liên hệ admin để được xử lý!');
             return back();
         }
-        if($cardStore->user-id != user()->id){
+        if($cardStore->user_id != user()->id){
             session()->flash('mgs_error', 'Bạn không phải người mua!');
             return back();
         }

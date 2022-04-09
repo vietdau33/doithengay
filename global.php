@@ -54,12 +54,10 @@ if (!function_exists('getTypeBank')) {
 }
 
 if (!function_exists('get_card_trade')) {
-    function get_card_trade()
+    function get_card_trade($trade, $rates, $listId): string
     {
-        $cardTrade = config('card.trade');
-        return array_reduce($cardTrade, function ($result, $item) {
-            $result[$item['id']] = $item;
-            return $result;
-        }, []);
+        $rates = $rates[$listId[$trade['card_type']]];
+        $rate = $rates[$trade['card_money']];
+        return ucfirst($rate['name']);
     }
 }

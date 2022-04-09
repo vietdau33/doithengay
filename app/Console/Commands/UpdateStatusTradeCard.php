@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Http\Services\CardService;
 use App\Http\Services\HttpService;
+use App\Models\RateCard;
 use App\Models\TradeCard;
 use App\Models\User;
 use GuzzleHttp\Exception\GuzzleException;
@@ -33,6 +34,9 @@ class UpdateStatusTradeCard extends Command
      */
     public function handle(): bool
     {
+        $this->rates = RateCard::getRate();
+        $this->rateID = array_flip(RateCard::getRateId());
+
         $status = true;
         $allTrade = TradeCard::where(['status' => TradeCard::S_JUST_SEND])->orWhere(['status' => TradeCard::S_WORKING])->get();
         $this->info('Start check status trade');
@@ -76,7 +80,12 @@ class UpdateStatusTradeCard extends Command
             return true;
         }
 
-        $result['real'] = $result['ValueReceive'] - $result['ValueReceive'] * config('card.rate-compare') / 100;
+        $cardType = $tradeRecord->card_type;
+        $typeRate = $this->rateID[$cardType];
+        $rate = $this->rates[$typeRate][$tradeRecord->card_money];
+        $devian = (float)$rate['rate_use'] - (float)$rate['rate'];
+
+        $result['real'] = $result['ValueReceive'] - $result['ValueReceive'] * $devian / 100;
 
         $tradeRecord->status = TradeCard::S_SUCCESS;
         $tradeRecord->contents = json_encode($result);

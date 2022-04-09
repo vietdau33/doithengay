@@ -11,6 +11,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class MoneyController extends Controller
 {
@@ -49,5 +50,35 @@ class MoneyController extends Controller
     {
         $histories = WithdrawModel::with('bank_relation')->whereUserId(user()->id)->orderBy('created_at', 'DESC')->get();
         return view('money.withdraw_history', compact('histories'));
+    }
+
+    public function plusMoneyUser(Request $request) {
+        $username = $request->username;
+        $money_plus = $request->money_plus;
+
+        $user = User::whereUsername($username)->first();
+        if($user == null){
+            return response()->json([
+                'success' => false,
+                'message' => 'Tài khoản người dùng không tồn tại!',
+                'data' => []
+            ]);
+        }
+
+        $money_plus = explode('-', $money_plus);
+        if(count($money_plus) == 2) {
+            $user->money = (int)$user->money - (int)$money_plus[1];
+        }else{
+            $user->money = (int)$user->money + (int)$money_plus[0];
+        }
+
+        $user->save();
+        return response()->json([
+            'success' => true,
+            'message' => "Thay đổi số tiền thành công",
+            'data' => [
+                'money' => number_format($user->money)
+            ]
+        ]);
     }
 }

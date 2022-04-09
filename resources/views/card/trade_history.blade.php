@@ -25,13 +25,12 @@
                     </thead>
                     <tbody>
                         @php($stt = 1)
-                        @php($cardTrade = get_card_trade())
                         @foreach($histories as $history)
                             @php($realMoney = $history->status == 3 ? json_decode($history->contents, 1)['real'] : 0)
                             <tr>
                                 <th scope="row">{{ $stt++ }}</th>
                                 <td style="min-width: 150px;">{!! $history->getStatusHtml() !!}</td>
-                                <td style="min-width: 130px;">{{ $cardTrade[$history->card_type]['name'] }}</td>
+                                <td style="min-width: 130px;">{{ get_card_trade($history, $rates, $rateID) }}</td>
                                 <td style="min-width: 150px;">{{ number_format($history->card_money) }}</td>
                                 <td style="min-width: 150px;">{{ number_format($realMoney) }}</td>
                                 <td style="min-width: 200px;">{{ $history->card_serial }}</td>
