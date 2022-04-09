@@ -42,7 +42,7 @@ Route::middleware('authenticated')->group(function () {
     Route::post('/trade-card', [CardController::class, 'tradeCardPost'])->name('trade-card.post');
     Route::get('/trade-card/history', [CardController::class, 'tradeCardHistory'])->name('trade-card.history');
 
-    Route::get('/check-trade-card', [CardController::class, 'checkTradeCard'])->name('check-trade-card');
+    Route::get('/chiet-khau', [CardController::class, 'showDiscount'])->name('chiet-khau');
 
     Route::get('/recharge', [MoneyController::class, 'recharge'])->name('recharge');
 

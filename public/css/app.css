@@ -114,7 +114,10 @@ body.full-height #copyright {
 #header .header-menu ul li a:hover:before {
   width: 75%;
 }
-#header .header-menu ul li.active a {
+#header .header-menu ul li a.dropdown-item.active {
+  color: #fff;
+}
+#header .header-menu ul li.active a:not(.dropdown-item) {
   color: #2188C9;
   box-shadow: 0 0 4px 1px;
   border-radius: 15px;

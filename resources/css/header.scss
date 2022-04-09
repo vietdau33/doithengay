@@ -38,9 +38,13 @@
             &:hover:before {
                 width: 75%;
             }
+
+            &.dropdown-item.active {
+                color: #fff;
+            }
         }
 
-        &.active a {
+        &.active a:not(.dropdown-item) {
             color: #2188C9;
             box-shadow: 0 0 4px 1px;
             border-radius: 15px;

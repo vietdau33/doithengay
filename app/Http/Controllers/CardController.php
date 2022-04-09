@@ -6,8 +6,10 @@ use App\Http\Requests\BuyCardRequest;
 use App\Http\Requests\TradeCardRequest;
 use App\Http\Services\CardService;
 use App\Http\Services\HttpService;
+use App\Http\Services\ModelService;
 use App\Http\Services\TradeCardService;
 use App\Models\CardStore;
+use App\Models\RateCard;
 use App\Models\TradeCard;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Contracts\Foundation\Application;
@@ -17,14 +19,13 @@ use Illuminate\Http\RedirectResponse;
 
 class CardController extends Controller
 {
+
     /**
      * @throws GuzzleException
      */
-    public function checkRate()
+    public function checkRate(): bool
     {
-        $urlCheckRate = CardService::getUrlApi('rate');
-        $result = HttpService::ins()->get($urlCheckRate);
-        dd($result);
+        return CardService::get_rate_card();
     }
 
     public function buyCard(): Factory|View|Application
@@ -64,9 +65,11 @@ class CardController extends Controller
         return redirect()->refresh();
     }
 
-    public function checkTradeCard()
+    public function showDiscount(): Factory|View|Application
     {
-        //
+        session()->flash('menu-active', 'menu-discount');
+        $rates = RateCard::getRate();
+        return view('card.rate', compact('rates'));
     }
 
     public function tradeCardHistory(): Factory|View|Application

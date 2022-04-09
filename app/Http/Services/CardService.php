@@ -4,6 +4,7 @@ namespace App\Http\Services;
 
 use App\Http\Requests\TradeCardRequest;
 use App\Models\CardStore;
+use App\Models\RateCard;
 use App\Models\TradeCard;
 use App\Models\User;
 use GuzzleHttp\Exception\GuzzleException;
@@ -133,5 +134,42 @@ class CardService extends Service
 
         $params['task_id'] = $result['TaskId'];
         return ModelService::insert(TradeCard::class, $params) !== false;
+    }
+
+    /**
+     * @throws GuzzleException
+     */
+    public static function get_rate_card(): bool
+    {
+        $urlCheckRate = CardService::getUrlApi('rate', [
+            'apikey' => env('API_KEY_AUTOCARD', '')
+        ]);
+
+        $result = HttpService::ins()->get($urlCheckRate);
+
+        if($result['Code'] !== 1){
+            return false;
+        }
+
+        foreach ($result['Data'] as $rate) {
+            $name = strtolower($rate['name']);
+            foreach ($rate['prices'] as $price) {
+                $_p = $price['price'];
+                $rate = $price['rate'];
+                $rateCard = RateCard::whereName($name)->wherePrice($_p)->first();
+                if($rateCard != null) {
+                    $rateCard->rate = $rate;
+                    $rateCard->save();
+                    continue;
+                }
+                ModelService::insert(RateCard::class, [
+                    'name' => $name,
+                    'price' => $_p,
+                    'rate' => $rate
+                ]);
+            }
+        }
+
+        return true;
     }
 }

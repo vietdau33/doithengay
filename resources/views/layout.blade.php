@@ -53,10 +53,28 @@
             <div class="d-none d-lg-block col-lg-8">
                 <div class="header-menu d-none {{ logined() ? 'd-lg-block' : '' }}">
                     <ul>
-                        <li data-id="menu-trade-card"><a href="{{ route('trade-card') }}">Đổi thẻ cào</a></li>
-                        <li data-id="menu-buy-card"><a href="{{ route('buy-card') }}">Mua thẻ cào</a></li>
-                        <li data-id="menu-recharge"><a href="{{ route('recharge') }}">Nạp tiền</a></li>
-                        <li data-id="menu-withdraw"><a href="{{ route('withdraw') }}">Rút tiền</a></li>
+                        <li>
+                            <div class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Thẻ cào</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="{{ route('buy-card') }}" data-id="menu-buy-card">Mua thẻ</a>
+                                    <a class="dropdown-item" href="{{ route('trade-card') }}" data-id="menu-trade-card">Đổi thẻ</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Dịch vụ</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="{{ route('recharge') }}" data-id="menu-recharge">Nạp tiền</a>
+                                    <a class="dropdown-item" href="{{ route('withdraw') }}" data-id="menu-withdraw">Rút tiền</a>
+                                    <a class="dropdown-item" href="{{ route('withdraw') }}" data-id="menu">Thanh toán cước</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li data-id="menu-discount">
+                            <a href="{{ route('chiet-khau') }}">Chiết khấu</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -83,6 +101,7 @@
                                         <li data-id="menu-buy-card"><a href="{{ route('buy-card') }}">Mua thẻ cào</a></li>
                                         <li data-id="menu-recharge"><a href="{{ route('recharge') }}">Nạp tiền</a></li>
                                         <li data-id="menu-withdraw"><a href="{{ route('withdraw') }}">Rút tiền</a></li>
+                                        <li data-id="menu-discount"><a href="{{ route('chiet-khau') }}">Chiết khấu</a></li>
                                         <hr />
                                     </div>
                                     <li><a href="{{ route('auth.logout') }}">Đăng xuất</a></li>
@@ -133,7 +152,13 @@
     @endif
     //active menu
     @if(session()->has('menu-active'))
-        $('[data-id="{{ session()->pull('menu-active') }}"]').addClass('active');
+        let activeElement = $('[data-id="{{ session()->pull('menu-active') }}"]');
+        if(activeElement.length > 0) {
+            activeElement.addClass('active');
+            if(activeElement.hasClass('dropdown-item')) {
+                activeElement.closest('li').addClass('active');
+            }
+        }
     @endif
 
     //remove elm script
