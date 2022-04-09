@@ -22,11 +22,11 @@
                         </thead>
                         <tbody>
                             @php($stt = 1)
-                            @foreach($rate as $money => $r)
+                            @foreach($rate as $r)
                                 <tr>
                                     <th scope="row">{{ $stt++ }}</th>
-                                    <td>{{ number_format($money) }}</td>
-                                    <td>{{ $r }}%</td>
+                                    <td>{{ number_format($r['price']) }}</td>
+                                    <td>{{ $r['rate'] }}%</td>
                                 </tr>
                             @endforeach
                         </tbody>

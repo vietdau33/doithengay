@@ -12,9 +12,20 @@ class RateCard extends Model
     protected $table = 'rate_card';
 
     public static function getRate(){
-        return array_reduce(self::all()->toArray(), function($result, $rate){
-            $result[$rate['name']][$rate['price']] = $rate['rate'];
+        $rates = array_reduce(self::all()->toArray(), function($result, $rate){
+            $result[$rate['name']][] = [
+                'price' => $rate['price'],
+                'rate' => $rate['rate']
+            ];
             return $result;
         }, []);
+
+        foreach ($rates as &$rate) {
+            uasort($rate, function($a, $b){
+                return (int)$a['price'] > (int)$b['price'];
+            });
+        }
+
+        return $rates;
     }
 }
