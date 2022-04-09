@@ -30,7 +30,7 @@ class BillController extends Controller
         if (!BillService::saveBillRequest($request)) {
             return back()->withInput();
         }
-        session()->flash('notif', 'Đã gửi yêu cầu! Hãy kiểm tra lịch sử để xem trạng thái gạch thẻ.');
+        session()->flash('notif', 'Đã gửi yêu cầu thanh toán cước.');
         return redirect()->route('pay-bill');
     }
 

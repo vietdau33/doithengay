@@ -21,7 +21,7 @@
                     <div class="form-group d-flex flex-wrap justify-content-center ">
                         @php($vendor = config('bill')[$type]['vendor'])
                         @foreach($vendor as $key => $_v)
-                            @php($checked = count($vendor) == 1)
+                            @php($checked = count($vendor) == 1 || old('vendor_id') == $key)
                             <label class="box-card {{ $checked ? 'checked' : '' }}" for="vendor_id-{{ $key }}">
                                 <img src="{{ asset($_v['image']) }}" alt="{{ $key }}">
                                 <input type="radio" id="vendor_id-{{ $key }}" name="vendor_id" value="{{ $key }}" {{ $checked ? 'checked' : '' }}>
@@ -42,7 +42,7 @@
                                 <span class="checkbox-custom"></span>
                             </label>
                         @endforeach
-                        <input type="text" class="form-control" name="money" placeholder="Số tiền thanh toán">
+                        <input type="text" class="form-control" name="money" value="{{ old('money') }}" placeholder="Số tiền thanh toán">
                     </div>
 
                     <hr />
@@ -52,7 +52,7 @@
                         <span>{{ $text }}</span>
                     </div>
                     <div class="form-group d-flex flex-wrap justify-content-center mt-2">
-                        <input class="form-control" name="bill_number" placeholder="{{ $text }}">
+                        <input class="form-control" name="bill_number" value="{{ old('bill_number') }}" placeholder="{{ $text }}">
                     </div>
                     <hr />
                     <div class="form-header">
@@ -105,5 +105,6 @@
             let val = $(this).val();
             $(this).val(App.setPriceFormat(val));
         });
+        $('[name="money"]').trigger('change');
     </script>
 @endsection
