@@ -14,7 +14,8 @@ RUN apk update \
         libjpeg-turbo-dev \
         zlib \
         unzip \
-        npm
+        npm \
+        git
 
 RUN docker-php-ext-install mysqli pdo pdo_mysql gd bcmath zip
 
@@ -39,5 +40,3 @@ USER www-data
 
 EXPOSE 9000
 CMD ["php-fpm"]
-
-USER root
