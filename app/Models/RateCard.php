@@ -13,10 +13,7 @@ class RateCard extends Model
 
     public static function getRate(){
         $rates = array_reduce(self::all()->toArray(), function($result, $rate){
-            $result[$rate['name']][] = [
-                'price' => $rate['price'],
-                'rate' => $rate['rate']
-            ];
+            $result[$rate['name']][] = $rate;
             return $result;
         }, []);
 

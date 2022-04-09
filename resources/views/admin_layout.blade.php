@@ -88,7 +88,7 @@
                     </li>
                     <li>
                         <a class="nav-submenu" data-toggle="nav-submenu" href="#">
-                            <i class="si si-puzzle"></i>
+                            <i class="si si-credit-card"></i>
                             <span class="sidebar-mini-hide">Thanh toán cước</span>
                         </a>
                         <ul class="nav-main__childrent">
@@ -96,6 +96,12 @@
                                 <li><a href="{{ route('admin.bill', ['type' => $type]) }}" data-id="pay-bill-{{ $type }}">{{ $bill['text'] }}</a></li>
                             @endforeach
                         </ul>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.discount') }}" data-id="discount">
+                            <i class="si si-wallet"></i>
+                            <span class="sidebar-mini-hide">Chiết khấu</span>
+                        </a>
                     </li>
                 </ul>
             </div>

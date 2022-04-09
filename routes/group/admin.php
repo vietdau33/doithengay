@@ -18,3 +18,6 @@ Route::prefix('user')->name('user.')->group(function(){
 
 Route::get('bill/{type}', [AdminController::class, 'showListBill'])->name('bill');
 Route::get('bill/change-status/{id}/{status}', [AdminController::class, 'changeBillStatus'])->name('bill.change-status');
+
+Route::get('discount', [AdminController::class, 'discount'])->name('discount');
+Route::post('discount/change/{name}', [AdminController::class, 'discountPost'])->name('discount.post');

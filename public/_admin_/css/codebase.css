@@ -24532,3 +24532,12 @@ div.tagsinput span.tag a:hover {
     color: #721c24 !important;
     background-color: #f8d7da !important;
 }
+
+.alert-primary {
+    color: #215179 !important;
+    background-color: #d9ebfa !important;
+}
+
+.list-style-decimal {
+    list-style: decimal;
+}

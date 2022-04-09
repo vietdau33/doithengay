@@ -18,16 +18,17 @@
                                 <th scope="col">#</th>
                                 <th scope="col">Mệnh giá</th>
                                 <th scope="col">Chiết khấu</th>
+                                <th scope="col">Cập nhật</th>
                             </tr>
                         </thead>
                         <tbody>
                             @php($stt = 1)
-                            @php($rateCompare = config('card.rate-compare'))
                             @foreach($rate as $r)
                                 <tr>
                                     <th scope="row">{{ $stt++ }}</th>
                                     <td>{{ number_format($r['price']) }}</td>
-                                    <td>{{ $r['rate'] + $rateCompare }}%</td>
+                                    <td>{{ $r['rate_use'] }}%</td>
+                                    <td>{{ date('H:i d/m/Y', strtotime($r['updated_at'])) }}</td>
                                 </tr>
                             @endforeach
                         </tbody>

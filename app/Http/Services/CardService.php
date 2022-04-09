@@ -165,7 +165,8 @@ class CardService extends Service
                 ModelService::insert(RateCard::class, [
                     'name' => $name,
                     'price' => $_p,
-                    'rate' => $rate
+                    'rate' => $rate,
+                    'rate_use' => $rate,
                 ]);
             }
         }

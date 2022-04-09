@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BankModel;
+use App\Http\Services\AdminService;
 use App\Models\BillModel;
+use App\Models\RateCard;
 use App\Models\User;
 use App\Models\WithdrawModel;
 use Illuminate\Contracts\Foundation\Application;
@@ -42,65 +43,12 @@ class AdminController extends Controller
 
     public function withdrawRequestPost(int $id, int $status): RedirectResponse
     {
-        if (!in_array($status, [0, 1, 2, 3], true)) {
-            session()->flash('mgs_error', 'Status không chính xác!');
-            return redirect()->back();
-        }
-
-        $withdraw = WithdrawModel::whereId($id)->first();
-        if ($withdraw == null) {
-            session()->flash('mgs_error', 'Yêu cầu không tồn tại!');
-            return redirect()->back();
-        }
-
-        $user = User::whereId($withdraw->user_id)->first();
-        if ($user == null) {
-            session()->flash('mgs_error', 'Người dùng không tồn tại hoặc đã bị xóa!');
-            return redirect()->back();
-        }
-
-        if ($status == 3) {
-            $user->money = (int)$user->money + (int)$withdraw->money;
-            $user->save();
-        }
-
-        $withdraw->status = $status;
-        $withdraw->save();
-
-        session()->flash('notif', "Thành công!");
-        return redirect()->back();
+        return AdminService::saveStatusWithdraw($id, $status);
     }
 
     public function bankInfo(Request $request): JsonResponse
     {
-        $bankId = $request->bank_id ?? null;
-        if (empty($bankId)) {
-            return response()->json([
-                'success' => false,
-                'message' => "Bank ID empty",
-                'datas' => []
-            ]);
-        }
-
-        $bank = BankModel::whereId($bankId)->first();
-        if ($bank == null) {
-            return response()->json([
-                'success' => false,
-                'message' => "Thông tin thanh toán đã không còn tồn tại!",
-                'datas' => []
-            ]);
-        }
-
-        return response()->json([
-            'success' => true,
-            'message' => "Success",
-            'datas' => [
-                'type' => getTypeBank($bank->type),
-                'name' => getNameBank($bank->type, $bank->name),
-                'a_number' => $bank->account_number,
-                'a_name' => $bank->account_name
-            ]
-        ]);
+        return AdminService::getBankInfoAjax($request->bank_id);
     }
 
     public function userListActive(): Factory|View|Application
@@ -121,22 +69,7 @@ class AdminController extends Controller
 
     public function changeActiveUser(int $id, int $status): RedirectResponse
     {
-        if ($status !== 0 && $status !== 1) {
-            session()->flash('mgs_error', 'Status không chính xác!');
-            return back();
-        }
-
-        $user = User::whereId($id)->first();
-        if ($user == null) {
-            session()->flash('mgs_error', 'Người dùng không còn tồn tại!');
-            return back();
-        }
-
-        $user->inactive = $status;
-        $user->save();
-
-        session()->flash('notif', "Thay đổi trạng thái thành công!");
-        return back();
+        return AdminService::changeActiveUser($id, $status);
     }
 
     public function showListBill($type): Factory|View|Application
@@ -148,32 +81,20 @@ class AdminController extends Controller
 
     public function changeBillStatus(int $id, int $status): RedirectResponse
     {
-        if (!in_array($status, [0, 1, 2, 3], true)) {
-            session()->flash('mgs_error', 'Status không chính xác!');
-            return redirect()->back();
-        }
+        return AdminService::changeBillStatus($id, $status);
+    }
 
-        $bill = BillModel::whereId($id)->first();
-        if ($bill == null) {
-            session()->flash('mgs_error', 'Yêu cầu không tồn tại!');
-            return redirect()->back();
-        }
+    public function discount(): Factory|View|Application
+    {
+        session()->flash('menu-active', 'discount');
+        $rates = RateCard::getRate();
+        return view('admin.rate.list', compact('rates'));
+    }
 
-        $user = User::whereId($bill->user_id)->first();
-        if ($user == null) {
-            session()->flash('mgs_error', 'Người dùng không tồn tại hoặc đã bị xóa!');
-            return redirect()->back();
-        }
-
-        if ($status == 3) {
-            $user->money = (int)$user->money + (int)$bill->money;
-            $user->save();
-        }
-
-        $bill->status = $status;
-        $bill->save();
-
-        session()->flash('notif', "Thành công!");
-        return redirect()->back();
+    public function discountPost($name, Request $request): JsonResponse
+    {
+        $params = $request->all();
+        unset($params['_token']);
+        return AdminService::changeRateCard($name, $params);
     }
 }
