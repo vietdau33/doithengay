@@ -68,7 +68,7 @@
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" href="{{ route('recharge') }}" data-id="menu-recharge">Nạp tiền</a>
                                     <a class="dropdown-item" href="{{ route('withdraw') }}" data-id="menu-withdraw">Rút tiền</a>
-                                    <a class="dropdown-item" href="{{ route('withdraw') }}" data-id="menu">Thanh toán cước</a>
+                                    <a class="dropdown-item" href="{{ route('pay-bill') }}" data-id="menu-pay-bill">Thanh toán cước</a>
                                 </div>
                             </div>
                         </li>

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BankController;
+use App\Http\Controllers\BillController;
 use App\Http\Controllers\MoneyController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -49,6 +50,11 @@ Route::middleware('authenticated')->group(function () {
     Route::get('/withdraw', [MoneyController::class, 'withdraw'])->name('withdraw');
     Route::post('/withdraw', [MoneyController::class, 'withdrawPost'])->name('withdraw.post');
     Route::get('/withdraw/history', [MoneyController::class, 'withdrawHistory'])->name('withdraw.history');
+
+    Route::get('/pay-bill', [BillController::class, 'payBill'])->name('pay-bill');
+    Route::get('/pay-bill/history', [BillController::class, 'payBillHistory'])->name('pay-bill.history');
+    Route::get('/pay-bill/create/{type}', [BillController::class, 'payBillCreate'])->name('pay-bill.create');
+    Route::post('/pay-bill/create', [BillController::class, 'payBillCreatePost'])->name('pay-bill.post');
 
     Route::prefix('profile')->name('profile.')->group(function () {
         Route::get('/', [PageController::class, 'profile'])->name('home');

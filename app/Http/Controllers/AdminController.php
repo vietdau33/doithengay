@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\BankModel;
+use App\Models\BillModel;
 use App\Models\User;
 use App\Models\WithdrawModel;
 use Illuminate\Contracts\Foundation\Application;
@@ -47,18 +48,18 @@ class AdminController extends Controller
         }
 
         $withdraw = WithdrawModel::whereId($id)->first();
-        if($withdraw == null){
+        if ($withdraw == null) {
             session()->flash('mgs_error', 'Yêu cầu không tồn tại!');
             return redirect()->back();
         }
 
         $user = User::whereId($withdraw->user_id)->first();
-        if($user == null){
+        if ($user == null) {
             session()->flash('mgs_error', 'Người dùng không tồn tại hoặc đã bị xóa!');
             return redirect()->back();
         }
 
-        if($status == 3) {
+        if ($status == 3) {
             $user->money = (int)$user->money + (int)$withdraw->money;
             $user->save();
         }
@@ -73,7 +74,7 @@ class AdminController extends Controller
     public function bankInfo(Request $request): JsonResponse
     {
         $bankId = $request->bank_id ?? null;
-        if(empty($bankId)){
+        if (empty($bankId)) {
             return response()->json([
                 'success' => false,
                 'message' => "Bank ID empty",
@@ -82,7 +83,7 @@ class AdminController extends Controller
         }
 
         $bank = BankModel::whereId($bankId)->first();
-        if($bank == null){
+        if ($bank == null) {
             return response()->json([
                 'success' => false,
                 'message' => "Thông tin thanh toán đã không còn tồn tại!",
@@ -100,5 +101,79 @@ class AdminController extends Controller
                 'a_name' => $bank->account_name
             ]
         ]);
+    }
+
+    public function userListActive(): Factory|View|Application
+    {
+        session()->flash('menu-active', 'user-active');
+        $users = User::whereInactive(0)->whereRole('user')->get();
+        $action = 'active';
+        return view('admin.user.list', compact('users', 'action'));
+    }
+
+    public function userListBlock(): Factory|View|Application
+    {
+        session()->flash('menu-active', 'user-block');
+        $users = User::whereInactive(1)->whereRole('user')->get();
+        $action = 'block';
+        return view('admin.user.list', compact('users', 'action'));
+    }
+
+    public function changeActiveUser(int $id, int $status): RedirectResponse
+    {
+        if ($status !== 0 && $status !== 1) {
+            session()->flash('mgs_error', 'Status không chính xác!');
+            return back();
+        }
+
+        $user = User::whereId($id)->first();
+        if ($user == null) {
+            session()->flash('mgs_error', 'Người dùng không còn tồn tại!');
+            return back();
+        }
+
+        $user->inactive = $status;
+        $user->save();
+
+        session()->flash('notif', "Thay đổi trạng thái thành công!");
+        return back();
+    }
+
+    public function showListBill($type): Factory|View|Application
+    {
+        session()->flash('menu-active', "pay-bill-$type");
+        $bills = BillModel::with('user')->whereType($type)->get();
+        return view('admin.bill.list', compact('bills', 'type'));
+    }
+
+    public function changeBillStatus(int $id, int $status): RedirectResponse
+    {
+        if (!in_array($status, [0, 1, 2, 3], true)) {
+            session()->flash('mgs_error', 'Status không chính xác!');
+            return redirect()->back();
+        }
+
+        $bill = BillModel::whereId($id)->first();
+        if ($bill == null) {
+            session()->flash('mgs_error', 'Yêu cầu không tồn tại!');
+            return redirect()->back();
+        }
+
+        $user = User::whereId($bill->user_id)->first();
+        if ($user == null) {
+            session()->flash('mgs_error', 'Người dùng không tồn tại hoặc đã bị xóa!');
+            return redirect()->back();
+        }
+
+        if ($status == 3) {
+            $user->money = (int)$user->money + (int)$bill->money;
+            $user->save();
+        }
+
+        $bill->status = $status;
+        $bill->save();
+
+        session()->flash('notif', "Thành công!");
+        return redirect()->back();
     }
 }

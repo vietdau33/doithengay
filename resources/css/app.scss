@@ -253,3 +253,43 @@ input[type="radio"]:checked ~ .checkbox-custom {
 .cursor-nomal {
     cursor: default;
 }
+
+.area-bill {
+    .icon {
+        height: 6em;
+        width: 6em;
+        margin: auto;
+        background: var(--background) no-repeat top center;
+        -webkit-background-size: 6em 12em;
+        background-size: 6em 12em;
+    }
+
+    ul {
+        list-style: none;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+
+        a {
+            width: 180px;
+            height: 150px;
+            display: block;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 7px;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            transition: all .2s;
+            margin: 10px;
+            position: relative;
+
+            &:hover{
+                box-shadow: 3px 3px 4px 1px rgba(0, 0, 0, 0.2);
+                border-color: transparent;
+
+                .checkbox-custom {
+                    transform: scale(1);
+                }
+            }
+        }
+    }
+}

@@ -68,12 +68,33 @@
                     </li>
                     <li>
                         <a class="nav-submenu" data-toggle="nav-submenu" href="#">
+                            <i class="si si-user"></i>
+                            <span class="sidebar-mini-hide">Thành viên</span>
+                        </a>
+                        <ul class="nav-main__childrent">
+                            <li><a href="{{ route('admin.user.active') }}" data-id="user-active">Hoạt động</a></li>
+                            <li><a href="{{ route('admin.user.block') }}" data-id="user-block">Bị khóa</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="nav-submenu" data-toggle="nav-submenu" href="#">
                             <i class="si si-puzzle"></i>
                             <span class="sidebar-mini-hide">Rút tiền</span>
                         </a>
                         <ul class="nav-main__childrent">
                             <li><a href="{{ route('admin.withdraw-request') }}" data-id="withdraw-request">Yêu cầu</a></li>
                             <li><a href="{{ route('admin.withdraw-history') }}" data-id="withdraw-history">Report</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="nav-submenu" data-toggle="nav-submenu" href="#">
+                            <i class="si si-puzzle"></i>
+                            <span class="sidebar-mini-hide">Thanh toán cước</span>
+                        </a>
+                        <ul class="nav-main__childrent">
+                            @foreach(config('bill') as $type => $bill)
+                                <li><a href="{{ route('admin.bill', ['type' => $type]) }}" data-id="pay-bill-{{ $type }}">{{ $bill['text'] }}</a></li>
+                            @endforeach
                         </ul>
                     </li>
                 </ul>

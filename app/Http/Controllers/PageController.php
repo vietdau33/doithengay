@@ -57,7 +57,7 @@ class PageController extends Controller
     public function changePasswordPost(PasswordRequest $request): RedirectResponse
     {
         if (!$this->userService->changePassword($request)) {
-            session()->flash('notif', 'Không thể thay đổi mật khẩu. Hãy liên hệ với admin để kiểm tra!');
+            session()->flash('mgs_error', 'Không thể thay đổi mật khẩu. Hãy liên hệ với admin để kiểm tra!');
             return redirect()->back();
         }
         session()->flash('notif', 'Thay đổi mật khẩu thành công. Hãy đăng nhập lại!');

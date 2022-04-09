@@ -9,3 +9,12 @@ Route::get('/withdraw-request', [AdminController::class, 'withdrawRequest'])->na
 Route::get('/withdraw-request/{id}/{status}', [AdminController::class, 'withdrawRequestPost'])->name('withdraw-request.status');
 Route::get('/withdraw-history', [AdminController::class, 'withdrawHistory'])->name('withdraw-history');
 Route::post('/bank/info', [AdminController::class, 'bankInfo'])->name('bank.info');
+
+Route::prefix('user')->name('user.')->group(function(){
+    Route::get('active', [AdminController::class, 'userListActive'])->name('active');
+    Route::get('block', [AdminController::class, 'userListBlock'])->name('block');
+    Route::get('change-active/{id}/{status}', [AdminController::class, 'changeActiveUser'])->name('change-active');
+});
+
+Route::get('bill/{type}', [AdminController::class, 'showListBill'])->name('bill');
+Route::get('bill/change-status/{id}/{status}', [AdminController::class, 'changeBillStatus'])->name('bill.change-status');
