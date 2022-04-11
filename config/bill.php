@@ -4,17 +4,17 @@ $vendor_list = [
     'viettel' => [
         'name' => 'Viettel',
         'image' => 'image/card/viettel.png',
-        'alias' => 'Viettel'
+        'alias' => 'viettel'
     ],
     'mobifone' => [
         'name' => 'Mobifone',
         'image' => 'image/card/mobifone.png',
-        'alias' => 'Mobifone'
+        'alias' => 'mobifone'
     ],
     'vinaphone' => [
         'name' => 'Vinaphone',
         'image' => 'image/card/vinaphone.png',
-        'alias' => 'Vinaphone'
+        'alias' => 'vinaphone'
     ],
 ];
 

@@ -61,3 +61,16 @@ if (!function_exists('get_card_trade')) {
         return ucfirst($rate['name']);
     }
 }
+
+
+if (!function_exists('get_title_setting_status')) {
+    function get_title_setting_status($type): string
+    {
+        return match ($type) {
+            'buy' => 'mua thẻ cào',
+            'trade' => 'bán thẻ cào',
+            'bill' => 'gạch cước',
+            default => '',
+        };
+    }
+}

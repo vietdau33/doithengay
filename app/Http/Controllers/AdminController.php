@@ -124,4 +124,17 @@ class AdminController extends Controller
     {
         return AdminService::changeStatusCardList($name, $type, 'buy');
     }
+
+    public function billSetting(): Factory|View|Application
+    {
+        session()->flash('menu-active', 'bill');
+        $settings = CardListModel::whereType('bill')->get();
+        $type = 'bill';
+        return view('admin.feature.setting_status', compact('settings', 'type'));
+    }
+
+    public function billSettingPost($name, $type): RedirectResponse
+    {
+        return AdminService::changeStatusCardList($name, $type, 'bill');
+    }
 }

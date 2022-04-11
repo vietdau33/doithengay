@@ -4,7 +4,7 @@
         <div class="block">
             <div class="block-header block-header-default">
                 <h3 class="block-title font-weight-bold">
-                    Quản lý trạng thái {{ $type == 'buy' ? 'mua' : 'bán' }} thẻ cào
+                    Quản lý trạng thái {{ get_title_setting_status($type) }}
                 </h3>
             </div>
             <div class="block-content">
@@ -24,7 +24,7 @@
                             @foreach($settings as $setting)
                                 <tr>
                                     <th>{{ $stt++ }}</th>
-                                    <td>{{ ucfirst($setting->name) }}</td>
+                                    <td>{{ $setting->fullname }}</td>
                                     <td>{!! $setting->getStatusHtml() !!}</td>
                                     <td>{!! $setting->getAutoHtml() !!}</td>
                                     <td style="min-width: 300px">

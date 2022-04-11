@@ -82,8 +82,8 @@
                             <span class="sidebar-mini-hide">Rút tiền</span>
                         </a>
                         <ul class="nav-main__childrent">
-                            <li><a href="{{ route('admin.withdraw-request') }}" data-id="withdraw-request">Yêu cầu</a></li>
-                            <li><a href="{{ route('admin.withdraw-history') }}" data-id="withdraw-history">Report</a></li>
+                            <li><a href="{{ route('admin.withdraw-request') }}" data-id="withdraw-request">Yêu cầu rút tiền</a></li>
+                            <li><a href="{{ route('admin.withdraw-history') }}" data-id="withdraw-history">Lịch sử yêu cầu</a></li>
                         </ul>
                     </li>
                     <li>
@@ -106,7 +106,7 @@
                             <li><a href="{{ route('admin.feature.discount') }}" data-id="discount">Chiết khấu</a></li>
                             <li><a href="{{ route('admin.feature.trade') }}" data-id="trade">Thu thẻ cào</a></li>
                             <li><a href="{{ route('admin.feature.buy') }}" data-id="buy">Bán thẻ cào</a></li>
-                            <li><a href="#" data-id="">Gạch cước</a></li>
+                            <li><a href="{{ route('admin.feature.bill') }}" data-id="bill">Gạch cước</a></li>
                         </ul>
                     </li>
                 </ul>
