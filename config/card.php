@@ -9,17 +9,17 @@ return [
         ],
         'mobifone' => [
             'name' => 'Mobifone',
-            'image' => 'image/card/mobi.png',
+            'image' => 'image/card/mobifone.png',
             'alias' => 'Mobifone'
         ],
         'vinaphone' => [
             'name' => 'Vinaphone',
-            'image' => 'image/card/vina.png',
+            'image' => 'image/card/vinaphone.png',
             'alias' => 'Vinaphone'
         ],
         'vietnamobile' => [
             'name' => 'Vietnamobile',
-            'image' => 'image/card/vnm.png',
+            'image' => 'image/card/vietnamobile.png',
             'alias' => 'Vietnamobile'
         ],
         'vcoin' => [

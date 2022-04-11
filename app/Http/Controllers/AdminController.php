@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Services\AdminService;
 use App\Models\BillModel;
+use App\Models\CardListModel;
 use App\Models\RateCard;
 use App\Models\User;
 use App\Models\WithdrawModel;
@@ -96,5 +97,31 @@ class AdminController extends Controller
         $params = $request->all();
         unset($params['_token']);
         return AdminService::changeRateCard($name, $params);
+    }
+
+    public function tradeSetting(): Factory|View|Application
+    {
+        session()->flash('menu-active', 'trade');
+        $settings = CardListModel::whereType('trade')->get();
+        $type = 'trade';
+        return view('admin.feature.setting_status', compact('settings', 'type'));
+    }
+
+    public function tradeSettingPost($name, $type): RedirectResponse
+    {
+        return AdminService::changeStatusCardList($name, $type, 'trade');
+    }
+
+    public function buySetting(): Factory|View|Application
+    {
+        session()->flash('menu-active', 'buy');
+        $settings = CardListModel::whereType('buy')->get();
+        $type = 'buy';
+        return view('admin.feature.setting_status', compact('settings', 'type'));
+    }
+
+    public function buySettingPost($name, $type): RedirectResponse
+    {
+        return AdminService::changeStatusCardList($name, $type, 'buy');
     }
 }

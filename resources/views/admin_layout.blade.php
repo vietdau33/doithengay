@@ -98,10 +98,16 @@
                         </ul>
                     </li>
                     <li>
-                        <a href="{{ route('admin.discount') }}" data-id="discount">
-                            <i class="si si-wallet"></i>
-                            <span class="sidebar-mini-hide">Chiết khấu</span>
+                        <a class="nav-submenu" data-toggle="nav-submenu" href="#">
+                            <i class="si si-power"></i>
+                            <span class="sidebar-mini-hide">Quản trị tính năng</span>
                         </a>
+                        <ul class="nav-main__childrent">
+                            <li><a href="{{ route('admin.feature.discount') }}" data-id="discount">Chiết khấu</a></li>
+                            <li><a href="{{ route('admin.feature.trade') }}" data-id="trade">Thu thẻ cào</a></li>
+                            <li><a href="{{ route('admin.feature.buy') }}" data-id="buy">Bán thẻ cào</a></li>
+                            <li><a href="#" data-id="">Gạch cước</a></li>
+                        </ul>
                     </li>
                 </ul>
             </div>

@@ -19,5 +19,20 @@ Route::prefix('user')->name('user.')->group(function(){
 Route::get('bill/{type}', [AdminController::class, 'showListBill'])->name('bill');
 Route::get('bill/change-status/{id}/{status}', [AdminController::class, 'changeBillStatus'])->name('bill.change-status');
 
-Route::get('discount', [AdminController::class, 'discount'])->name('discount');
-Route::post('discount/change/{name}', [AdminController::class, 'discountPost'])->name('discount.post');
+Route::prefix('feature')->name('feature.')->group(function() {
+    //discount
+    Route::get('discount', [AdminController::class, 'discount'])->name('discount');
+    Route::post('discount/change/{name}', [AdminController::class, 'discountPost'])->name('discount.post');
+
+    //trade
+    Route::get('trade', [AdminController::class, 'tradeSetting'])->name('trade');
+    Route::get('trade/{name}/{type}', [AdminController::class, 'tradeSettingPost'])->name('trade.post');
+
+    //buy
+    Route::get('buy', [AdminController::class, 'buySetting'])->name('buy');
+    Route::get('buy/{name}/{type}', [AdminController::class, 'buySettingPost'])->name('buy.post');
+
+    //bill
+    Route::get('bill', [AdminController::class, 'billSetting'])->name('bill');
+    Route::get('bill/{name}/{type}', [AdminController::class, 'billSettingPost'])->name('bill.post');
+});

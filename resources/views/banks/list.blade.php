@@ -19,7 +19,7 @@
                             <th scope="col">Số thẻ</th>
                             <th scope="col">Tên chủ thẻ</th>
                             <th scope="col">Ngày thêm</th>
-                            <th scope="col">Action</th>
+                            <th scope="col" class="table-fixed-column">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -32,7 +32,7 @@
                                 <td>{{ $bank['account_number'] }}</td>
                                 <td style="min-width: 150px">{{ $bank['account_name'] }}</td>
                                 <td style="min-width: 130px;">{{ date('d/m/Y', strtotime($bank['created_at'])) }}</td>
-                                <td style="min-width: 100px;">
+                                <td style="min-width: 100px;" class="table-fixed-column">
                                     <a onclick="return confirm('Bạn chắc chắn muốn xóa thẻ này?')" href="{{ route('bank.remove', ['id' => $bank->id]) }}" class="btn btn-danger p-0 pl-2 pr-2">Xóa</a>
                                 </td>
                             </tr>

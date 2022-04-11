@@ -293,3 +293,19 @@ input[type="radio"]:checked ~ .checkbox-custom {
         }
     }
 }
+
+.table-fixed-column {
+    position: sticky;
+    right: 0;
+    background: #fff;
+
+    &:before {
+        content: '';
+        border-left: 2px solid #dee2e6;
+        position: absolute;
+        height: 100%;
+        width: 0;
+        left: 0;
+        top: 0;
+    }
+}

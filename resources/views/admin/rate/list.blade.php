@@ -3,13 +3,13 @@
     <div class="content">
         <div class="block">
             <div class="block-header block-header-default">
-                <h3 class="block-title">Chiết khấu đổi thẻ</h3>
+                <h3 class="block-title font-weight-bold">Chiết khấu đổi thẻ</h3>
             </div>
             <div class="block-content">
                 @foreach($rates as $key => $rate)
                     <div class="table-responsive">
                         <h3>{{ ucfirst($key) }}</h3>
-                        <form action="{{ route('admin.discount.post', ['name' => $key]) }}" method="POST" onsubmit="return ChangeRateCard.submit(this)">
+                        <form action="{{ route('admin.feature.discount.post', ['name' => $key]) }}" method="POST" onsubmit="return ChangeRateCard.submit(this)">
                             @csrf
                             <table class="table table-striped table-vcenter text-center">
                                 <thead>

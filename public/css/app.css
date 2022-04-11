@@ -340,3 +340,19 @@ input[type=radio]:checked ~ .checkbox-custom {
 .area-bill ul a:hover .checkbox-custom {
   transform: scale(1);
 }
+
+.table-fixed-column {
+  position: -webkit-sticky;
+  position: sticky;
+  right: 0;
+  background: #fff;
+}
+.table-fixed-column:before {
+  content: "";
+  border-left: 2px solid #dee2e6;
+  position: absolute;
+  height: 100%;
+  width: 0;
+  left: 0;
+  top: 0;
+}

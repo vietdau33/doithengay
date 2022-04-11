@@ -5,6 +5,7 @@ namespace App\Http\Services;
 use App\Http\Services\Service;
 use App\Models\BankModel;
 use App\Models\BillModel;
+use App\Models\CardListModel;
 use App\Models\RateCard;
 use App\Models\User;
 use App\Models\WithdrawModel;
@@ -167,5 +168,25 @@ class AdminService extends Service
             'message' => "Thành công",
             'errors' => $errors
         ]);
+    }
+
+    public static function changeStatusCardList($name, $typeChange, $typeCard): RedirectResponse
+    {
+        if(!in_array($typeChange, ['active', 'auto'], true)) {
+            session()->flash('mgs_error', 'Loại trạng thái không chính xác!');
+            return back();
+        }
+
+        $card = CardListModel::whereName($name)->whereType($typeCard)->first();
+        if($card == null) {
+            session()->flash('mgs_error', 'Thẻ này không tồn tại trong hệ thống!');
+            return back();
+        }
+
+        $card->{$typeChange} = (int)!$card->{$typeChange};
+        $card->save();
+
+        session()->flash('notif', 'Thay đổi trạng thái thành công!');
+        return back();
     }
 }

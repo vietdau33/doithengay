@@ -10,11 +10,12 @@
                     <table class="table table-striped table-vcenter text-center">
                         <thead>
                             <tr>
-                                <th>#</th>
-                                <th>Tài khoản</th>
-                                <th>Số tiền</th>
-                                <th>Ghi chú</th>
-                                <th>Ngày thanh toán</th>
+                                <th scope="col">#</th>
+                                <th scope="col">Trạng thái</th>
+                                <th scope="col">Tài khoản</th>
+                                <th scope="col">Số tiền</th>
+                                <th scope="col">Ghi chú</th>
+                                <th scope="col">Ngày thanh toán</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -22,6 +23,7 @@
                             @foreach($lists as $list)
                                 <tr>
                                     <td>{{ $stt++ }}</td>
+                                    <td style="min-width: 150px;">{!! $list->getStatus() !!}</td>
                                     <td class="font-w600">{{ $list->user->username ?? '' }}</td>
                                     <td>{{ number_format($list->money) }}</td>
                                     <td style="max-width: 250px">{{ $list->note }}</td>
