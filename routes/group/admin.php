@@ -24,6 +24,10 @@ Route::prefix('feature')->name('feature.')->group(function() {
     Route::get('discount', [AdminController::class, 'discount'])->name('discount');
     Route::post('discount/change/{name}', [AdminController::class, 'discountPost'])->name('discount.post');
 
+    //discount bill
+    Route::get('discount_bill', [AdminController::class, 'discountBill'])->name('discount_bill');
+    Route::post('discount_bill/change', [AdminController::class, 'discountBillPost'])->name('discount_bill.post');
+
     //trade
     Route::get('trade', [AdminController::class, 'tradeSetting'])->name('trade');
     Route::get('trade/{name}/{type}', [AdminController::class, 'tradeSettingPost'])->name('trade.post');

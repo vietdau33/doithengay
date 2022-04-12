@@ -28,10 +28,10 @@
                         <span>Chọn loại thẻ</span>
                     </div>
                     <div class="form-group d-flex flex-wrap justify-content-center" id="area-card">
-                        @foreach($rates as $key => $card)
-                            <label class="box-card" for="card-{{ $key }}">
-                                <img src="/image/card/{{ $key }}.png" alt="{{ $key }}">
-                                <input type="radio" id="card-{{ $key }}" name="card_type" data-type="{{ $key }}" value="{{ $rateID[$key] }}" {{ old('card_type') == $rateID[$key] ? 'checked' : '' }}>
+                        @foreach($cardList as $key => $card)
+                            <label class="box-card" for="card-{{ $card['name'] }}">
+                                <img src="/image/card/{{ $card['name'] }}.png" alt="{{ $card['name'] }}">
+                                <input type="radio" id="card-{{ $card['name'] }}" name="card_type" data-type="{{ $card['name'] }}" value="{{ $card['name'] }}" {{ old('card_type') == $card['name'] ? 'checked' : '' }}>
                                 <span class="checkbox-custom"></span>
                             </label>
                         @endforeach
@@ -70,11 +70,10 @@
         let rates = {!! json_encode($rates) !!};
         let areaMoney = $('#area-money');
         let template = $('[data-template="label-money"]');
-        let rate_id = App.objectFlip({!! json_encode($rateID) !!});
 
         $('[name="card_type"]').on('change', function(){
-            let type    = rate_id[$(this).val()];
-            let rate    = rates[type];
+            let val  = $(this).val();
+            let rate = rates[val];
 
             areaMoney.empty();
 

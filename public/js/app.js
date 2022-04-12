@@ -124,7 +124,7 @@ window.App = {
     };
 
     setTimeout(triggerChecked, 0);
-    $('input[type="checkbox"], input[type="radio"]').on('click', function () {
+    $('form').on('click', 'input[type="checkbox"], input[type="radio"]', function () {
       setTimeout(triggerChecked, 50);
     });
   },

@@ -99,11 +99,20 @@
                     </li>
                     <li>
                         <a class="nav-submenu" data-toggle="nav-submenu" href="#">
+                            <i class="si si-calculator"></i>
+                            <span class="sidebar-mini-hide">Quản trị chiết khấu</span>
+                        </a>
+                        <ul class="nav-main__childrent">
+                            <li><a href="{{ route('admin.feature.discount') }}" data-id="discount">Chiết khấu đổi thẻ</a></li>
+                            <li><a href="{{ route('admin.feature.discount_bill') }}" data-id="discount_bill">Chiết khấu gạch cước</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="nav-submenu" data-toggle="nav-submenu" href="#">
                             <i class="si si-power"></i>
                             <span class="sidebar-mini-hide">Quản trị tính năng</span>
                         </a>
                         <ul class="nav-main__childrent">
-                            <li><a href="{{ route('admin.feature.discount') }}" data-id="discount">Chiết khấu</a></li>
                             <li><a href="{{ route('admin.feature.trade') }}" data-id="trade">Thu thẻ cào</a></li>
                             <li><a href="{{ route('admin.feature.buy') }}" data-id="buy">Bán thẻ cào</a></li>
                             <li><a href="{{ route('admin.feature.bill') }}" data-id="bill">Gạch cước</a></li>

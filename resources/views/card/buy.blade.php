@@ -19,10 +19,10 @@
                         <span>Chọn loại thẻ</span>
                     </div>
                     <div class="form-group d-flex flex-wrap justify-content-center ">
-                        @foreach(config('card.list') as $key => $card)
-                            <label class="box-card" for="card-{{ $key }}">
-                                <img src="{{ asset($card['image']) }}" alt="{{ $key }}">
-                                <input type="radio" id="card-{{ $key }}" name="card_buy" value="{{ $key }}" {{ old('card_buy') != $key ?: 'checked' }}>
+                        @foreach($listCard as $card)
+                            <label class="box-card" for="card-{{ $card['name'] }}">
+                                <img src="/image/card/{{ $card['name'] }}.png" alt="{{ $card['name'] }}">
+                                <input type="radio" id="card-{{ $card['name'] }}" name="card_buy" value="{{ $card['name'] }}" {{ old('card_buy') != $card['name'] ?: 'checked' }}>
                                 <span class="checkbox-custom"></span>
                             </label>
                         @endforeach

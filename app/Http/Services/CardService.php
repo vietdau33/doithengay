@@ -117,6 +117,14 @@ class CardService extends Service
         $params['user_id'] = user()->id;
         $params['hash'] = self::generate_hash_trade();
 
+        $cardType = RateCard::whereName($params['card_type'])->first();
+        if($cardType == null) {
+            session()->flash('Nhà mạng không tồn tại!');
+            return false;
+        }
+
+        $params['card_type'] = $cardType->rate_id;
+
         $urlTrade = self::getUrlApi('trade');
         $result = HttpService::ins()->post($urlTrade, [
             'ApiKey' => env('API_KEY_AUTOCARD', ''),

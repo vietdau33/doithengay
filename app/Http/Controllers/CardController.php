@@ -31,7 +31,16 @@ class CardController extends Controller
     public function buyCard(): Factory|View|Application
     {
         session()->flash('menu-active', 'menu-buy-card');
-        return view('card.buy');
+        $listCard = RateCard::getListCardBuy();
+        $listCard = array_reduce($listCard, function($result, $card){
+            $card = end($card);
+            $result[$card['name']] = [
+                'name' => $card['name'],
+                'rate_id' => $card['rate_id']
+            ];
+            return $result;
+        }, []);
+        return view('card.buy', compact('listCard'));
     }
 
     /**
@@ -50,9 +59,16 @@ class CardController extends Controller
     public function tradeCard(): Factory|View|Application
     {
         session()->flash('menu-active', 'menu-trade-card');
-        $rates = RateCard::getRate();
-        $rateID = RateCard::getRateId();
-        return view('card.trade', compact('rates', 'rateID'));
+        $rates = RateCard::getListCardTrade();
+        $cardList = array_reduce($rates, function($result, $card){
+            $card = end($card);
+            $result[$card['name']] = [
+                'name' => $card['name'],
+                'rate_id' => $card['rate_id']
+            ];
+            return $result;
+        }, []);
+        return view('card.trade', compact('rates', 'cardList'));
     }
 
     /**

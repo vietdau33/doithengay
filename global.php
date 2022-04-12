@@ -62,7 +62,6 @@ if (!function_exists('get_card_trade')) {
     }
 }
 
-
 if (!function_exists('get_title_setting_status')) {
     function get_title_setting_status($type): string
     {
@@ -70,6 +69,19 @@ if (!function_exists('get_title_setting_status')) {
             'buy' => 'mua thẻ cào',
             'trade' => 'bán thẻ cào',
             'bill' => 'gạch cước',
+            default => '',
+        };
+    }
+}
+
+if (!function_exists('get_text_type_account_bill')) {
+    function get_text_type_account_bill($type): string
+    {
+        return match ($type) {
+            'viettel' => 'Viettel',
+            'mobifone' => 'Mobifone',
+            'vinaphone' => 'Vinaphone',
+            'k_plus' => 'K+',
             default => '',
         };
     }

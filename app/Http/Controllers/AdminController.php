@@ -99,6 +99,25 @@ class AdminController extends Controller
         return AdminService::changeRateCard($name, $params);
     }
 
+    public function discountBill(): Factory|View|Application
+    {
+        session()->flash('menu-active', 'discount_bill');
+        $rates = [];
+        foreach (RateCard::getRate('bill') as $key => $rate) {
+            $key = explode('|', $key);
+            $rates[$key[0]][$key[1]] = $rate;
+        }
+        return view('admin.bill.rate', compact('rates'));
+    }
+
+    public function discountBillPost(Request $request): JsonResponse
+    {
+        $params = $request->all();
+        unset($params['_token']);
+
+        return AdminService::changeRateBill($params);
+    }
+
     public function tradeSetting(): Factory|View|Application
     {
         session()->flash('menu-active', 'trade');

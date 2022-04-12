@@ -33,7 +33,7 @@
                                                 type="text"
                                                 data-rate="{{ $r['rate'] }}"
                                                 name="rate_{{ $r['price'] }}"
-                                                class="form-control m-auto"
+                                                class="form-control m-auto text-center"
                                                 value="{{ $r['rate_use'] }}"
                                                 style="width: 100px"
                                                 oninput="ChangeRateCard.calcDeviant(this)"

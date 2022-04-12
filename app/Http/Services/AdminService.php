@@ -170,15 +170,47 @@ class AdminService extends Service
         ]);
     }
 
+    public static function changeRateBill(array $params): JsonResponse
+    {
+        $errors = [];
+        $configBill = config('bill');
+        $patternMatch = '/^[0-9]{1,2}$/i';
+        $patternFloat = '/^[0-9]{1,2}\.[0-9]{1,2}$/i';
+        foreach ($params as $key => $rate) {
+            $typeBill = explode('|', $key);
+            $typeFee = $configBill[$typeBill[0]]['text'];
+            $typeAccount = get_text_type_account_bill($typeBill[1]);
+
+            if (!preg_match($patternMatch, $rate) && !preg_match($patternFloat, $rate)) {
+                $errors[] = "Giá trị chiết khấu không hợp lệ ở loại cước <b>$typeFee</b>, loại tài khoản <b>$typeAccount</b>";
+                continue;
+            }
+
+            $r = RateCard::whereName($key)->whereTypeRate('bill')->first();
+            if ($r == null) {
+                $errors[] = "Chiết khấu của loại cước <b>$typeFee</b>, loại tài khoản <b>$typeAccount</b> không tồn tại!";
+                continue;
+            }
+
+            $r->rate_use = $rate;
+            $r->save();
+        }
+        return response()->json([
+            'success' => empty($errors),
+            'message' => "Thành công",
+            'errors' => $errors
+        ]);
+    }
+
     public static function changeStatusCardList($name, $typeChange, $typeCard): RedirectResponse
     {
-        if(!in_array($typeChange, ['active', 'auto'], true)) {
+        if (!in_array($typeChange, ['active', 'auto'], true)) {
             session()->flash('mgs_error', 'Loại trạng thái không chính xác!');
             return back();
         }
 
         $card = CardListModel::whereName($name)->whereType($typeCard)->first();
-        if($card == null) {
+        if ($card == null) {
             session()->flash('mgs_error', 'Thẻ này không tồn tại trong hệ thống!');
             return back();
         }
