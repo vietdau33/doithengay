@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\BillRequest;
 use App\Http\Services\BillService;
 use App\Models\BillModel;
+use App\Models\CardListModel;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -16,13 +17,19 @@ class BillController extends Controller
     public function payBill(): Factory|View|Application
     {
         session()->flash('menu-active', 'menu-pay-bill');
-        return view('bill.list');
+        $bills = CardListModel::getBillActive();
+        return view('bill.list', compact('bills'));
     }
 
-    public function payBillCreate($type): Factory|View|Application
+    public function payBillCreate($type): Factory|View|Application|RedirectResponse
     {
+        $bills = CardListModel::getBillActive();
+        if(!isset($bills[$type])) {
+            return redirect()->route('pay-bill');
+        }
+        $billActive = $bills[$type];
         session()->flash('menu-active', 'menu-pay-bill');
-        return view('bill.create', compact('type'));
+        return view('bill.create', compact('type', 'billActive'));
     }
 
     public function payBillCreatePost(BillRequest $request): RedirectResponse

@@ -32,7 +32,7 @@
                             @endforeach
                             @if($lists->count() <= 0)
                                 <tr>
-                                    <td colspan="5">Không có yêu cầu nào</td>
+                                    <td colspan="6">Không có yêu cầu nào</td>
                                 </tr>
                             @endif
                         </tbody>

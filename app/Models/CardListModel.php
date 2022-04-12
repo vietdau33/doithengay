@@ -60,4 +60,14 @@ class CardListModel extends Model
     {
         return $this->auto === 1;
     }
+
+    public static function getBillActive(): array
+    {
+        $bills = self::select(['name'])->whereType('bill')->whereActive(1)->get()->toArray();
+        return array_reduce($bills, function ($result, $bill) {
+            $name = explode('|', $bill['name']);
+            $result[$name[0]][] = $name[1];
+            return $result;
+        }, []);
+    }
 }

@@ -14,11 +14,12 @@
                 <hr />
                 <div class="area-bill">
                     <ul>
-                        @foreach(config('bill') as $key => $bill)
+                        @php($configBill = config('bill'))
+                        @foreach($bills as $key => $bill)
                             <li>
-                                <a href="{{ route('pay-bill.create', ['type' => $key]) }}" style="--background: url('{{ $bill['image'] }}')">
+                                <a href="{{ route('pay-bill.create', ['type' => $key]) }}" style="--background: url('{{ $configBill[$key]['image'] }}')">
                                     <div class="icon"></div>
-                                    <div class="text">{{ $bill['text'] }}</div>
+                                    <div class="text">{{ $configBill[$key]['text'] }}</div>
                                     <span class="checkbox-custom"></span>
                                 </a>
                             </li>

@@ -9,6 +9,7 @@
             <div class="box-content box-pay-card p-3 mt-4">
                 <div class="form-group d-flex justify-content-between align-items-center">
                     <h4 class="font-weight-bold mb-0">{{ config('bill')[$type]['text'] }}</h4>
+                    <a class="btn btn-secondary ml-2" href="{{ route('pay-bill') }}">Quay lại</a>
                 </div>
                 <hr />
                 <form action="{{ route('pay-bill.post') }}" method="POST">
@@ -21,6 +22,9 @@
                     <div class="form-group d-flex flex-wrap justify-content-center ">
                         @php($vendor = config('bill')[$type]['vendor'])
                         @foreach($vendor as $key => $_v)
+                            @if(!in_array($key, $billActive))
+                                @continue
+                            @endif
                             @php($checked = count($vendor) == 1 || old('vendor_id') == $key)
                             <label class="box-card {{ $checked ? 'checked' : '' }}" for="vendor_id-{{ $key }}">
                                 <img src="{{ asset($_v['image']) }}" alt="{{ $key }}">
@@ -78,7 +82,6 @@
                     <hr />
                     <div class="footer-button d-flex justify-content-center">
                         <button class="btn btn-primary">Tiếp tục</button>
-                        <a class="btn btn-secondary ml-2" href="{{ route('pay-bill') }}">Quay lại</a>
                     </div>
                 </form>
             </div>

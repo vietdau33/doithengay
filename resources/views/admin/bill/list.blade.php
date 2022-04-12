@@ -51,7 +51,7 @@
                             @endforeach
                             @if($bills->count() <= 0)
                                 <tr>
-                                    <td colspan="7">Không có hóa đơn cần thanh toán</td>
+                                    <td colspan="8">Không có hóa đơn cần thanh toán</td>
                                 </tr>
                             @endif
                         </tbody>
