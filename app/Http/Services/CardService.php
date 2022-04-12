@@ -168,6 +168,7 @@ class CardService extends Service
                 $rateCard = RateCard::whereName($name)->wherePrice($_p)->first();
                 if($rateCard != null) {
                     $rateCard->rate = $rate;
+                    $rateCard->rate_id = $id;
                     $rateCard->save();
                     continue;
                 }
