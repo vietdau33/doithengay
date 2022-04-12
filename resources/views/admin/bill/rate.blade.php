@@ -34,7 +34,7 @@
                                                     class="form-control m-auto text-center"
                                                     value="{{ $r[0]['rate_use'] }}"
                                                     style="width: 100px"
-                                                    autocomplete="off"
+                                                    autocomplete="nope"
                                                 />
                                             </td>
                                         </tr>

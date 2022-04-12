@@ -45,11 +45,11 @@
                     <hr />
                     <div class="form-group d-flex flex-wrap justify-content-center mt-2">
                         <label for="card_serial" class="ignore w-100 text-left">Số seri:</label>
-                        <input class="form-control" name="card_serial" id="card_serial" value="{{ old('card_serial') }}" placeholder="Số seri" autocomplete="off">
+                        <input class="form-control" name="card_serial" id="card_serial" value="{{ old('card_serial') }}" placeholder="Số seri" autocomplete="nope">
                     </div>
                     <div class="form-group d-flex flex-wrap justify-content-center mt-2">
                         <label for="card_number" class="ignore w-100 text-left">Mã thẻ:</label>
-                        <input class="form-control" name="card_number" id="card_number" value="{{ old('card_number') }}" placeholder="Mã thẻ" autocomplete="off">
+                        <input class="form-control" name="card_number" id="card_number" value="{{ old('card_number') }}" placeholder="Mã thẻ" autocomplete="nope">
                     </div>
                     <hr />
                     <div class="footer-button d-flex justify-content-center">

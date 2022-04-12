@@ -37,7 +37,7 @@
                                                 value="{{ $r['rate_use'] }}"
                                                 style="width: 100px"
                                                 oninput="ChangeRateCard.calcDeviant(this)"
-                                                autocomplete="off"
+                                                autocomplete="nope"
                                             />
                                         </td>
                                         <td class="deviant">{{ (float)$r['rate_use'] - (float)$r['rate'] }}</td>

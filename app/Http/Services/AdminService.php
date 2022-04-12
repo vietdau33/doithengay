@@ -160,7 +160,7 @@ class AdminService extends Service
                 continue;
             }
 
-            $r->rate_use = $rate;
+            $r->rate_use = (float)$rate;
             $r->save();
         }
         return response()->json([
@@ -192,7 +192,7 @@ class AdminService extends Service
                 continue;
             }
 
-            $r->rate_use = $rate;
+            $r->rate_use = (float)$rate;
             $r->save();
         }
         return response()->json([

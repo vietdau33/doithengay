@@ -39,7 +39,7 @@
                         <span>Số tài khoản / Số điện thoại ví</span>
                     </div>
                     <div class="form-group d-flex flex-wrap justify-content-center mt-2">
-                        <input class="form-control" name="account_number" placeholder="Số tài khoản" autocomplete="off">
+                        <input class="form-control" name="account_number" placeholder="Số tài khoản" autocomplete="nope">
                     </div>
                     <hr />
                     <div class="form-header">
@@ -47,7 +47,7 @@
                         <span>Tên chủ tài khoản</span>
                     </div>
                     <div class="form-group d-flex flex-wrap justify-content-center mt-2">
-                        <input class="form-control" name="account_name" placeholder="Tên chủ khoản" autocomplete="off">
+                        <input class="form-control" name="account_name" placeholder="Tên chủ khoản" autocomplete="nope">
                     </div>
                     <hr />
                     <div class="footer-button d-flex justify-content-center">
