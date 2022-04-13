@@ -76,7 +76,14 @@ class CardController extends Controller
      */
     public function tradeCardPost(TradeCardRequest $request)
     {
-        if (!CardService::saveTradeCard($request)) {
+        if(empty($request->type_trade) || !in_array($request->type_trade, ['slow', 'fast'])) {
+            session()->flash('mgs_error', "Loại gạch thẻ không chính xác!");
+            return back()->withInput();
+        }
+        if ($request->type_trade == 'fast' && !CardService::saveTradeCardFast($request)) {
+            return back()->withInput();
+        }
+        if ($request->type_trade == 'slow' && !CardService::saveTradeCardSlow($request)) {
             return back()->withInput();
         }
         session()->flash('notif', 'Đã gửi yêu cầu! Hãy kiểm tra lịch sử để xem trạng thái gạch thẻ.');

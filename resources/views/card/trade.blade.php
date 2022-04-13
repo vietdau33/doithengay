@@ -18,6 +18,7 @@
                         <li>Bạn phải chọn chính xác <b>loại thẻ</b> và <b>mệnh giá</b> thẻ cào.</li>
                         <li>Nếu chọn sai loại thẻ, hệ thống sẽ <b>từ chối</b> yêu cầu gạch thẻ, thẻ cào sẽ bị <b>vô hiệu hóa</b>.</li>
                         <li>Nếu chọn sai mệnh giá, hệ thống sẽ <b>trừ 50%</b> số tiền nhận được.</li>
+                        <li>Xem chiết khấu đổi thẻ tại: <a href="{{ route('chiet-khau') }}" class="text-decoration-none"><b>Chiết khấu</b></a></li>
                     </ul>
                 </div>
                 <hr />
@@ -52,8 +53,17 @@
                         <input class="form-control" name="card_number" id="card_number" value="{{ old('card_number') }}" placeholder="Mã thẻ" autocomplete="nope">
                     </div>
                     <hr />
+                    <div class="alert alert-warning">
+                        <ul style="list-style: decimal; padding-left: 20px">
+                            <li>Đối với gạch chậm, thời gian xác minh thẻ tối đa là 5 phút.</li>
+                            <li>Đối với gạch chậm, chiết khấu sẽ thấp hơn, bạn sẽ nhận được nhiều tiền hơn.</li>
+                            <li>Sau 5 phút kể từ khi gửi thẻ, nếu hệ thống không xác minh được thẻ thì thẻ sẽ bị đẩy sang gạch thường.</li>
+                        </ul>
+                    </div>
+                    <hr />
                     <div class="footer-button d-flex justify-content-center">
-                        <button class="btn btn-primary">Gửi yêu cầu</button>
+                        <button class="btn btn-secondary" name="type_trade" value="slow">Gạch chậm</button>
+                        <button class="btn btn-primary ml-2" name="type_trade" value="fast">Gạch nhanh</button>
                     </div>
                 </form>
             </div>

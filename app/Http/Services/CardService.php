@@ -111,7 +111,7 @@ class CardService extends Service
     /**
      * @throws GuzzleException
      */
-    public static function saveTradeCard(TradeCardRequest $request): bool
+    public static function saveTradeCardFast(TradeCardRequest $request): bool
     {
         $params = $request->validated();
         $params['user_id'] = user()->id;
@@ -142,6 +142,12 @@ class CardService extends Service
 
         $params['task_id'] = $result['TaskId'];
         return ModelService::insert(TradeCard::class, $params) !== false;
+    }
+
+    public static function saveTradeCardSlow(TradeCardRequest $request): bool
+    {
+        session()->flash("mgs_error", "Chức năng nạp chậm chưa hoàn thiện. Vui lòng thử lại sau");
+        return false;
     }
 
     /**

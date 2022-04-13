@@ -143,7 +143,10 @@ class AdminService extends Service
         $patternMatch = '/^[0-9]{1,2}$/i';
         $patternFloat = '/^[0-9]{1,2}\.[0-9]{1,2}$/i';
         foreach ($params as $key => $rate) {
-            $key = explode('rate_', $key);
+            $stack = str_starts_with($key, 'rate_') ? 'rate_' : 'slow_';
+            $keySave = $stack == 'rate_' ? 'rate_use' : 'rate_slow';
+
+            $key = explode($stack, $key);
             if (count($key) != 2) {
                 continue;
             }
@@ -160,7 +163,7 @@ class AdminService extends Service
                 continue;
             }
 
-            $r->rate_use = (float)$rate;
+            $r->{$keySave} = (float)$rate;
             $r->save();
         }
         return response()->json([

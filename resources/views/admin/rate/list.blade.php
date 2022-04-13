@@ -16,9 +16,10 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Mệnh giá</th>
-                                    <th>Chiết khấu từ đối tác</th>
-                                    <th>Chiết khấu của mình</th>
-                                    <th>Chênh lệch (Lãi)</th>
+                                    <th>Chiết khấu gạch nhanh từ đối tác</th>
+                                    <th>Chiết khấu gạch nhanh của mình</th>
+                                    <th>Chiết khấu gạch chậm của mình</th>
+                                    <th>Chênh lệch chiết khấu gạch nhanh (Lãi)</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -37,6 +38,16 @@
                                                 value="{{ $r['rate_use'] }}"
                                                 style="width: 100px"
                                                 oninput="ChangeRateCard.calcDeviant(this)"
+                                                autocomplete="nope"
+                                            />
+                                        </td>
+                                        <td>
+                                            <input
+                                                type="text"
+                                                name="slow_{{ $r['price'] }}"
+                                                class="form-control m-auto text-center"
+                                                value="{{ $r['rate_slow'] }}"
+                                                style="width: 100px"
                                                 autocomplete="nope"
                                             />
                                         </td>
