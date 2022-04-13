@@ -22,9 +22,7 @@
                     <div class="form-group d-flex flex-wrap justify-content-center ">
                         @php($vendor = config('bill')[$type]['vendor'])
                         @foreach($vendor as $key => $_v)
-                            @if(!in_array($key, $billActive))
-                                @continue
-                            @endif
+                            @continue(!in_array($key, $billActive))
                             @php($checked = count($vendor) == 1 || old('vendor_id') == $key)
                             <label class="box-card {{ $checked ? 'checked' : '' }}" for="vendor_id-{{ $key }}">
                                 <img src="{{ asset($_v['image']) }}" alt="{{ $key }}">
