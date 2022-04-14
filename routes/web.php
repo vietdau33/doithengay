@@ -19,6 +19,7 @@ use App\Http\Controllers\CardController;
 |
 */
 
+Route::get('/', [PageController::class, 'home'])->name('home');
 Route::get('/logs', [PageController::class, 'showLogs'])->name('logger');
 Route::get('/comming-soon', [PageController::class, 'commingSoon'])->name('comming-soon');
 Route::get('/check-rate', [CardController::class, 'checkRate'])->name('check-rate');
@@ -33,7 +34,6 @@ Route::middleware('guest')->name('auth.')->group(function () {
 });
 
 Route::middleware('authenticated')->group(function () {
-    Route::get('/', [PageController::class, 'home'])->name('home');
     Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
     Route::get('/buy-card', [CardController::class, 'buyCard'])->name('buy-card');
