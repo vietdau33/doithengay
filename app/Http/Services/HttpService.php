@@ -24,6 +24,12 @@ class HttpService
         return self::$ins;
     }
 
+    public static function client(): ?Client
+    {
+        self::initClient();
+        return self::$client;
+    }
+
     private static function initClient()
     {
         if (self::$client == null) {
