@@ -119,6 +119,30 @@
     @yield('contents')
 </div>
 
+@if(isset($show_menu_bottom) && $show_menu_bottom === true)
+    <div id="bottom_menu" class="container-fluid">
+        <div class="row">
+            <div class="col-md-2 col-4">
+                <a class="text-decoration-none" href="{{ route('trade-card') }}">Đổi thẻ cào</a>
+            </div>
+            <div class="col-md-2 col-4">
+                <a class="text-decoration-none" href="{{ route('buy-card') }}">Mua thẻ cào</a>
+            </div>
+            <div class="col-md-2 col-4">
+                <a class="text-decoration-none" href="{{ route('recharge') }}">Nạp tiền</a>
+            </div>
+            <div class="col-md-2 col-4">
+                <a class="text-decoration-none" href="{{ route('withdraw') }}">Rút tiền</a>
+            </div>
+            <div class="col-md-2 col-4">
+                <a class="text-decoration-none" href="{{ route('chiet-khau') }}">Chiết khấu</a>
+            </div>
+            <div class="col-md-2 col-4">
+                <a class="text-decoration-none" href="{{ route('pay-bill') }}">Thanh toán cước</a>
+            </div>
+        </div>
+    </div>
+@endif
 <div id="copyright">
     <hr class="m-0">
     <p class="m-0 p-3 text-center">Bản quyền &copy; {{ request()->getHost() }} {{ date('Y') }}</p>

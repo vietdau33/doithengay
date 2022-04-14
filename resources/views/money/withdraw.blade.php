@@ -29,6 +29,9 @@
                                 </option>
                             @endforeach
                         </select>
+                        @if($banks->count() > 0)
+                            <p class="alert alert-info w-100 mb-0 mt-2 p-1 font-size-15">Muốn thêm thẻ khác? Đi tới <a href="{{ route('bank.add') }}">Thêm Thẻ</a></p>
+                        @endif
                     </div>
                     <div class="row m-0 mt-3">
                         <label class="w-100 font-weight-bold" for="money">Số tiền *</label>

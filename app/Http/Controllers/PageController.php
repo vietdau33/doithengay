@@ -64,4 +64,10 @@ class PageController extends Controller
         auth()->logout();
         return redirect()->route('auth.view');
     }
+
+    public function commingSoon(): RedirectResponse
+    {
+        session()->flash('notif', 'Chức năng đang phát triển. Vui lòng quay lại sau!');
+        return back();
+    }
 }

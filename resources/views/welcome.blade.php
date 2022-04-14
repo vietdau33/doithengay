@@ -1,3 +1,4 @@
+@php($show_menu_bottom = true)
 @extends('layout')
 @section('contents')
     <div id="slide-home" class="container-fluid pt-3 pb-3">

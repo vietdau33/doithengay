@@ -20,6 +20,7 @@ use App\Http\Controllers\CardController;
 */
 
 Route::get('/logs', [PageController::class, 'showLogs'])->name('logger');
+Route::get('/comming-soon', [PageController::class, 'commingSoon'])->name('comming-soon');
 Route::get('/check-rate', [CardController::class, 'checkRate'])->name('check-rate');
 Route::post('/administator/plus-money', [MoneyController::class, 'plusMoneyUser'])->name('plus-money');
 
