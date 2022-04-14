@@ -15,6 +15,7 @@
     <meta property="og:type" content="{{ config('meta.type') }}">
     <meta property="og:url" content="{{ url('') }}"/>
     <meta property="og:image" content="{{ asset('image/logo-trans.png') }}">
+    <meta property="og:image:alt" content="{{ config('meta.name') }}">
     <meta property="og:description" content="{{ config('meta.description') }}">
     <meta property="og:site_name" content="{{ config('meta.name') }}">
     <meta property="article:section" content="{{ config('meta.description') }}">
