@@ -20,23 +20,23 @@
         </div>
     </div>
 
-    <div class="container">
-        <h2 class="text-center font-weight-bold">Đổi thẻ ngay !</h2>
-        <ul class="list-notif mb-4">
-            <li>
-                <img src="{{ asset('image/arrow-1.gif') }}" alt="Arrow">
-                <span class="font-weight-bold">Không nhận thẻ trộm cắp, lừa đảo. Phát hiện khóa tài khoản vĩnh viễn không cần báo trước.</span>
-            </li>
-            <li>
-                <img src="{{ asset('image/arrow-1.gif') }}" alt="Arrow">
-                <span class="font-weight-bold">Hỗ trợ nạp / đổi nhiều loại thẻ: Viettel, Vina, Mobi, Vnmb, Gate, Zing, Vcoin, Garena. Xử lý tự động 100%</span>
-            </li>
-            <li>
-                <img src="{{ asset('image/arrow-1.gif') }}" alt="Arrow">
-                <span class="font-weight-bold">Rút tiền về ATM/ Ví điện tử trong 30 phút</span>
-            </li>
-        </ul>
-    </div>
+{{--    <div class="container">--}}
+{{--        <h2 class="text-center font-weight-bold">Đổi thẻ ngay !</h2>--}}
+{{--        <ul class="list-notif mb-4">--}}
+{{--            <li>--}}
+{{--                <img src="{{ asset('image/arrow-1.gif') }}" alt="Arrow">--}}
+{{--                <span class="font-weight-bold">Không nhận thẻ trộm cắp, lừa đảo. Phát hiện khóa tài khoản vĩnh viễn không cần báo trước.</span>--}}
+{{--            </li>--}}
+{{--            <li>--}}
+{{--                <img src="{{ asset('image/arrow-1.gif') }}" alt="Arrow">--}}
+{{--                <span class="font-weight-bold">Hỗ trợ nạp / đổi nhiều loại thẻ: Viettel, Vina, Mobi, Vnmb, Gate, Zing, Vcoin, Garena. Xử lý tự động 100%</span>--}}
+{{--            </li>--}}
+{{--            <li>--}}
+{{--                <img src="{{ asset('image/arrow-1.gif') }}" alt="Arrow">--}}
+{{--                <span class="font-weight-bold">Rút tiền về ATM/ Ví điện tử trong 30 phút</span>--}}
+{{--            </li>--}}
+{{--        </ul>--}}
+{{--    </div>--}}
 @endsection
 @section('script')
     <script>
