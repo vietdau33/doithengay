@@ -11,10 +11,6 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::table('rate_card', function(Blueprint $table){
-            $table->string('type_rate')->nullable()->after('rate_use');
-        });
-
         foreach (RateCard::all() as $rate) {
             $rate->type_rate = 'trade';
             $rate->save();
