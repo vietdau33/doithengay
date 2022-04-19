@@ -30,10 +30,12 @@ class HttpService
         return self::$client;
     }
 
-    private static function initClient()
+    private static function initClient(): void
     {
         if (self::$client == null) {
-            self::$client = new Client();
+            self::$client = new Client([
+                'verify' => false,
+            ]);
         }
     }
 
