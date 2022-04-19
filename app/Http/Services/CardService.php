@@ -175,6 +175,7 @@ class CardService extends Service
                 if($rateCard != null) {
                     $rateCard->rate = $rate;
                     $rateCard->rate_id = $id;
+                    $rateCard->type_rate = 'trade';
                     $rateCard->save();
                     continue;
                 }
@@ -184,6 +185,7 @@ class CardService extends Service
                     'price' => $_p,
                     'rate' => $rate,
                     'rate_use' => $rate,
+                    'type_rate' => 'trade'
                 ]);
             }
         }
