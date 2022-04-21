@@ -27,7 +27,8 @@ class TradeCardRequest extends FormRequest
             'card_type' => 'required',
             'card_money' => 'required',
             'card_serial' => 'required',
-            'card_number' => 'required'
+            'card_number' => 'required',
+            'type_trade' => 'required',
         ];
     }
 
@@ -38,6 +39,7 @@ class TradeCardRequest extends FormRequest
             'card_money.required' => 'Phải chọn mệnh giá thẻ!',
             'card_serial.required' => 'Phải nhập số Seri thẻ!',
             'card_number.required' => 'Phải nhập mã thẻ!',
+            'type_trade.required' => 'Phải nhập mã thẻ!',
         ];
     }
 }

@@ -16,6 +16,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Carbon;
 
 class CardController extends Controller
 {
@@ -53,7 +54,11 @@ class CardController extends Controller
             return back()->withInput();
         }
 
-        return redirect()->route('list-card', ['hash' => $hash]);
+        if($request->type_buy == 'fast') {
+            return redirect()->route('list-card', ['hash' => $hash]);
+        }
+        session()->flash('notif', 'Thẻ đã được đặt mua thành công! Sau 5 phút chưa được xử lý sẽ tự động chuyển sang mua thường!');
+        return back();
     }
 
     public function tradeCard(): Factory|View|Application
@@ -74,10 +79,14 @@ class CardController extends Controller
     /**
      * @throws GuzzleException
      */
-    public function tradeCardPost(TradeCardRequest $request)
+    public function tradeCardPost(TradeCardRequest $request): RedirectResponse
     {
         if(empty($request->type_trade) || !in_array($request->type_trade, ['slow', 'fast'])) {
             session()->flash('mgs_error', "Loại gạch thẻ không chính xác!");
+            return back()->withInput();
+        }
+        if(TradeCard::whereCardSerial($request->card_serial)->orWhere('card_number', $request->card_number)->first() != null) {
+            session()->flash('mgs_error', "Số serial hoặc mã thẻ đã tồn tại trên hệ thống!");
             return back()->withInput();
         }
         if ($request->type_trade == 'fast' && !CardService::saveTradeCardFast($request)) {
@@ -87,7 +96,7 @@ class CardController extends Controller
             return back()->withInput();
         }
         session()->flash('notif', 'Đã gửi yêu cầu! Hãy kiểm tra lịch sử để xem trạng thái gạch thẻ.');
-        return redirect()->refresh();
+        return back();
     }
 
     public function showDiscount(): Factory|View|Application

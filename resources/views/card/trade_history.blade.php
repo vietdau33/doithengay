@@ -16,6 +16,7 @@
                             <th scope="col">#</th>
                             <th scope="col">Trạng thái</th>
                             <th scope="col">Loại thẻ</th>
+                            <th scope="col">Loại gạch</th>
                             <th scope="col">Số tiền</th>
                             <th scope="col">Thực nhận</th>
                             <th scope="col">Số seri</th>
@@ -31,6 +32,7 @@
                                 <th scope="row">{{ $stt++ }}</th>
                                 <td style="min-width: 150px;">{!! $history->getStatusHtml() !!}</td>
                                 <td style="min-width: 130px;">{{ get_card_trade($history, $rates, $rateID) }}</td>
+                                <td style="min-width: 130px;">{{ $history->type_trade == 'fast' ? 'Nhanh' : 'Chậm' }}</td>
                                 <td style="min-width: 150px;">{{ number_format($history->card_money) }}</td>
                                 <td style="min-width: 150px;">{{ number_format($realMoney) }}</td>
                                 <td style="min-width: 200px;">{{ $history->card_serial }}</td>

@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Services\AdminService;
 use App\Models\BillModel;
 use App\Models\CardListModel;
+use App\Models\CardStore;
 use App\Models\RateCard;
+use App\Models\TradeCard;
 use App\Models\User;
 use App\Models\WithdrawModel;
 use Illuminate\Contracts\Foundation\Application;
@@ -155,5 +157,29 @@ class AdminController extends Controller
     public function billSettingPost($name, $type): RedirectResponse
     {
         return AdminService::changeStatusCardList($name, $type, 'bill');
+    }
+
+    public function buyCardRequest(): Factory|View|Application
+    {
+        session()->flash('menu-active', 'buycard-request');
+        $requests = CardStore::with('user')->whereTypeBuy('slow')->whereIn('status', [0, 1])->get();
+        return view('admin.buycard.request', compact('requests'));
+    }
+
+    public function buyCardRequestStatus(int $id, int $status): RedirectResponse
+    {
+        return AdminService::saveStatusBuyCard($id, $status);
+    }
+
+    public function tradeCardRequest(): Factory|View|Application
+    {
+        session()->flash('menu-active', 'tradecard-request');
+        $requests = TradeCard::with('user')->whereTypeTrade('slow')->whereIn('status', [1, 2])->get();
+        return view('admin.tradecard.request', compact('requests'));
+    }
+
+    public function tradeCardRequestStatus(int $id, int $status): RedirectResponse
+    {
+        return AdminService::saveStatusTradeCard($id, $status);
     }
 }

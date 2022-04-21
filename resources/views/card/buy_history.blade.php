@@ -14,6 +14,7 @@
                             <th scope="col">Loại thẻ</th>
                             <th scope="col">Mệnh giá</th>
                             <th scope="col">Số lượng</th>
+                            <th scope="col">Trạng thái</th>
                             <th scope="col">Ngày mua</th>
                         </tr>
                     </thead>
@@ -21,11 +22,14 @@
                         @foreach($histories as $history)
                             <tr>
                                 <th scope="row">
-                                    <a href="{{ route('list-card', ['hash' => $history->store_hash]) }}" class="text-decoration-none">Xem</a>
+                                    @if($history->type_buy == 'fast' || $history->status === 2)
+                                        <a href="{{ route('list-card', ['hash' => $history->store_hash]) }}" class="text-decoration-none">Xem</a>
+                                    @endif
                                 </th>
                                 <td style="min-width: 155px;">{{ ucfirst($history->card_buy) }}</td>
                                 <td style="min-width: 150px;">{{ number_format($history->money_buy) }}</td>
                                 <td style="min-width: 100px;">{{ $history->quantity }}</td>
+                                <td style="min-width: 140px;">{!! $history->getStatus() !!}</td>
                                 <td style="min-width: 150px;">{{ date('d/m/Y', strtotime($history->created_at)) }}</td>
                             </tr>
                         @endforeach

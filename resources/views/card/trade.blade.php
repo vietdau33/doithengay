@@ -42,7 +42,8 @@
                         <img src="{{ asset('image/pay.png') }}" alt="Pay">
                         <span>Chọn mệnh giá</span>
                     </div>
-                    <div class="form-group d-flex flex-wrap justify-content-center" id="area-money"></div>
+                    @php($dataActiveMoney = json_encode(['card_money' => old('card_money', ''), 'card_type' => old('card_type', '')]))
+                    <div class="form-group d-flex flex-wrap justify-content-center" id="area-money" data-active="{{ $dataActiveMoney }}"></div>
                     <hr />
                     <div class="form-group d-flex flex-wrap justify-content-center mt-2">
                         <label for="card_serial" class="ignore w-100 text-left">Số seri:</label>
@@ -81,6 +82,16 @@
         let areaMoney = $('#area-money');
         let template = $('[data-template="label-money"]');
 
+        let activeMoney = function() {
+            let dataActiveMoney = JSON.parse(areaMoney.attr('data-active'));
+            if(dataActiveMoney.card_type == '' || dataActiveMoney.card_money == '') {
+                return;
+            }
+            if($(`[name="card_type"][value="${dataActiveMoney.card_type}"]`).prop('checked') === true) {
+                $(`[name="card_money"][value="${dataActiveMoney.card_money}"]`).trigger('click');
+            }
+        }
+
         $('[name="card_type"]').on('change', function(){
             let val  = $(this).val();
             let rate = rates[val];
@@ -101,12 +112,14 @@
                 tempEl.find('.money-show').text(App.setPriceFormat(money));
                 areaMoney.append(tempEl);
             });
+
+            activeMoney();
         });
 
         if($('#area-card').find('[name="card_type"]:checked').length > 0){
             $('#area-card').find('[name="card_type"]:checked').trigger('change');
-        }else{
-            $('#area-card').find('label.box-card:first-child').trigger('click');
         }
+
+        activeMoney();
     </script>
 @endsection

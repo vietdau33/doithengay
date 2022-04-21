@@ -10,6 +10,16 @@ Route::get('/withdraw-request/{id}/{status}', [AdminController::class, 'withdraw
 Route::get('/withdraw-history', [AdminController::class, 'withdrawHistory'])->name('withdraw-history');
 Route::post('/bank/info', [AdminController::class, 'bankInfo'])->name('bank.info');
 
+Route::prefix('/buy-card')->group(function() {
+    Route::get('/request', [AdminController::class, 'buyCardRequest'])->name('buycard-request');
+    Route::get('/request/{id}/{status}', [AdminController::class, 'buyCardRequestStatus'])->name('buycard-request.status');
+});
+
+Route::prefix('/trade-card')->group(function() {
+    Route::get('/request', [AdminController::class, 'tradeCardRequest'])->name('tradecard-request');
+    Route::get('/request/{id}/{status}', [AdminController::class, 'tradeCardRequestStatus'])->name('tradecard-request.status');
+});
+
 Route::prefix('user')->name('user.')->group(function(){
     Route::get('active', [AdminController::class, 'userListActive'])->name('active');
     Route::get('block', [AdminController::class, 'userListBlock'])->name('block');

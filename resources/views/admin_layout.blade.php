@@ -89,6 +89,24 @@
                     <li>
                         <a class="nav-submenu" data-toggle="nav-submenu" href="#">
                             <i class="si si-credit-card"></i>
+                            <span class="sidebar-mini-hide">Yêu cầu mua thẻ</span>
+                        </a>
+                        <ul class="nav-main__childrent">
+                            <li><a href="{{ route('admin.buycard-request') }}" data-id="buycard-request">Danh sách yêu cầu</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="nav-submenu" data-toggle="nav-submenu" href="#">
+                            <i class="si si-credit-card"></i>
+                            <span class="sidebar-mini-hide">Yêu cầu gạch thẻ</span>
+                        </a>
+                        <ul class="nav-main__childrent">
+                            <li><a href="{{ route('admin.tradecard-request') }}" data-id="tradecard-request">Danh sách yêu cầu</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="nav-submenu" data-toggle="nav-submenu" href="#">
+                            <i class="si si-credit-card"></i>
                             <span class="sidebar-mini-hide">Thanh toán cước</span>
                         </a>
                         <ul class="nav-main__childrent">

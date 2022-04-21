@@ -9,6 +9,7 @@ use App\Models\TradeCard;
 use App\Models\User;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Console\Command;
+use Illuminate\Support\Carbon;
 
 class UpdateStatusTradeCard extends Command
 {
@@ -38,9 +39,13 @@ class UpdateStatusTradeCard extends Command
         $this->rateID = array_flip(RateCard::getRateId());
 
         $status = true;
+        $now = strtotime(Carbon::now());
         $allTrade = TradeCard::where(['status' => TradeCard::S_JUST_SEND])->orWhere(['status' => TradeCard::S_WORKING])->get();
         $this->info('Start check status trade');
         foreach ($allTrade as $trade) {
+            if ($trade->type_trade == 'slow' && $now - strtotime($trade->created_at) < 300) {
+                continue;
+            }
             $this->info("Check: $trade->id");
             $status |= $this->checkTrade($trade);
         }
@@ -55,6 +60,13 @@ class UpdateStatusTradeCard extends Command
     {
         $taskId = $tradeRecord->task_id;
         if ($taskId == null) {
+            $taskId = $this->createTaskId($tradeRecord->toArray());
+            if($taskId !== false) {
+                $tradeRecord->task_id = $taskId;
+            }else{
+                $tradeRecord->status = TradeCard::S_ERROR;
+            }
+            $tradeRecord->save();
             return false;
         }
 
@@ -67,13 +79,13 @@ class UpdateStatusTradeCard extends Command
             return false;
         }
 
-        if($result['Code'] === 0 || $result['Code'] === 1) {
+        if ($result['Code'] === 0 || $result['Code'] === 1) {
             $tradeRecord->status = TradeCard::S_WORKING;
             $tradeRecord->save();
             return true;
         }
 
-        if($result['Code'] === 3) {
+        if ($result['Code'] === 3) {
             $tradeRecord->status = TradeCard::S_ERROR;
             $tradeRecord->contents = json_encode($result);
             $tradeRecord->save();
@@ -92,7 +104,7 @@ class UpdateStatusTradeCard extends Command
         $tradeRecord->save();
 
         $user = User::whereId($tradeRecord->user_id)->first();
-        if($user == null) {
+        if ($user == null) {
             return false;
         }
 
@@ -100,5 +112,27 @@ class UpdateStatusTradeCard extends Command
         $user->save();
 
         return true;
+    }
+
+    /**
+     * @throws GuzzleException
+     */
+    private function createTaskId($params)
+    {
+        $urlTrade = config('card.api.trade');
+        $result = HttpService::ins()->post($urlTrade, [
+            'ApiKey' => env('API_KEY_AUTOCARD', ''),
+            'Pin' => $params['card_number'],
+            'Seri' => $params['card_serial'],
+            'CardType' => $params['card_type'],
+            'CardValue' => $params['card_money'],
+            'requestid' => $params['hash']
+        ]);
+
+        if ($result['Code'] === 0) {
+            return false;
+        }
+
+        return $result['TaskId'];
     }
 }

@@ -88,23 +88,26 @@ class CardService extends Service
             return false;
         }
 
-        $url = self::getUrlApi('buy');
-        $result = HttpService::ins()->post($url, [
-            'ApiKey' => env('API_KEY_AUTOCARD', ''),
-            'Telco' => ucfirst($param['card_buy']),
-            'Amount' => (int)$param['money_buy'],
-            'Quantity' => (int)$param['quantity']
-        ]);
+        if($param['type_buy'] == 'fast') {
+            $url = self::getUrlApi('buy');
+            $result = HttpService::ins()->post($url, [
+                'ApiKey' => env('API_KEY_AUTOCARD', ''),
+                'Telco' => ucfirst($param['card_buy']),
+                'Amount' => (int)$param['money_buy'],
+                'Quantity' => (int)$param['quantity']
+            ]);
 
-        if($result['Code'] === 0){
-            session()->flash('mgs_error', 'Không thể mua thẻ ngay lúc này. Hãy liên hệ admin để được xử lý!');
-            return false;
+            if($result['Code'] === 0){
+                session()->flash('mgs_error', 'Không thể mua thẻ ngay lúc này. Hãy liên hệ admin để được xử lý!');
+                return false;
+            }
+
+            $param['results'] = json_encode($result['Data']);
         }
 
         $user->money = (int)$user->money - $money;
         $user->save();
 
-        $param['results'] = json_encode($result['Data']);
         return ModelService::insert(CardStore::class, $param) !== false;
     }
 
@@ -146,8 +149,18 @@ class CardService extends Service
 
     public static function saveTradeCardSlow(TradeCardRequest $request): bool
     {
-        session()->flash("mgs_error", "Chức năng nạp chậm chưa hoàn thiện. Vui lòng thử lại sau");
-        return false;
+        $params = $request->validated();
+        $params['user_id'] = user()->id;
+        $params['hash'] = self::generate_hash_trade();
+
+        $cardType = RateCard::whereName($params['card_type'])->first();
+        if($cardType == null) {
+            session()->flash('Nhà mạng không tồn tại!');
+            return false;
+        }
+
+        $params['card_type'] = $cardType->rate_id;
+        return ModelService::insert(TradeCard::class, $params) !== false;
     }
 
     /**

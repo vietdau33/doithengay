@@ -7,7 +7,7 @@
         </div>
         <div class="body-content">
             <div class="box-content box-cards p-3 mt-4">
-                @foreach($lists as $list)
+                @foreach($lists ?? [] as $list)
                     <div class="box-card-info d-flex flex-column align-items-center">
                         <h4 class="font-weight-bold">Thẻ {{ $list['Telco'] }}: {{ number_format($list['Amount']) }}</h4>
                         <ul style="padding-left: 20px">

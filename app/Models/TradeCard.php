@@ -41,4 +41,17 @@ class TradeCard extends Model
             default => '',
         };
     }
+
+    public function getNameTelco(): string
+    {
+        static $telcoList;
+        if (isset($telcoList[$this->card_type])) {
+            return $telcoList[$this->card_type];
+        }
+        logger('call sql');
+        $rate = RateCard::whereRateId($this->card_type)->first();
+        $name = ucfirst($rate->name ?? '');
+        $telcoList[$this->card_type] = $name;
+        return $name;
+    }
 }

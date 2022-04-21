@@ -6,7 +6,9 @@ use App\Http\Services\Service;
 use App\Models\BankModel;
 use App\Models\BillModel;
 use App\Models\CardListModel;
+use App\Models\CardStore;
 use App\Models\RateCard;
+use App\Models\TradeCard;
 use App\Models\User;
 use App\Models\WithdrawModel;
 use Illuminate\Http\JsonResponse;
@@ -50,6 +52,57 @@ class AdminService extends Service
 
         $withdraw->status = $status;
         $withdraw->save();
+
+        session()->flash('notif', "Thành công!");
+        return redirect()->back();
+    }
+
+    public static function saveStatusBuyCard(int $id, int $status): RedirectResponse
+    {
+        if (!in_array($status, [0, 1, 2, 3], true)) {
+            session()->flash('mgs_error', 'Status không chính xác!');
+            return redirect()->back();
+        }
+
+        $buyCard = CardStore::whereId($id)->first();
+        if ($buyCard == null) {
+            session()->flash('mgs_error', 'Yêu cầu không tồn tại!');
+            return redirect()->back();
+        }
+
+        $user = User::whereId($buyCard->user_id)->first();
+        if ($user == null) {
+            session()->flash('mgs_error', 'Người dùng không tồn tại hoặc đã bị xóa!');
+            return redirect()->back();
+        }
+
+        if ($status == 3) {
+            $user->money = (int)$user->money + (int)$buyCard->money;
+            $user->save();
+        }
+
+        $buyCard->status = $status;
+        $buyCard->save();
+
+        session()->flash('notif', "Thành công!");
+        return redirect()->back();
+    }
+
+    public static function saveStatusTradeCard(int $id, int $status): RedirectResponse
+    {
+        if (!in_array($status, [1, 2, 3, 4], true)) {
+            session()->flash('mgs_error', 'Status không chính xác!');
+            return redirect()->back();
+        }
+
+        $tradeCard = TradeCard::whereId($id)->first();
+        if ($tradeCard == null) {
+            session()->flash('mgs_error', 'Yêu cầu không tồn tại!');
+            return redirect()->back();
+        }
+
+        $tradeCard->status = $status;
+        $tradeCard->save();
 
         session()->flash('notif', "Thành công!");
         return redirect()->back();
