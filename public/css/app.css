@@ -368,14 +368,88 @@ input[type=radio]:checked ~ .checkbox-custom {
   width: 100%;
   height: 60px;
   text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   color: #fff;
+  display: inline-table;
   transition: all 0.2s;
 }
 #bottom_menu a:hover {
   color: #0c2c63;
   background: #95acd5;
   font-weight: bold;
+}
+#bottom_menu a:hover .img-icon {
+  background-position: top center;
+}
+#bottom_menu .img-icon {
+  width: 3em;
+  height: 3em;
+  background-position: bottom center;
+  background-repeat: no-repeat;
+  margin: 1em auto 0;
+  background-size: 3em 6em;
+  background-image: var(--img-icon-url);
+}
+
+input[type=button] {
+  -webkit-appearance: button;
+  cursor: pointer;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+.input-group {
+  clear: both;
+  position: relative;
+}
+
+.input-group input[type=button] {
+  background-color: #eeeeee;
+  min-width: 38px;
+  width: auto;
+  transition: all 300ms ease;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+  -webkit-appearance: none;
+}
+
+.input-group .button-minus,
+.input-group .button-plus {
+  font-weight: bold;
+  height: 38px;
+  padding: 0;
+  width: 38px;
+  position: relative;
+  border: 1px solid #ced4da;
+}
+
+.input-group .button-minus:focus,
+.input-group .button-plus:focus {
+  box-shadow: initial;
+}
+
+.input-group .quantity-field {
+  position: relative;
+  height: 38px;
+  left: 0;
+  margin: 0 4px;
+  text-align: center;
+  width: 62px;
+  display: inline-block;
+  font-size: 13px;
+  resize: vertical;
+  border-radius: 0.25rem !important;
+}
+
+.input-group .quantity-field:focus {
+  box-shadow: initial;
+  z-index: 0;
+}
+
+.button-plus {
+  right: 0;
 }

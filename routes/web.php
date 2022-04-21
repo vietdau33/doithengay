@@ -72,8 +72,10 @@ Route::middleware('authenticated')->group(function () {
         Route::post('/add', [BankController::class, 'addPost'])->name('add.post');
         Route::get('/remove/{id}', [BankController::class, 'remove'])->name('remove');
     });
-});
 
+
+});
+Route::post('create/api', [AuthController::class, 'createApiKey'])->name('create_api');
 Route::middleware('is_admin')->prefix('admin')->name('admin.')->group(function () {
     require_once __DIR__ . DIRECTORY_SEPARATOR . 'group' . DIRECTORY_SEPARATOR . 'admin.php';
 });
