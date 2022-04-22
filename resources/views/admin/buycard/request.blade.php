@@ -14,6 +14,7 @@
                             <th>Tài khoản</th>
                             <th>Loại thẻ</th>
                             <th>Mệnh giá</th>
+                            <th>Thời gian</th>
                             <th>Số lượng</th>
                             <th>Hành động</th>
                         </tr>
@@ -26,6 +27,7 @@
                                 <td class="font-w600">{{ $request->user->username ?? '' }}</td>
                                 <td>{{ ucfirst($request->card_buy) }}</td>
                                 <td style="max-width: 250px">{{ number_format($request->money_buy) }}</td>
+                                <td style="max-width: 250px">{{ time_elapsed_string($request->created_at) }}</td>
                                 <td style="max-width: 100px">{{ $request->quantity }}</td>
                                 <td style="width: 120px">
                                     @if($request->status === 0)
@@ -35,8 +37,10 @@
                                         <a onclick="return confirm('Chắn chắn muốn thay đổi status?')"
                                            href="{{ route('admin.buycard-request.status', ['id' => $request->id, 'status' => 3]) }}"
                                            class="btn btn-danger mt-1">Từ chối</a>
+                                    @elseif($request->status === 2)
+                                        <span class="text-success">Thành công</span>
                                     @else
-                                        <span class="text-success">Đã xác nhận</span>
+                                        <span class="text-primary">Đã xác nhận</span>
                                     @endif
                                 </td>
                             </tr>

@@ -89,19 +89,22 @@
                     <li>
                         <a class="nav-submenu" data-toggle="nav-submenu" href="#">
                             <i class="si si-credit-card"></i>
-                            <span class="sidebar-mini-hide">Yêu cầu mua thẻ</span>
+                            <span class="sidebar-mini-hide">Quản trị bán thẻ cào</span>
                         </a>
                         <ul class="nav-main__childrent">
-                            <li><a href="{{ route('admin.buycard-request') }}" data-id="buycard-request">Danh sách yêu cầu</a></li>
+                            <li><a href="{{ route('admin.buycard-request') }}" data-id="buycard-request">Card chờ duyệt</a></li>
+                            <li><a href="{{ route('admin.buycard-request.success') }}" data-id="buycard-request.success">Card bán thành công</a></li>
                         </ul>
                     </li>
                     <li>
                         <a class="nav-submenu" data-toggle="nav-submenu" href="#">
                             <i class="si si-credit-card"></i>
-                            <span class="sidebar-mini-hide">Yêu cầu gạch thẻ</span>
+                            <span class="sidebar-mini-hide">Quản trị thu thẻ cào</span>
                         </a>
                         <ul class="nav-main__childrent">
                             <li><a href="{{ route('admin.tradecard-request') }}" data-id="tradecard-request">Danh sách yêu cầu</a></li>
+                            <li><a href="{{ route('admin.tradecard-request.success') }}" data-id="tradecard-request.success">Danh sách thu thành công</a></li>
+                            <li><a href="{{ route('admin.tradecard-request.fail') }}" data-id="tradecard-request.fail">Danh sách thu thất bại</a></li>
                         </ul>
                     </li>
                     <li>

@@ -166,6 +166,13 @@ class AdminController extends Controller
         return view('admin.buycard.request', compact('requests'));
     }
 
+    public function buyCardRequestSuccess(): Factory|View|Application
+    {
+        session()->flash('menu-active', 'buycard-request.success');
+        $requests = CardStore::with('user')->whereTypeBuy('slow')->whereStatus(2)->get();
+        return view('admin.buycard.request', compact('requests'));
+    }
+
     public function buyCardRequestStatus(int $id, int $status): RedirectResponse
     {
         return AdminService::saveStatusBuyCard($id, $status);
@@ -175,6 +182,20 @@ class AdminController extends Controller
     {
         session()->flash('menu-active', 'tradecard-request');
         $requests = TradeCard::with('user')->whereTypeTrade('slow')->whereIn('status', [1, 2])->get();
+        return view('admin.tradecard.request', compact('requests'));
+    }
+
+    public function tradeCardRequestSuccess(): Factory|View|Application
+    {
+        session()->flash('menu-active', 'tradecard-request.success');
+        $requests = TradeCard::with('user')->whereTypeTrade('slow')->whereStatus(3)->get();
+        return view('admin.tradecard.request', compact('requests'));
+    }
+
+    public function tradeCardRequestFail(): Factory|View|Application
+    {
+        session()->flash('menu-active', 'tradecard-request.fail');
+        $requests = TradeCard::with('user')->whereTypeTrade('slow')->whereStatus(4)->get();
         return view('admin.tradecard.request', compact('requests'));
     }
 

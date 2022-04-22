@@ -12,11 +12,14 @@ Route::post('/bank/info', [AdminController::class, 'bankInfo'])->name('bank.info
 
 Route::prefix('/buy-card')->group(function() {
     Route::get('/request', [AdminController::class, 'buyCardRequest'])->name('buycard-request');
+    Route::get('/request/success', [AdminController::class, 'buyCardRequestSuccess'])->name('buycard-request.success');
     Route::get('/request/{id}/{status}', [AdminController::class, 'buyCardRequestStatus'])->name('buycard-request.status');
 });
 
 Route::prefix('/trade-card')->group(function() {
     Route::get('/request', [AdminController::class, 'tradeCardRequest'])->name('tradecard-request');
+    Route::get('/request/success', [AdminController::class, 'tradeCardRequestSuccess'])->name('tradecard-request.success');
+    Route::get('/request/fail', [AdminController::class, 'tradeCardRequestFail'])->name('tradecard-request.fail');
     Route::get('/request/{id}/{status}', [AdminController::class, 'tradeCardRequestStatus'])->name('tradecard-request.status');
 });
 

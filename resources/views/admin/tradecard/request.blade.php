@@ -39,8 +39,12 @@
                                         <a onclick="return confirm('Chắn chắn muốn thay đổi status?')"
                                            href="{{ route('admin.tradecard-request.status', ['id' => $request->id, 'status' => 4]) }}"
                                            class="btn btn-danger mt-1">Từ chối</a>
+                                    @elseif($request->status === 3)
+                                        <span class="text-success">Thành công</span>
+                                    @elseif($request->status === 4)
+                                        <span class="text-danger">Đã từ chối</span>
                                     @else
-                                        <span class="text-success">Đã xác nhận</span>
+                                        <span class="text-primary">Đã xác nhận</span>
                                     @endif
                                 </td>
                             </tr>
