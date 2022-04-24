@@ -13,10 +13,11 @@ class Kernel extends ConsoleKernel
      * @param Schedule $schedule
      * @return void
      */
-    protected function schedule(Schedule $schedule)
+    protected function schedule(Schedule $schedule): void
     {
          $schedule->command('update-status:trade-card')->everyMinute();
          $schedule->command('rate-card:refresh')->dailyAt("06:00");
+         $schedule->command('check-schedule')->everyMinute();
     }
 
     /**
@@ -24,7 +25,7 @@ class Kernel extends ConsoleKernel
      *
      * @return void
      */
-    protected function commands()
+    protected function commands(): void
     {
         $this->load(__DIR__.'/Commands');
 
