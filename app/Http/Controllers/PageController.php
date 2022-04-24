@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PasswordRequest;
 use App\Http\Requests\ProfileRequest;
 use App\Http\Services\UserService;
+use App\Models\ApiData;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -69,5 +70,14 @@ class PageController extends Controller
     {
         session()->flash('notif', 'Chức năng đang phát triển. Vui lòng quay lại sau!');
         return back();
+    }
+
+    public function connectApi(): Factory|View|Application
+    {
+        $api_key = '';
+        if(logined()) {
+            $api_key = ApiData::whereUserId(user()->id)->first()->api_key ?? '';
+        }
+        return view('connect-api', compact('api_key'));
     }
 }

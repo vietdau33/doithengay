@@ -76,6 +76,9 @@
                         <li data-id="menu-discount">
                             <a href="{{ route('chiet-khau') }}">Chiết khấu</a>
                         </li>
+                        <li data-id="connect-api">
+                            <a href="{{ route('connect-api') }}">Kết nối API</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -103,6 +106,7 @@
                                         <li data-id="menu-recharge"><a href="{{ route('recharge') }}">Nạp tiền</a></li>
                                         <li data-id="menu-withdraw"><a href="{{ route('withdraw') }}">Rút tiền</a></li>
                                         <li data-id="menu-discount"><a href="{{ route('chiet-khau') }}">Chiết khấu</a></li>
+                                        <li data-id="connect-api"><a href="{{ route('connect-api') }}">Kết nối API</a></li>
                                         <hr />
                                     </div>
                                     <li><a href="{{ route('auth.logout') }}">Đăng xuất</a></li>
@@ -121,45 +125,35 @@
 </div>
 
 @if(isset($show_menu_bottom) && $show_menu_bottom === true)
-    <div id="bottom_menu" class="container-fluid">
-        <div class="row">
-            <div class="col-md-2 col-4">
-                <a class="text-decoration-none" href="{{ route('trade-card') }}">
-                    <div style="--img-icon-url: url('{{ asset('image/icon/icon1.svg') }}')" class="img-icon"></div>
-                    <p class="w-100">Đổi thẻ cào</p>
-                </a>
-            </div>
-            <div class="col-md-2 col-4">
-                <a class="text-decoration-none" href="{{ route('buy-card') }}">
-                    <div style="--img-icon-url: url('{{ asset('image/icon/icon2.svg') }}')" class="img-icon"></div>
-                    <p class="w-100">Mua thẻ cào</p>
-                </a>
-            </div>
-            <div class="col-md-2 col-4">
-                <a class="text-decoration-none" href="{{ route('recharge') }}">
-                    <div style="--img-icon-url: url('{{ asset('image/icon/icon1.svg') }}')" class="img-icon"></div>
-                    <p class="w-100">Nạp tiền</p>
-                </a>
-            </div>
-            <div class="col-md-2 col-4">
-                <a class="text-decoration-none" href="{{ route('withdraw') }}">
-                    <div style="--img-icon-url: url('{{ asset('image/icon/icon3.svg') }}')" class="img-icon"></div>
-                    <p class="w-100">Rút tiền</p>
-                </a>
-            </div>
-            <div class="col-md-2 col-4">
-                <a class="text-decoration-none" href="{{ route('chiet-khau') }}">
-                    <div style="--img-icon-url: url('{{ asset('image/icon/icon4.svg') }}')" class="img-icon"></div>
-                    <p class="w-100">Chiết khấu</p>
-                </a>
-            </div>
-            <div class="col-md-2 col-4">
-                <a class="text-decoration-none" href="{{ route('pay-bill') }}">
-                    <div style="--img-icon-url: url('{{ asset('image/icon/icon3.svg') }}')" class="img-icon"></div>
-                    <p class="w-100">Thanh toán cước</p>
-                </a>
-            </div>
-        </div>
+    <div id="bottom_menu" class="container-fluid d-flex">
+        <a class="text-decoration-none" href="{{ route('trade-card') }}">
+            <div style="--img-icon-url: url('{{ asset('image/icon/icon1.svg') }}')" class="img-icon"></div>
+            <p class="w-100">Đổi thẻ cào</p>
+        </a>
+        <a class="text-decoration-none" href="{{ route('buy-card') }}">
+            <div style="--img-icon-url: url('{{ asset('image/icon/icon2.svg') }}')" class="img-icon"></div>
+            <p class="w-100">Mua thẻ cào</p>
+        </a>
+        <a class="text-decoration-none" href="{{ route('recharge') }}">
+            <div style="--img-icon-url: url('{{ asset('image/icon/icon1.svg') }}')" class="img-icon"></div>
+            <p class="w-100">Nạp tiền</p>
+        </a>
+        <a class="text-decoration-none" href="{{ route('withdraw') }}">
+            <div style="--img-icon-url: url('{{ asset('image/icon/icon3.svg') }}')" class="img-icon"></div>
+            <p class="w-100">Rút tiền</p>
+        </a>
+        <a class="text-decoration-none" href="{{ route('chiet-khau') }}">
+            <div style="--img-icon-url: url('{{ asset('image/icon/icon4.svg') }}')" class="img-icon"></div>
+            <p class="w-100">Chiết khấu</p>
+        </a>
+        <a class="text-decoration-none" href="{{ route('pay-bill') }}">
+            <div style="--img-icon-url: url('{{ asset('image/icon/icon3.svg') }}')" class="img-icon"></div>
+            <p class="w-100">Thanh toán cước</p>
+        </a>
+        <a class="text-decoration-none" href="{{ route('connect-api') }}">
+            <div style="--img-icon-url: url('{{ asset('image/icon/icon3.svg') }}')" class="img-icon"></div>
+            <p class="w-100">Kết nối API</p>
+        </a>
     </div>
 @endif
 <div id="copyright">

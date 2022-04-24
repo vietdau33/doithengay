@@ -2,9 +2,11 @@
 
 namespace App\Http\Services;
 
+use App\Models\ApiData;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AuthService extends Service
 {
@@ -25,11 +27,15 @@ class AuthService extends Service
         return Auth::attempt($credentials);
     }
 
-    public function registerPost($registerRequest): mixed
+    public function registerPost($registerRequest): bool|ApiData
     {
         $listKeyUser = array_keys($registerRequest->rules());
         $params = $registerRequest->only($listKeyUser);
         $params['password'] = bcrypt($params['password']);
-        return ModelService::insert(User::class, $params);
+        $user = ModelService::insert(User::class, $params);
+        if($user === false) {
+            return false;
+        }
+        return ApiData::createAPI($user->id);
     }
 }
