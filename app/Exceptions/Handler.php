@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use App\Models\ErrorLog;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
@@ -37,5 +38,15 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    public function report(Throwable $e)
+    {
+        $dataArr = [
+            'file' => $e->getFile(),
+            'error_summary' => 'Line ' . $e->getLine() . ': ' . $e->getMessage(),
+            'log_trace' => $e->getTraceAsString()
+        ];
+        ErrorLog::create($dataArr);
     }
 }
