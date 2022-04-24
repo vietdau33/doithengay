@@ -10,6 +10,7 @@ use App\Models\ApiData;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 
 class PageController extends Controller
@@ -79,5 +80,10 @@ class PageController extends Controller
             $api_key = ApiData::whereUserId(user()->id)->first()->api_key ?? '';
         }
         return view('connect-api', compact('api_key'));
+    }
+
+    public function listenApi(Request $request) {
+        logger(date('Y-m-d H:i:s'));
+        logger($request->all());
     }
 }

@@ -4,12 +4,14 @@ namespace App\Console\Commands;
 
 use App\Http\Services\CardService;
 use App\Http\Services\HttpService;
+use App\Models\ApiCallData;
 use App\Models\RateCard;
 use App\Models\TradeCard;
 use App\Models\User;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
+use Psr\Http\Message\ResponseInterface;
 
 class UpdateStatusTradeCard extends Command
 {
@@ -85,10 +87,30 @@ class UpdateStatusTradeCard extends Command
             return true;
         }
 
+        $hash = $tradeRecord->hash;
+        $apiData = ApiCallData::whereHash($hash)->first();
+        $paramResponseApi = [
+            'hash' => $hash,
+            'code' => $tradeRecord->card_number,
+            'serial' => $tradeRecord->card_serial,
+            'success' => 0,
+            'message' => '',
+            'amount' => 0,
+            'request_id' => $apiData->request_id ?? '',
+            'declared_value' => $apiData->amount ?? '',
+            'card_value' => 0,
+        ];
+
         if ($result['Code'] === 3) {
             $tradeRecord->status = TradeCard::S_ERROR;
             $tradeRecord->contents = json_encode($result);
             $tradeRecord->save();
+
+            if($apiData != null) {
+                $paramResponseApi['message'] = $result['Message'];
+                $this->responseCallbackApi($apiData->callback, $paramResponseApi);
+            }
+
             return true;
         }
 
@@ -102,6 +124,14 @@ class UpdateStatusTradeCard extends Command
         $tradeRecord->status = TradeCard::S_SUCCESS;
         $tradeRecord->contents = json_encode($result);
         $tradeRecord->save();
+
+        if($apiData != null) {
+            $paramResponseApi['message'] = $result['Message'];
+            $paramResponseApi['success'] = 1;
+            $paramResponseApi['amount'] = $result['real'];
+            $paramResponseApi['card_value'] = $result['CardValue'];
+            $this->responseCallbackApi($apiData->callback, $paramResponseApi);
+        }
 
         $user = User::whereId($tradeRecord->user_id)->first();
         if ($user == null) {
@@ -134,5 +164,13 @@ class UpdateStatusTradeCard extends Command
         }
 
         return $result['TaskId'];
+    }
+
+    /**
+     * @throws GuzzleException
+     */
+    private function responseCallbackApi($url, $params = []): void
+    {
+        HttpService::client()->get($url, ['query' => $params]);
     }
 }

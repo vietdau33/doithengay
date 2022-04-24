@@ -24,6 +24,17 @@ class ApiService extends Service
         parent::__construct($request);
     }
 
+    public static function getMgsError ($mgs): string
+    {
+        return match ($mgs) {
+            self::API_KEY_NOTFOUND => 'API Key không tồn tại',
+            self::API_KEY_NOTACTIVE => 'API Key chưa được kích hoạt',
+            self::API_KEY_EXPIRE => 'API Key đã hết hạn',
+            self::API_KEY_NOTSEEOWNER => 'API Key không tìm thấy chủ',
+            default => 'Lỗi không xác định'
+        };
+    }
+
     public static function getRate(): JsonResponse
     {
         $rates = RateCard::select(['name', 'price', DB::raw('rate_use as rate')])->whereTypeRate('trade')->get()->toArray();

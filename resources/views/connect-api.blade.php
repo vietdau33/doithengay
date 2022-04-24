@@ -39,6 +39,7 @@
                         <li><b>code:</b> Mã thẻ cào đã gửi lên</li>
                         <li><b>serial:</b> Số seri thẻ cào đã gửi lên</li>
                         <li><b>success:</b> Trạng thái gạch thẻ (1 - thành công, 0 - thất bại)</li>
+                        <li><b>message:</b> Message theo trạng thái</li>
                         <li><b>amount:</b> Tiền nhận được</li>
                         <li><b>request_id:</b> Mã request mà bạn gửi lên hệ thống</li>
                         <li><b>declared_value:</b> Mệnh giá mà bạn gửi lên hệ thống</li>

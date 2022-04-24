@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Http\Services\ApiService;
 use App\Models\ApiData;
+use App\Models\User;
 use Closure;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -44,6 +45,7 @@ class ApiMiddleware
         //    return $this->error('API_KEY_EXPIRE');
         //}
 
+        $request->user = $apiData->user;
         return $next($request);
     }
 
@@ -52,9 +54,9 @@ class ApiMiddleware
         $refl = new ReflectionClass(ApiService::class);
         $n_code = $refl->getConstants()[$code] ?? 500;
         return response()->json([
-            'code' => $n_code,
-            'mgs' => $code,
-            'datas' => []
+            'success' => 0,
+            'message' => ApiService::getMgsError($n_code),
+            'hash' => ''
         ]);
     }
 }

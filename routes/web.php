@@ -37,6 +37,7 @@ Route::middleware('authenticated')->group(function () {
     Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
     Route::get('/connect-api', [PageController::class, 'connectApi'])->name('connect-api');
+    Route::get('/listen-api', [PageController::class, 'listenApi']);
 
     Route::get('/buy-card', [CardController::class, 'buyCard'])->name('buy-card');
     Route::post('/buy-card', [CardController::class, 'buyCardPost'])->name('buy-card.post');
