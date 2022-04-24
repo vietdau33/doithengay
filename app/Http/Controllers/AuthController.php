@@ -7,14 +7,19 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Services\AuthService;
 use App\Http\Services\ModelService;
+use App\Mail\ForgotMail;
 use App\Models\ApiData;
+use App\Models\User;
+use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Mail;
 
 class AuthController extends Controller
 {
@@ -56,6 +61,138 @@ class AuthController extends Controller
         $this->authService->registerPost($request);
         session()->flash('notif', 'Tạo tài khoản thành công!');
         return redirect()->route('auth.view');
+    }
+
+    public function forgot($step = 'start', $hash = ''): Factory|View|Application
+    {
+        return view('auth.forgot-password', compact('step', 'hash'));
+    }
+
+    public function forgotVerify($hash): View|Factory|Application|RedirectResponse
+    {
+        $hash = urldecode($hash);
+        $user = User::whereHashForgot($hash)->first();
+        if($user == null) {
+            session()->flash('mgs_error', 'Mã hash xác nhận quên mật khẩu không tồn tại hoặc đã hết hạn!');
+            return redirect()->to('/');
+        }
+        return $this->forgot('new', $hash);
+    }
+
+    public function forgotPost(Request $request): Application|Factory|RedirectResponse|View
+    {
+        $step = $request->step;
+
+        if($step == 'start') {
+            return $this->sendMailForgot($request);
+        }
+
+        if($step == 'verify') {
+            return $this->verifyForgot($request);
+        }
+
+        if($step == 'new') {
+            return $this->renewPassword($request);
+        }
+
+        session()->flash('mgs_error', 'Một lỗi đã xảy ra!');
+        return $this->forgot();
+    }
+
+    private function sendMailForgot($request): View|Factory|Application|RedirectResponse
+    {
+        $username = $request->dasfsada;
+        if(empty($username)) {
+            session()->flash('mgs_error', 'Email hoặc tên người dùng chưa được nhập!');
+            return back();
+        }
+
+        $user = User::whereUsername($username)->orWhere('email', $username)->first();
+        if($user == null) {
+            session()->flash('mgs_error', 'Không tìm thấy thông tin người dùng!');
+            return back();
+        }
+
+        $code = rand(100000, 999999);
+        $hash = Hash::make($code);
+
+        $details['code'] = $code;
+        $details['link'] = url('forgot-password', ['hash' => urlencode($hash)]);
+
+        try{
+            Mail::to($user->email)->send(new ForgotMail($details));
+            $user->hash_forgot = $hash;
+            $user->save();
+        }catch (Exception $exception) {
+            session()->flash('mgs_error', 'Chúng tôi không thể gửi mail xác nhận ngay bây giờ!');
+            return back();
+        }
+
+        return $this->forgot('verify', $username);
+    }
+
+    private function verifyForgot($request): Factory|View|Application
+    {
+        $username = $request->dasfsada;
+        $verifyCode = $request->verify_code;
+
+        if(empty($username)) {
+            session()->flash('mgs_error', 'Email hoặc tên người dùng chưa được nhập!');
+            return $this->forgot();
+        }
+
+        if(empty($verifyCode)) {
+            session()->flash('mgs_error', 'Mã xác nhận chưa được nhập!');
+            return $this->forgot('verify', $username);
+        }
+
+        $user = User::whereUsername($username)->orWhere('email', $username)->first();
+        if($user == null) {
+            session()->flash('mgs_error', 'Không tìm thấy thông tin người dùng!');
+            return $this->forgot();
+        }
+        if(empty($user->hash_forgot)) {
+            session()->flash('mgs_error', 'Một lỗi đã xảy ra!');
+            return $this->forgot();
+        }
+
+        if(!Hash::check($verifyCode, $user->hash_forgot)){
+            session()->flash('mgs_error', 'Mã xác nhận không chính xác!');
+            return $this->forgot('verify', $username);
+        }
+
+        return $this->forgot('new', $user->hash_forgot);
+    }
+
+    private function renewPassword($request): Factory|View|RedirectResponse|Application
+    {
+        if(empty($request->hash)) {
+            session()->flash('mgs_error', 'Mã hash không tồn tại. Hãy thao tác lại!');
+            return $this->forgot();
+        }
+
+        if(empty($request->new_password) || empty($request->new_password_2)) {
+            session()->flash('mgs_error', 'Phải nhập đầy đủ 2 ô mật khẩu!');
+            return $this->forgot('new', $request->hash);
+        }
+
+        if($request->new_password != $request->new_password_2) {
+            session()->flash('mgs_error', '2 mật khẩu được nhập không giống nhau!');
+            return $this->forgot('new', $request->hash);
+        }
+
+        $user = User::whereHashForgot($request->hash)->first();
+        if($user == null) {
+            session()->flash('mgs_error', 'Không tìm thấy thông tin người dùng. Hãy thao tác lại!');
+            return $this->forgot();
+        }
+
+        $user->password = Hash::make($request->new_password);
+        $user->hash_forgot = null;
+        $user->save();
+
+        session()->flash('notif', 'Mật khẩu đã được thay đổi thành công. Vui lòng đăng nhập lại!');
+        return redirect()->to('/login');
     }
 
     public function logout(): RedirectResponse

@@ -23,7 +23,7 @@
                 </form>
                 <hr>
                 <div class="row pl-3 pr-3 justify-content-between">
-                    <a href="#">Quên mật khẩu?</a>
+                    <a href="{{ route('auth.forgot.view') }}">Quên mật khẩu?</a>
                     <a href="{{ route('auth.register.view') }}">Đăng ký?</a>
                 </div>
             </div>
