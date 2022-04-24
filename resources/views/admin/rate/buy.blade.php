@@ -3,7 +3,7 @@
     <div class="content">
         <div class="block">
             <div class="block-header block-header-default">
-                <h3 class="block-title font-weight-bold">Chiết khấu đổi thẻ</h3>
+                <h3 class="block-title font-weight-bold">Chiết khấu bán thẻ</h3>
             </div>
             <div class="block-content">
                 @foreach($rates as $key => $rate)
