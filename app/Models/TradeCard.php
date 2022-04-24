@@ -48,7 +48,6 @@ class TradeCard extends Model
         if (isset($telcoList[$this->card_type])) {
             return $telcoList[$this->card_type];
         }
-        logger('call sql');
         $rate = RateCard::whereRateId($this->card_type)->first();
         $name = ucfirst($rate->name ?? '');
         $telcoList[$this->card_type] = $name;
