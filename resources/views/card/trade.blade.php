@@ -54,6 +54,41 @@
                         <input class="form-control" name="card_number" id="card_number" value="{{ old('card_number') }}" placeholder="Mã thẻ" autocomplete="nope">
                     </div>
                     <hr />
+                    <div class="form-group mt-2">
+                        <div class="w-100 d-flex m-2">
+                            <label class="box-card m-0" for="type-slow">
+                                <input
+                                    type="radio"
+                                    id="type-slow"
+                                    name="type_trade"
+                                    value="slow"
+                                    {{ old('type_trade') == 'slow' ? 'checked' : '' }}
+                                />
+                                <span>Gạch chậm</span>
+                                <span class="checkbox-custom"></span>
+                            </label>
+                            <div class="mb-0 ml-2 alert alert-secondary d-flex align-items-center" data-for="type-slow" style="width: calc(100% - 150px)">
+                                Gạch chậm:&nbsp;<span id="rate_slow_show">0</span>% -&nbsp;<span id="money_slow_show">0</span> VNĐ
+                            </div>
+                        </div>
+                        <div class="w-100 d-flex m-2">
+                            <label class="box-card m-0" for="type-fast">
+                                <input
+                                    type="radio"
+                                    id="type-fast"
+                                    name="type_trade"
+                                    value="fast"
+                                    {{  old('type_trade') != 'slow' ? 'checked' : '' }}
+                                />
+                                <span>Gạch nhanh</span>
+                                <span class="checkbox-custom"></span>
+                            </label>
+                            <div class="mb-0 ml-2 alert alert-secondary d-flex align-items-center" data-for="type-fast" style="width: calc(100% - 150px)">
+                                Gạch nhanh:&nbsp;<span id="rate_fast_show">0</span>% -&nbsp;<span id="money_fast_show">0</span> VNĐ
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
                     <div class="alert alert-warning">
                         <ul style="list-style: decimal; padding-left: 20px">
                             <li>Đối với gạch chậm, thời gian xác minh thẻ tối đa là 5 phút.</li>
@@ -63,8 +98,7 @@
                     </div>
                     <hr />
                     <div class="footer-button d-flex justify-content-center">
-                        <button class="btn btn-secondary" name="type_trade" value="slow">Gạch chậm</button>
-                        <button class="btn btn-primary ml-2" name="type_trade" value="fast">Gạch nhanh</button>
+                        <button class="btn btn-primary ml-2">Tiếp tục</button>
                     </div>
                 </form>
             </div>
@@ -108,8 +142,12 @@
                 let money = r.price;
                 let id = 'money-' + money;
                 tempEl.attr('for', id);
-                tempEl.find('input').attr('id', id).attr('value', money)
                 tempEl.find('.money-show').text(App.setPriceFormat(money));
+                tempEl.find('input')
+                    .attr('id', id)
+                    .attr('value', money)
+                    .attr('data-rate', r.rate_use)
+                    .attr('data-rate-slow', r.rate_slow);
                 areaMoney.append(tempEl);
             });
 
@@ -121,5 +159,17 @@
         }
 
         activeMoney();
+
+        $('#area-money').on('change', 'input[name="card_money"]', function(){
+            const rate = parseInt($(this).attr('data-rate'));
+            const rateSlow = parseInt($(this).attr('data-rate-slow'));
+            const money = parseInt($(this).val());
+            const moneySlow = money - (money * rateSlow / 100);
+            const moneyFast = money - (money * rate / 100);
+            $('#rate_slow_show').text(rateSlow);
+            $('#money_slow_show').text(App.setPriceFormat(moneySlow));
+            $('#rate_fast_show').text(rate);
+            $('#money_fast_show').text(App.setPriceFormat(moneyFast));
+        })
     </script>
 @endsection

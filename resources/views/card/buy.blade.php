@@ -32,15 +32,10 @@
                         <img src="{{ asset('image/pay.png') }}" alt="Pay">
                         <span>Chọn mệnh giá</span>
                     </div>
-                    <div class="form-group d-flex flex-wrap justify-content-center ">
-                        @foreach([10000, 20000, 30000, 50000, 100000, 200000, 300000, 500000] as $money)
-                            <label class="box-card" for="money-{{ $money }}">
-                                <input type="radio" id="money-{{ $money }}" name="money_buy" value="{{ $money }}" {{ old('money_buy') != $money ?: 'checked' }}>
-                                <span>{{ number_format($money) }} Đ</span>
-                                <span class="checkbox-custom"></span>
-                            </label>
-                        @endforeach
-                    </div>
+
+                    @php($dataActiveMoney = json_encode(['money_buy' => old('money_buy', ''), 'card_buy' => old('card_buy', '')]))
+                    <div class="form-group d-flex flex-wrap justify-content-center" id="area-money" data-active="{{ $dataActiveMoney }}"></div>
+
                     @if(false)
                         <hr />
                         <div class="form-header">
@@ -87,29 +82,39 @@
                         <img src="{{ asset('image/pay.png') }}" alt="Pay">
                         <span>Phương thức xử lý</span>
                     </div>
-                    <div class="form-group d-flex flex-wrap justify-content-center mt-2">
-                        <label class="box-card" for="type-slow">
-                            <input
-                                type="radio"
-                                id="type-slow"
-                                name="type_buy"
-                                value="slow"
-                                {{ old('type_buy') == 'slow' ? 'checked' : '' }}
-                            />
-                            <span>Mua chậm</span>
-                            <span class="checkbox-custom"></span>
-                        </label>
-                        <label class="box-card" for="type-fast">
-                            <input
-                                type="radio"
-                                id="type-fast"
-                                name="type_buy"
-                                value="fast"
-                                {{  old('type_buy') != 'slow' ? 'checked' : '' }}
-                            />
-                            <span>Mua nhanh</span>
-                            <span class="checkbox-custom"></span>
-                        </label>
+                    <div class="form-group mt-2">
+                        <div class="w-100 d-flex m-2">
+                            <label class="box-card m-0" for="type-slow">
+                                <input
+                                    type="radio"
+                                    id="type-slow"
+                                    name="type_buy"
+                                    value="slow"
+                                    {{ old('type_buy') == 'slow' ? 'checked' : '' }}
+                                />
+                                <span>Mua chậm</span>
+                                <span class="checkbox-custom"></span>
+                            </label>
+                            <div class="mb-0 ml-2 alert alert-secondary d-flex align-items-center" data-for="type-slow" style="width: calc(100% - 150px)">
+                                Mua chậm:&nbsp;<span id="rate_slow_show">0</span>% -&nbsp;<span id="money_slow_show">0</span> VNĐ
+                            </div>
+                        </div>
+                        <div class="w-100 d-flex m-2">
+                            <label class="box-card m-0" for="type-fast">
+                                <input
+                                    type="radio"
+                                    id="type-fast"
+                                    name="type_buy"
+                                    value="fast"
+                                    {{  old('type_buy') != 'slow' ? 'checked' : '' }}
+                                />
+                                <span>Mua nhanh</span>
+                                <span class="checkbox-custom"></span>
+                            </label>
+                            <div class="mb-0 ml-2 alert alert-secondary d-flex align-items-center" data-for="type-fast" style="width: calc(100% - 150px)">
+                                Mua nhanh:&nbsp;<span id="rate_fast_show">0</span>% -&nbsp;<span id="money_fast_show">0</span> VNĐ
+                            </div>
+                        </div>
                     </div>
                     <hr />
                     <div class="alert alert-warning">
@@ -126,8 +131,58 @@
             </div>
         </div>
     </div>
+    <label class="box-card d-none" for="" data-template="label-money">
+        <input type="radio" id="" name="money_buy" value="">
+        <span class="money-show"></span>
+        <span class="checkbox-custom"></span>
+    </label>
 @endsection
 @section('script')
+    <script>
+        let rates = {!! json_encode($rates) !!};
+        let areaMoney = $('#area-money');
+        let template = $('[data-template="label-money"]');
+
+        let activeMoney = function() {
+            let dataActiveMoney = JSON.parse(areaMoney.attr('data-active'));
+            if(dataActiveMoney.card_buy == '' || dataActiveMoney.money_buy == '') {
+                return;
+            }
+            if($(`[name="card_buy"][value="${dataActiveMoney.card_buy}"]`).prop('checked') === true) {
+                $(`[name="money_buy"][value="${dataActiveMoney.money_buy}"]`).trigger('click');
+            }
+        }
+
+        $('[name="card_buy"]').on('change', function(){
+            let val  = $(this).val();
+            let rate = rates[val];
+            areaMoney.empty();
+            if(rate == undefined) {
+                return;
+            }
+            $.each(rate, function(index, r){
+                let tempEl  = template.clone().removeClass('d-none').removeAttr('data-template');
+                let money = r.price;
+                let id = 'money-' + money;
+                tempEl.attr('for', id);
+                tempEl.find('.money-show').text(App.setPriceFormat(money));
+                tempEl.find('input')
+                    .attr('id', id)
+                    .attr('value', money)
+                    .attr('data-rate', r.rate)
+                    .attr('data-rate-slow', r.rate_slow);
+                areaMoney.append(tempEl);
+            });
+
+            activeMoney();
+        });
+
+        if($('#area-card').find('[name="card_buy"]:checked').length > 0){
+            $('#area-card').find('[name="card_buy"]:checked').trigger('change');
+        }
+
+        activeMoney();
+    </script>
     <script>
         function incrementValue(e) {
             e.preventDefault();
@@ -162,5 +217,17 @@
         $('.input-group').on('click', '.button-minus', function(e) {
             decrementValue(e);
         });
+
+        $('#area-money').on('change', 'input[name="money_buy"]', function(){
+            const rate = parseInt($(this).attr('data-rate'));
+            const rateSlow = parseInt($(this).attr('data-rate-slow'));
+            const money = parseInt($(this).val());
+            const moneySlow = money - (money * rateSlow / 100);
+            const moneyFast = money - (money * rate / 100);
+            $('#rate_slow_show').text(rateSlow);
+            $('#money_slow_show').text(App.setPriceFormat(moneySlow));
+            $('#rate_fast_show').text(rate);
+            $('#money_fast_show').text(App.setPriceFormat(moneyFast));
+        })
     </script>
 @endsection

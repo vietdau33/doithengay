@@ -125,6 +125,7 @@
                         </a>
                         <ul class="nav-main__childrent">
                             <li><a href="{{ route('admin.feature.discount') }}" data-id="discount">Chiết khấu đổi thẻ</a></li>
+                            <li><a href="{{ route('admin.feature.discount_buy') }}" data-id="discount_buy">Chiết khấu bán thẻ</a></li>
                             <li><a href="{{ route('admin.feature.discount_bill') }}" data-id="discount_bill">Chiết khấu gạch cước</a></li>
                         </ul>
                     </li>

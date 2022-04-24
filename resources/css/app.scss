@@ -413,3 +413,10 @@ input[type="number"] {
     right: 0;
 }
 
+[data-for] {
+    user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
+    cursor: pointer;
+}

@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class RateCard extends Model
+class RateCardSell extends Model
 {
     use HasFactory;
 
-    protected $table = 'rate_card';
+    protected $table = 'rate_card_sell';
 
     public static function getRate($type = 'trade')
     {
@@ -31,18 +31,9 @@ class RateCard extends Model
         return $rates;
     }
 
-    public static function getListCardTrade(): array
+    public static function getListCardBuy(): array
     {
         $rates = self::getRate();
-        return CardListModel::ingoreInactiveCard($rates, 'trade');
-    }
-
-    public static function getRateId()
-    {
-        $rate_id = self::select('name', 'rate_id')->groupBy('name')->get()->toArray();
-        return array_reduce($rate_id, function ($result, $rate) {
-            $result[$rate['name']] = $rate['rate_id'];
-            return $result;
-        }, []);
+        return CardListModel::ingoreInactiveCard($rates, 'buy');
     }
 }

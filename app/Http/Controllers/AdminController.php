@@ -7,6 +7,7 @@ use App\Models\BillModel;
 use App\Models\CardListModel;
 use App\Models\CardStore;
 use App\Models\RateCard;
+use App\Models\RateCardSell;
 use App\Models\TradeCard;
 use App\Models\User;
 use App\Models\WithdrawModel;
@@ -99,6 +100,20 @@ class AdminController extends Controller
         $params = $request->all();
         unset($params['_token']);
         return AdminService::changeRateCard($name, $params);
+    }
+
+    public function discountBuy(): Factory|View|Application
+    {
+        session()->flash('menu-active', 'discount_buy');
+        $rates = RateCardSell::getRate();
+        return view('admin.rate.buy', compact('rates'));
+    }
+
+    public function discountBuyPost($name, Request $request): JsonResponse
+    {
+        $params = $request->all();
+        unset($params['_token']);
+        return AdminService::changeRateCardBuy($name, $params);
     }
 
     public function discountBill(): Factory|View|Application

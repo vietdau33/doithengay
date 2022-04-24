@@ -1,69 +1,69 @@
 version: '3.3'
 
 services:
-  nginx:
-    container_name: doithengay_nginx
-    image: nginx:1.19.1-alpine
-    ports:
-      - "80:80"
-    volumes:
-      - .:/app
-      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
-    depends_on:
-      - app
-    restart: always
-    networks:
-      - network
+    nginx:
+        container_name: doithengay_nginx
+        image: nginx:1.21.6-alpine
+        ports:
+            - "80:80"
+        volumes:
+            - .:/app
+            - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+        depends_on:
+            - app
+        restart: always
+        networks:
+            - network
 
-  app:
-    container_name: doithengay_app
-    build:
-      context: .
-      dockerfile: ./docker/php/Dockerfile
-    working_dir: /app
-    restart: always
-    volumes:
-      - .:/app
-      - ./docker/php/php.ini:/usr/local/etc/php/php.ini
-    networks:
-      - network
+    app:
+        container_name: doithengay_app
+        build:
+            context: .
+            dockerfile: ./docker/php/Dockerfile
+        working_dir: /app
+        restart: always
+        volumes:
+            - .:/app
+            - ./docker/php/php.ini:/usr/local/etc/php/php.ini
+        networks:
+            - network
 
-  database:
-    container_name: database
-    image: library/mysql:8.0
-    command: --default-authentication-plugin=mysql_native_password
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: cdmllove
-      MYSQL_USER: mark
-      MYSQL_PASSWORD: cdmllove
-      MYSQL_DATABASE: doithengay
-    ports:
-      - "3206:3306"
-    volumes:
-      - data:/var/lib/mysql
-      - ./docker/mysql/custom.cnf:/etc/mysql/conf.d/custom.cnf
-    networks:
-      - network
+    database:
+        container_name: database
+        image: library/mysql:8.0
+        command: --default-authentication-plugin=mysql_native_password
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: cdmllove
+            MYSQL_USER: mark
+            MYSQL_PASSWORD: cdmllove
+            MYSQL_DATABASE: doithengay
+        ports:
+            - "3206:3306"
+        volumes:
+            - data:/var/lib/mysql
+            - ./docker/mysql/custom.cnf:/etc/mysql/conf.d/custom.cnf
+        networks:
+            - network
 
-  phpmyadmin:
-    container_name: doithengay_phpmyadmin
-    depends_on:
-      - database
-    image: phpmyadmin/phpmyadmin:latest
-    restart: always
-    ports:
-      - '8080:80'
-    environment:
-      PMA_HOST: database
-      MYSQL_ROOT_PASSWORD: cdmllove
-    networks:
-      - network
+    phpmyadmin:
+        container_name: doithengay_phpmyadmin
+        depends_on:
+            - database
+        image: phpmyadmin/phpmyadmin:latest
+        restart: always
+        ports:
+            - '8080:80'
+        environment:
+            PMA_HOST: database
+            MYSQL_ROOT_PASSWORD: cdmllove
+        networks:
+            - network
 
 volumes:
-  data:
-    driver: local
+    data:
+        driver: local
 
 networks:
-  network:
-    driver: bridge
+    network:
+        driver: bridge

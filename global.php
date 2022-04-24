@@ -66,8 +66,8 @@ if (!function_exists('get_title_setting_status')) {
     function get_title_setting_status($type): string
     {
         return match ($type) {
-            'buy' => 'mua thẻ cào',
-            'trade' => 'bán thẻ cào',
+            'buy' => 'bán thẻ cào',
+            'trade' => 'thu thẻ cào',
             'bill' => 'gạch cước',
             default => '',
         };

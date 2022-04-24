@@ -10,6 +10,7 @@ use App\Http\Services\ModelService;
 use App\Http\Services\TradeCardService;
 use App\Models\CardStore;
 use App\Models\RateCard;
+use App\Models\RateCardSell;
 use App\Models\TradeCard;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Contracts\Foundation\Application;
@@ -32,16 +33,15 @@ class CardController extends Controller
     public function buyCard(): Factory|View|Application
     {
         session()->flash('menu-active', 'menu-buy-card');
-        $listCard = RateCard::getListCardBuy();
-        $listCard = array_reduce($listCard, function($result, $card){
+        $rates = RateCardSell::getListCardBuy();
+        $listCard = array_reduce($rates, function($result, $card){
             $card = end($card);
             $result[$card['name']] = [
-                'name' => $card['name'],
-                'rate_id' => $card['rate_id']
+                'name' => $card['name']
             ];
             return $result;
         }, []);
-        return view('card.buy', compact('listCard'));
+        return view('card.buy', compact('listCard', 'rates'));
     }
 
     /**

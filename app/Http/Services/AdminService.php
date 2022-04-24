@@ -8,6 +8,7 @@ use App\Models\BillModel;
 use App\Models\CardListModel;
 use App\Models\CardStore;
 use App\Models\RateCard;
+use App\Models\RateCardSell;
 use App\Models\TradeCard;
 use App\Models\User;
 use App\Models\WithdrawModel;
@@ -193,8 +194,8 @@ class AdminService extends Service
     public static function changeRateCard($name, $params): JsonResponse
     {
         $errors = [];
-        $patternMatch = '/^[0-9]{1,2}$/i';
-        $patternFloat = '/^[0-9]{1,2}\.[0-9]{1,2}$/i';
+        $patternMatch = '/^\d{1,2}$/i';
+        $patternFloat = '/^\d{1,2}\.\d{1,2}$/i';
         foreach ($params as $key => $rate) {
             $stack = str_starts_with($key, 'rate_') ? 'rate_' : 'slow_';
             $keySave = $stack == 'rate_' ? 'rate_use' : 'rate_slow';
@@ -221,7 +222,43 @@ class AdminService extends Service
         }
         return response()->json([
             'success' => empty($errors),
-            'message' => "Thành công",
+            'message' => empty($errors) ? "Thành công" : "Thay đổi thất bại. Hãy tải lại trang và thử lại!",
+            'errors' => $errors
+        ]);
+    }
+
+    public static function changeRateCardBuy($name, $params): JsonResponse
+    {
+        $errors = [];
+        $patternMatch = '/^\d{1,2}$/i';
+        $patternFloat = '/^\d{1,2}\.\d{1,2}$/i';
+        foreach ($params as $key => $rate) {
+            $stack = str_starts_with($key, 'rate_') ? 'rate_' : 'slow_';
+            $keySave = $stack == 'rate_' ? 'rate' : 'rate_slow';
+
+            $key = explode($stack, $key);
+            if (count($key) != 2) {
+                continue;
+            }
+
+            $money = $key[1];
+            if (!preg_match($patternMatch, $rate) && !preg_match($patternFloat, $rate)) {
+                $errors[] = 'Giá trị chiết khấu không hợp lệ ở mệnh giá: ' . number_format($money);
+                continue;
+            }
+
+            $r = RateCardSell::whereName($name)->wherePrice($money)->first();
+            if ($r == null) {
+                $errors[] = 'Chiết khấu sau không tồn tại: ' . ucfirst($name) . ' mệnh giá ' . number_format($money);
+                continue;
+            }
+
+            $r->{$keySave} = (float)$rate;
+            $r->save();
+        }
+        return response()->json([
+            'success' => empty($errors),
+            'message' => empty($errors) ? "Thành công" : "Thay đổi thất bại. Hãy tải lại trang và thử lại!",
             'errors' => $errors
         ]);
     }

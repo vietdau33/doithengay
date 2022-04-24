@@ -4,6 +4,7 @@ window.App = {
         this.setErrorsUIView();
         this.setPositionCopyright();
         this.setClickCheckboxButton();
+        this.setTriggerClickForElement();
         this.setAutoSize();
         this.setEventClickMenu();
         this.preventEnterSubmit();
@@ -99,6 +100,13 @@ window.App = {
         setTimeout(triggerChecked, 0);
         $('form').on('click', 'input[type="checkbox"], input[type="radio"]', function () {
             setTimeout(triggerChecked, 50);
+        });
+    },
+    setTriggerClickForElement : function(){
+        $('[data-for]').off('click.data_for');
+        $('[data-for]').on('click.data_for', function() {
+            let forData = $(this).attr('data-for');
+            $('input[id="' + forData + '"]').trigger('click');
         });
     },
     setAutoSize: function () {

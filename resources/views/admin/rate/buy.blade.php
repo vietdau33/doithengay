@@ -9,17 +9,15 @@
                 @foreach($rates as $key => $rate)
                     <div class="table-responsive">
                         <h3>{{ ucfirst($key) }}</h3>
-                        <form action="{{ route('admin.feature.discount.post', ['name' => $key]) }}" method="POST" onsubmit="return ChangeRateCard.submit(this)">
+                        <form action="{{ route('admin.feature.discount_buy.post', ['name' => $key]) }}" method="POST" onsubmit="return ChangeRateCard.submit(this)">
                             @csrf
                             <table class="table table-striped table-vcenter text-center">
                                 <thead>
                                 <tr>
                                     <th>#</th>
                                     <th>Mệnh giá</th>
-                                    <th>Từ đối tác</th>
-                                    <th>Gạch nhanh</th>
-                                    <th>Gạch chậm</th>
-                                    <th>Chênh lệch nhanh (Lãi)</th>
+                                    <th>Bán nhanh</th>
+                                    <th>Bán chậm</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -28,16 +26,13 @@
                                     <tr>
                                         <th>{{ $stt++ }}</th>
                                         <td>{{ number_format($r['price']) }}</td>
-                                        <td>{{ $r['rate'] }}</td>
                                         <td>
                                             <input
                                                 type="text"
-                                                data-rate="{{ $r['rate'] }}"
                                                 name="rate_{{ $r['price'] }}"
                                                 class="form-control m-auto text-center"
-                                                value="{{ $r['rate_use'] }}"
+                                                value="{{ $r['rate'] }}"
                                                 style="width: 100px"
-                                                oninput="ChangeRateCard.calcDeviant(this)"
                                                 autocomplete="nope"
                                             />
                                         </td>
@@ -51,7 +46,6 @@
                                                 autocomplete="nope"
                                             />
                                         </td>
-                                        <td class="deviant">{{ (float)$r['rate_use'] - (float)$r['rate'] }}</td>
                                     </tr>
                                 @endforeach
                                 </tbody>
@@ -91,15 +85,6 @@
                     return false;
                 });
                 return false;
-            },
-            calcDeviant : function (el){
-                let rate = el.getAttribute('data-rate');
-                let val = el.value.trim();
-                if(parseFloat(val) != val){
-                    return;
-                }
-                let deviant = parseFloat(val) - parseFloat(rate);
-                $(el).closest('tr').find('.deviant').text(deviant);
             }
         }
     </script>

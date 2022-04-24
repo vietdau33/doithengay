@@ -70,4 +70,16 @@ class CardListModel extends Model
             return $result;
         }, []);
     }
+
+    public static function ingoreInactiveCard($listCard, $type): array
+    {
+        $listCardInactive = CardListModel::whereActive(0)->whereType($type)->get()->toArray();
+        $listCardInactive = array_column($listCardInactive, 'name');
+        foreach ($listCard as $key => $card) {
+            if (in_array($key, $listCardInactive)) {
+                unset($listCard[$key]);
+            }
+        }
+        return $listCard;
+    }
 }
