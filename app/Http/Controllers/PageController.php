@@ -29,7 +29,6 @@ class PageController extends Controller
 
     public function home(): Factory|View|Application
     {
-        echo $abc;
         return view('welcome');
     }
 
