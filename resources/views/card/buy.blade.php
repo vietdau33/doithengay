@@ -219,8 +219,8 @@
         });
 
         $('#area-money').on('change', 'input[name="money_buy"]', function(){
-            const rate = parseInt($(this).attr('data-rate'));
-            const rateSlow = parseInt($(this).attr('data-rate-slow'));
+            const rate = parseFloat($(this).attr('data-rate'));
+            const rateSlow = parseFloat($(this).attr('data-rate-slow'));
             const money = parseInt($(this).val());
             const moneySlow = money - (money * rateSlow / 100);
             const moneyFast = money - (money * rate / 100);
