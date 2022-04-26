@@ -36,4 +36,9 @@ class RateCardSell extends Model
         $rates = self::getRate();
         return CardListModel::ingoreInactiveCard($rates, 'buy');
     }
+
+    public static function getRateSingle(string $name, int $money): ?RateCardSell
+    {
+        return self::whereName(strtolower($name))->wherePrice($money)->first();
+    }
 }

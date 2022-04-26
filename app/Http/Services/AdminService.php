@@ -78,7 +78,7 @@ class AdminService extends Service
         }
 
         if ($status == 3) {
-            $user->money = (int)$user->money + (int)$buyCard->money;
+            $user->money = (int)$user->money + (int)($buyCard->money_after_rate ?? $buyCard->money);
             $user->save();
         }
 

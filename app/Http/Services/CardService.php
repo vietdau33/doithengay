@@ -5,6 +5,7 @@ namespace App\Http\Services;
 use App\Http\Requests\TradeCardRequest;
 use App\Models\CardStore;
 use App\Models\RateCard;
+use App\Models\RateCardSell;
 use App\Models\TradeCard;
 use App\Models\User;
 use GuzzleHttp\Exception\GuzzleException;
@@ -80,7 +81,12 @@ class CardService extends Service
      */
     protected static function paymentCash($param): bool
     {
+        $rate = RateCardSell::getRateSingle($param['card_buy'], (int)$param['money_buy']);
+
+        $rate = $param['type_buy'] == 'fast' ? (float)($rate->rate ?? 0) : (float)($rate->rate_slow ?? 0);
         $money = (int)$param['money_buy'] * (int)$param['quantity'];
+        $money -= $money * $rate / 100;
+
         $user = User::whereId(user()->id)->first();
 
         if ((int)$user->money < $money) {
@@ -105,8 +111,12 @@ class CardService extends Service
             $param['results'] = json_encode($result['Data']);
         }
 
-        $user->money = (int)$user->money - $money;
+        $moneyBuy = (int)$user->money - $money;
+        $user->money = $moneyBuy;
         $user->save();
+
+        $param['rate_buy'] = $rate;
+        $param['money_after_rate'] = $moneyBuy;
 
         return ModelService::insert(CardStore::class, $param) !== false;
     }

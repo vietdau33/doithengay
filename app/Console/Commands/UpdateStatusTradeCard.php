@@ -103,6 +103,7 @@ class UpdateStatusTradeCard extends Command
 
         if ($result['Code'] === 3) {
             $tradeRecord->status = TradeCard::S_ERROR;
+            $tradeRecord->status_card = TradeCard::S_CARD_ERROR;
             $tradeRecord->contents = json_encode($result);
             $tradeRecord->save();
 
@@ -122,6 +123,7 @@ class UpdateStatusTradeCard extends Command
         $result['real'] = $result['ValueReceive'] - $result['ValueReceive'] * $devian / 100;
 
         $tradeRecord->status = TradeCard::S_SUCCESS;
+        $tradeRecord->status_card = $result['CardValue'] != $result['CardSend'] ? TradeCard::S_CARD_SUCCESS : TradeCard::S_CARD_HALF;
         $tradeRecord->contents = json_encode($result);
         $tradeRecord->save();
 

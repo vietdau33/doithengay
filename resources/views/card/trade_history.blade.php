@@ -37,7 +37,7 @@
                                 <td style="min-width: 150px;">{{ number_format($realMoney) }}</td>
                                 <td style="min-width: 200px;">{{ $history->card_serial }}</td>
                                 <td style="min-width: 200px;">{{ $history->card_number }}</td>
-                                <td style="min-width: 200px;">{{ date('d/m/Y', strtotime($history->created_at)) }}</td>
+                                <td style="min-width: 170px;">{{ date('H:i d/m/Y', strtotime($history->created_at)) }}</td>
                             </tr>
                         @endforeach
                         @if($histories->count() == 0)

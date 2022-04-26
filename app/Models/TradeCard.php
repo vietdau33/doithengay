@@ -15,6 +15,11 @@ class TradeCard extends Model
     const S_SUCCESS = 3;
     const S_ERROR = 4;
 
+    const S_CARD_ERROR = 3;
+    const S_CARD_SUCCESS = 1;
+    const S_CARD_HALF = 2;
+    const S_CARD_WORKING = 0;
+
     protected $table = 'trade_card';
 
     public function user(): BelongsTo
@@ -34,11 +39,14 @@ class TradeCard extends Model
 
     public function getStatusHtml(): string
     {
-        return match ($this->status) {
-            self::S_JUST_SEND, self::S_WORKING => '<span class="text-secondary">Đang xử lý</span>',
-            self::S_SUCCESS => '<span class="text-primary">Thành công</span>',
-            self::S_ERROR => '<span class="text-danger">Từ chối</span>',
-            default => '',
+        if($this->status == self::S_ERROR && $this->status_card == self::S_CARD_WORKING) {
+            return '<span class="text-danger">Từ chối</span>';
+        }
+        return match ($this->status_card) {
+            self::S_CARD_HALF => '<span class="text-info">Thẻ sai mệnh giá</span>',
+            self::S_CARD_SUCCESS => '<span class="text-success">Thẻ đúng</span>',
+            self::S_CARD_ERROR => '<span class="text-danger">Thẻ sai</span>',
+            default => '<span class="text-secondary">Đang xử lý</span>',
         };
     }
 
