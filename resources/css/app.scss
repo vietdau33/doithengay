@@ -420,3 +420,19 @@ input[type="number"] {
     -webkit-user-select: none;
     cursor: pointer;
 }
+
+@media (max-width: 575px) {
+    .type_buy_response {
+        flex-direction: column;
+
+        label {
+            width: calc(100% - 1rem) !important;
+        }
+
+        [data-for] {
+            width: calc(100% - 1rem) !important;
+            margin-left: 0 !important;
+            margin-top: 5px !important;
+        }
+    }
+}

@@ -83,7 +83,7 @@
                         <span>Phương thức xử lý</span>
                     </div>
                     <div class="form-group mt-2">
-                        <div class="w-100 d-flex m-2">
+                        <div class="type_buy_response w-100 d-flex m-2">
                             <label class="box-card m-0" for="type-slow">
                                 <input
                                     type="radio"
@@ -99,7 +99,7 @@
                                 Mua chậm:&nbsp;<span id="rate_slow_show">0</span>% -&nbsp;<span id="money_slow_show">0</span> VNĐ
                             </div>
                         </div>
-                        <div class="w-100 d-flex m-2">
+                        <div class="type_buy_response w-100 d-flex m-2">
                             <label class="box-card m-0" for="type-fast">
                                 <input
                                     type="radio"
