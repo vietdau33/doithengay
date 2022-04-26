@@ -47,7 +47,7 @@
                         @endforeach
                         @if($requests->count() <= 0)
                             <tr>
-                                <td colspan="6">Không có yêu cầu nào</td>
+                                <td colspan="7">Không có yêu cầu nào</td>
                             </tr>
                         @endif
                         </tbody>

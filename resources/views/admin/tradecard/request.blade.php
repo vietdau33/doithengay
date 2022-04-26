@@ -3,7 +3,7 @@
     <div class="content">
         <div class="block">
             <div class="block-header block-header-default">
-                <h3 class="block-title">Danh sách yêu cầu mua thẻ</h3>
+                <h3 class="block-title">Danh sách yêu cầu đổi thẻ</h3>
             </div>
             <div class="block-content">
                 <div class="table-responsive">
@@ -51,7 +51,7 @@
                         @endforeach
                         @if($requests->count() <= 0)
                             <tr>
-                                <td colspan="6">Không có yêu cầu nào</td>
+                                <td colspan="8">Không có yêu cầu nào</td>
                             </tr>
                         @endif
                         </tbody>

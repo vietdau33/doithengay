@@ -40,19 +40,29 @@ class UpdateStatusTradeCard extends Command
         $this->rates = RateCard::getRate();
         $this->rateID = array_flip(RateCard::getRateId());
 
-        $status = true;
         $now = strtotime(Carbon::now());
-        $allTrade = TradeCard::where(['status' => TradeCard::S_JUST_SEND])->orWhere(['status' => TradeCard::S_WORKING])->get();
+
+        $allTrade = TradeCard::whereIn(['status' => [
+            TradeCard::S_JUST_SEND,
+            TradeCard::S_WORKING,
+            TradeCard::S_PUSH_TO_FAST,
+        ]])->get();
+
         $this->info('Start check status trade');
         foreach ($allTrade as $trade) {
-            if ($trade->type_trade == 'slow' && $now - strtotime($trade->created_at) < 300) {
+            if($trade->status == TradeCard::S_PUSH_TO_FAST) {
+                $this->info("Check: $trade->id");
+                $this->checkTrade($trade);
+                continue;
+            }
+            if ($trade->type_trade == 'slow' && ($now - strtotime($trade->created_at)) < 300) {
                 continue;
             }
             $this->info("Check: $trade->id");
-            $status |= $this->checkTrade($trade);
+            $this->checkTrade($trade);
         }
         $this->info('Done');
-        return $status;
+        return 0;
     }
 
     /**

@@ -14,6 +14,7 @@ class TradeCard extends Model
     const S_WORKING = 2;
     const S_SUCCESS = 3;
     const S_ERROR = 4;
+    const S_PUSH_TO_FAST = 99;
 
     const S_CARD_ERROR = 3;
     const S_CARD_SUCCESS = 1;
