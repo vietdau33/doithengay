@@ -55,7 +55,7 @@
                     </div>
                     <hr />
                     <div class="form-group mt-2">
-                        <div class="w-100 d-flex m-2">
+                        <div class="type_buy_response w-100 d-flex m-2">
                             <label class="box-card m-0" for="type-slow">
                                 <input
                                     type="radio"
@@ -71,7 +71,7 @@
                                 Gạch chậm:&nbsp;<span id="rate_slow_show">0</span>% -&nbsp;<span id="money_slow_show">0</span> VNĐ
                             </div>
                         </div>
-                        <div class="w-100 d-flex m-2">
+                        <div class="type_buy_response w-100 d-flex m-2">
                             <label class="box-card m-0" for="type-fast">
                                 <input
                                     type="radio"
@@ -161,8 +161,8 @@
         activeMoney();
 
         $('#area-money').on('change', 'input[name="card_money"]', function(){
-            const rate = parseInt($(this).attr('data-rate'));
-            const rateSlow = parseInt($(this).attr('data-rate-slow'));
+            const rate = parseFloat($(this).attr('data-rate'));
+            const rateSlow = parseFloat($(this).attr('data-rate-slow'));
             const money = parseInt($(this).val());
             const moneySlow = money - (money * rateSlow / 100);
             const moneyFast = money - (money * rate / 100);
