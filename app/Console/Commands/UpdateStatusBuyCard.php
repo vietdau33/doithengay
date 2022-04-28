@@ -39,10 +39,11 @@ class UpdateStatusBuyCard extends Command
             'error_summary' => 'Update status buy card: ' . date('Y-m-d H:i:s'),
             'log_trace' => strtotime(now())
         ]);
-        $allCardBuy = CardStore::whereTypeBuy('slow')->whereStatus(0)->get();
+
+        $allCardBuy = CardStore::whereTypeBuy('slow')->whereIn('status', [0, 99])->get();
         $now = strtotime(Carbon::now());
         foreach ($allCardBuy as $card) {
-            if ($now - strtotime($card->created_at) < 300) {
+            if ($card->status === 0 && $now - strtotime($card->created_at) < 300) {
                 continue;
             }
 
