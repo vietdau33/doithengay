@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Http\Services\CardService;
 use App\Http\Services\HttpService;
 use App\Models\ApiCallData;
+use App\Models\ErrorLog;
 use App\Models\RateCard;
 use App\Models\TradeCard;
 use App\Models\User;
@@ -37,6 +38,12 @@ class UpdateStatusTradeCard extends Command
      */
     public function handle(): bool
     {
+        ErrorLog::create([
+            'file' => "No thing",
+            'error_summary' => 'Update status trade card: ' . date('Y-m-d H:i:s'),
+            'log_trace' => strtotime(now())
+        ]);
+
         $this->rates = RateCard::getRate();
         $this->rateID = array_flip(RateCard::getRateId());
 

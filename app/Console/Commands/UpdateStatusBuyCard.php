@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Http\Services\HttpService;
 use App\Models\CardStore;
+use App\Models\ErrorLog;
 use App\Models\User;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Console\Command;
@@ -33,6 +34,11 @@ class UpdateStatusBuyCard extends Command
      */
     public function handle(): int
     {
+        ErrorLog::create([
+            'file' => "No thing",
+            'error_summary' => 'Update status buy card: ' . date('Y-m-d H:i:s'),
+            'log_trace' => strtotime(now())
+        ]);
         $allCardBuy = CardStore::whereTypeBuy('slow')->whereStatus(0)->get();
         $now = strtotime(Carbon::now());
         foreach ($allCardBuy as $card) {

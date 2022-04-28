@@ -28,11 +28,11 @@ class CheckSchedule extends Command
      */
     public function handle(): int
     {
-//        ErrorLog::create([
-//            'file' => "No thing",
-//            'error_summary' => 'Test Schedule: ' . date('Y-m-d H:i:s'),
-//            'log_trace' => strtotime(now())
-//        ]);
+        ErrorLog::create([
+            'file' => "No thing",
+            'error_summary' => 'Test Schedule: ' . date('Y-m-d H:i:s'),
+            'log_trace' => strtotime(now())
+        ]);
         return 0;
     }
 }
