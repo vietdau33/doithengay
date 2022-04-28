@@ -105,18 +105,22 @@ class CardService extends Service
 
             if($result['Code'] === 0){
                 session()->flash('mgs_error', 'Không thể mua thẻ ngay lúc này. Hãy liên hệ admin để được xử lý!');
+                $param['rate_buy'] = 0;
+                $param['money_after_rate'] = 0;
+                $param['status'] =CardStore::S_CANCEL;
+                ModelService::insert(CardStore::class, $param);
                 return false;
             }
 
             $param['results'] = json_encode($result['Data']);
         }
 
-        $moneyBuy = (int)$user->money - $money;
-        $user->money = $moneyBuy;
+        $user->money = (int)$user->money - $money;
         $user->save();
 
         $param['rate_buy'] = $rate;
-        $param['money_after_rate'] = $moneyBuy;
+        $param['money_after_rate'] = $money;
+        $param['status'] =CardStore::S_SUCCESS;
 
         return ModelService::insert(CardStore::class, $param) !== false;
     }

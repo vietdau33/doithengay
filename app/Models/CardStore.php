@@ -20,7 +20,12 @@ class CardStore extends Model
     public function getStatus(): string
     {
         if ($this->type_buy == 'fast') {
-            return '<span class="text-success">Thành công</span>';
+            if($this->status == self::S_SUCCESS) {
+                return '<span class="text-success">Thành công</span>';
+            }
+            if($this->status == self::S_CANCEL) {
+                return '<span class="text-danger">Thất bại</span>';
+            }
         }
         return match ($this->status) {
             self::S_CREATE => '<span class="text-secondary">Chờ xác nhận</span>',

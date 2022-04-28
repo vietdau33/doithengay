@@ -24,6 +24,10 @@
                         </div>
                     @elseif($step == 'verify')
                         <input type="hidden" name="dasfsada" value="{{ $hash }}">
+                        <div class="alert alert-warning">
+                            Đã gửi mã xác nhận đến mail bạn đã đăng ký
+                            Kiểm tra cả hộp thư rác nếu bạn không tìm thấy email trong hộp thư chính.
+                        </div>
                         <div class="row m-0">
                             <label class="w-100 text-center" for="verify_code">Nhập mã xác nhận *</label>
                             <input

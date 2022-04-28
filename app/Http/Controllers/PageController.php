@@ -48,7 +48,7 @@ class PageController extends Controller
             session()->flash('notif', 'Đã có một vài lỗi xảy ra khi thay đổi thông tin. Hãy liên hệ với admin để kiểm tra!');
             return redirect()->back()->withInput();
         }
-        return redirect()->route('profile');
+        return redirect()->route('profile.home');
     }
 
     public function changePassword(): Factory|View|Application
