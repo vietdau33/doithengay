@@ -49,11 +49,11 @@ class UpdateStatusTradeCard extends Command
 
         $now = strtotime(Carbon::now());
 
-        $allTrade = TradeCard::whereIn(['status' => [
+        $allTrade = TradeCard::whereIn('status', [
             TradeCard::S_JUST_SEND,
             TradeCard::S_WORKING,
             TradeCard::S_PUSH_TO_FAST,
-        ]])->get();
+        ])->get();
 
         $this->info('Start check status trade');
         foreach ($allTrade as $trade) {
