@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
          $schedule->command('update-status:trade-card')->everyMinute();
+         $schedule->command('update-status:buy-card')->everyMinute();
          $schedule->command('rate-card:refresh')->dailyAt("06:00");
          $schedule->command('check-schedule')->everyMinute();
     }
