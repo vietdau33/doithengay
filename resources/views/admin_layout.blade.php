@@ -140,6 +140,12 @@
                             <li><a href="{{ route('admin.feature.bill') }}" data-id="bill">Gạch cước</a></li>
                         </ul>
                     </li>
+                    <li>
+                        <a href="{{ route('admin.system-setting') }}" data-id="system-setting">
+                            <i class="si si-power"></i>
+                            <span class="sidebar-mini-hide">Quản trị hệ thống</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
             <!-- END Side Navigation -->

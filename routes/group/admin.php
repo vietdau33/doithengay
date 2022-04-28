@@ -10,20 +10,20 @@ Route::get('/withdraw-request/{id}/{status}', [AdminController::class, 'withdraw
 Route::get('/withdraw-history', [AdminController::class, 'withdrawHistory'])->name('withdraw-history');
 Route::post('/bank/info', [AdminController::class, 'bankInfo'])->name('bank.info');
 
-Route::prefix('/buy-card')->group(function() {
+Route::prefix('/buy-card')->group(function () {
     Route::get('/request', [AdminController::class, 'buyCardRequest'])->name('buycard-request');
     Route::get('/request/success', [AdminController::class, 'buyCardRequestSuccess'])->name('buycard-request.success');
     Route::get('/request/{id}/{status}', [AdminController::class, 'buyCardRequestStatus'])->name('buycard-request.status');
 });
 
-Route::prefix('/trade-card')->group(function() {
+Route::prefix('/trade-card')->group(function () {
     Route::get('/request', [AdminController::class, 'tradeCardRequest'])->name('tradecard-request');
     Route::get('/request/success', [AdminController::class, 'tradeCardRequestSuccess'])->name('tradecard-request.success');
     Route::get('/request/fail', [AdminController::class, 'tradeCardRequestFail'])->name('tradecard-request.fail');
     Route::get('/request/{id}/{status}', [AdminController::class, 'tradeCardRequestStatus'])->name('tradecard-request.status');
 });
 
-Route::prefix('user')->name('user.')->group(function(){
+Route::prefix('user')->name('user.')->group(function () {
     Route::get('active', [AdminController::class, 'userListActive'])->name('active');
     Route::get('block', [AdminController::class, 'userListBlock'])->name('block');
     Route::get('change-active/{id}/{status}', [AdminController::class, 'changeActiveUser'])->name('change-active');
@@ -32,7 +32,7 @@ Route::prefix('user')->name('user.')->group(function(){
 Route::get('bill/{type}', [AdminController::class, 'showListBill'])->name('bill');
 Route::get('bill/change-status/{id}/{status}', [AdminController::class, 'changeBillStatus'])->name('bill.change-status');
 
-Route::prefix('feature')->name('feature.')->group(function() {
+Route::prefix('feature')->name('feature.')->group(function () {
     //discount
     Route::get('discount', [AdminController::class, 'discount'])->name('discount');
     Route::post('discount/change/{name}', [AdminController::class, 'discountPost'])->name('discount.post');
@@ -56,4 +56,9 @@ Route::prefix('feature')->name('feature.')->group(function() {
     //bill
     Route::get('bill', [AdminController::class, 'billSetting'])->name('bill');
     Route::get('bill/{name}/{type}', [AdminController::class, 'billSettingPost'])->name('bill.post');
+});
+
+Route::prefix('system-setting')->group(function () {
+    Route::get('/', [AdminController::class, 'systemSettings'])->name('system-setting');
+    Route::post('/', [AdminController::class, 'systemSettingSave']);
 });

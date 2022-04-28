@@ -9,6 +9,7 @@ use App\Http\Services\ModelService;
 use App\Models\ApiCallData;
 use App\Models\ApiData;
 use App\Models\RateCard;
+use App\Models\SystemSetting;
 use App\Models\TradeCard;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\JsonResponse;
@@ -109,7 +110,7 @@ class ApiController extends Controller
 
         $urlTrade = CardService::getUrlApi('trade');
         $result = HttpService::ins()->post($urlTrade, [
-            'ApiKey' => env('API_KEY_AUTOCARD', ''),
+            'ApiKey' => SystemSetting::getSetting('api_key_365', 'system', ''),
             'Pin' => $params['card_number'],
             'Seri' => $params['card_serial'],
             'CardType' => $params['card_type'],

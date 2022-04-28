@@ -9,6 +9,7 @@ use App\Models\CardListModel;
 use App\Models\CardStore;
 use App\Models\RateCard;
 use App\Models\RateCardSell;
+use App\Models\SystemSetting;
 use App\Models\TradeCard;
 use App\Models\User;
 use App\Models\WithdrawModel;
@@ -313,5 +314,12 @@ class AdminService extends Service
 
         session()->flash('notif', 'Thay đổi trạng thái thành công!');
         return back();
+    }
+
+    public static function saveSystemSetting(array $params): void
+    {
+        foreach ($params as $key => $param) {
+            SystemSetting::setSetting($key, trim($param));
+        }
     }
 }

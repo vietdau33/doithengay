@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Http\Services\HttpService;
 use App\Models\CardStore;
 use App\Models\ErrorLog;
+use App\Models\SystemSetting;
 use App\Models\User;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Console\Command;
@@ -80,7 +81,7 @@ class UpdateStatusBuyCard extends Command
     {
         $url = config('card.api.buy');
         $result = HttpService::ins()->post($url, [
-            'ApiKey' => env('API_KEY_AUTOCARD', ''),
+            'ApiKey' => SystemSetting::getSetting('api_key_365', 'system', ''),
             'Telco' => ucfirst($param['card_buy']),
             'Amount' => (int)$param['money_buy'],
             'Quantity' => (int)$param['quantity']

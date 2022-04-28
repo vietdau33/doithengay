@@ -8,6 +8,7 @@ use App\Models\CardListModel;
 use App\Models\CardStore;
 use App\Models\RateCard;
 use App\Models\RateCardSell;
+use App\Models\SystemSetting;
 use App\Models\TradeCard;
 use App\Models\User;
 use App\Models\WithdrawModel;
@@ -217,5 +218,22 @@ class AdminController extends Controller
     public function tradeCardRequestStatus(int $id, int $status): RedirectResponse
     {
         return AdminService::saveStatusTradeCard($id, $status);
+    }
+
+    public function systemSettings(): Factory|View|Application
+    {
+        session()->flash('menu-active', 'system-setting');
+        $settings = SystemSetting::getAllSetting();
+        return view('admin.system_setting.home', compact('settings'));
+    }
+
+    public function systemSettingSave(Request $request): RedirectResponse
+    {
+        $params = $request->only([
+            'api_key_365'
+        ]);
+        AdminService::saveSystemSetting($params);
+        session()->flash('notif', "Thay đổi cài đặt thành công!");
+        return back();
     }
 }

@@ -6,6 +6,7 @@ use App\Http\Requests\TradeCardRequest;
 use App\Models\CardStore;
 use App\Models\RateCard;
 use App\Models\RateCardSell;
+use App\Models\SystemSetting;
 use App\Models\TradeCard;
 use App\Models\User;
 use GuzzleHttp\Exception\GuzzleException;
@@ -97,7 +98,7 @@ class CardService extends Service
         if($param['type_buy'] == 'fast') {
             $url = self::getUrlApi('buy');
             $result = HttpService::ins()->post($url, [
-                'ApiKey' => env('API_KEY_AUTOCARD', ''),
+                'ApiKey' => SystemSetting::getSetting('api_key_365', 'system', ''),
                 'Telco' => ucfirst($param['card_buy']),
                 'Amount' => (int)$param['money_buy'],
                 'Quantity' => (int)$param['quantity']
@@ -144,7 +145,7 @@ class CardService extends Service
 
         $urlTrade = self::getUrlApi('trade');
         $result = HttpService::ins()->post($urlTrade, [
-            'ApiKey' => env('API_KEY_AUTOCARD', ''),
+            'ApiKey' => SystemSetting::getSetting('api_key_365', 'system', ''),
             'Pin' => $params['card_number'],
             'Seri' => $params['card_serial'],
             'CardType' => $params['card_type'],
@@ -183,7 +184,7 @@ class CardService extends Service
     public static function get_rate_card(): bool
     {
         $urlCheckRate = CardService::getUrlApi('rate', [
-            'apikey' => env('API_KEY_AUTOCARD', '')
+            'apikey' => SystemSetting::getSetting('api_key_365', 'system', '')
         ]);
 
         $result = HttpService::ins()->get($urlCheckRate);
