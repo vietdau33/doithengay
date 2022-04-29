@@ -31,7 +31,7 @@ class SystemSetting extends Model
         return $setting;
     }
 
-    public static function getSetting($name, $type = 'system', $default = null): ?SystemSetting
+    public static function getSetting($name, $type = 'system', $default = null): ?string
     {
         if(isset(self::$settings[$name.$type])){
             return self::$settings[$name.$type];

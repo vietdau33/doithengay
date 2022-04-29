@@ -114,6 +114,7 @@ class CardService extends Service
             }
 
             $param['results'] = json_encode($result['Data']);
+            $param['status'] =CardStore::S_SUCCESS;
         }
 
         $user->money = (int)$user->money - $money;
@@ -121,7 +122,6 @@ class CardService extends Service
 
         $param['rate_buy'] = $rate;
         $param['money_after_rate'] = $money;
-        $param['status'] =CardStore::S_SUCCESS;
 
         return ModelService::insert(CardStore::class, $param) !== false;
     }
