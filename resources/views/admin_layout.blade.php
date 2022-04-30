@@ -147,9 +147,9 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('admin.system-setting') }}" data-id="system-setting">
+                        <a href="{{ route('admin.logs') }}" data-id="trace-log">
                             <i class="si si-calculator"></i>
-                            <span class="sidebar-mini-hide">Quản lý logs hệ thống</span>
+                            <span class="sidebar-mini-hide">Quản lý logs</span>
                         </a>
                     </li>
                 </ul>

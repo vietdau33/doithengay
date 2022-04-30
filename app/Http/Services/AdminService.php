@@ -250,8 +250,9 @@ class AdminService extends Service
 
             if($r->{$keySave} != (float)$rate) {
                 $oldRate = $r->{$keySave};
+                $text = $keySave == 'trace_slow' ? 'chậm' : 'nhanh';
                 TraceSystem::setTrace([
-                    'mgs' => "Admin thay đổi rate đổi thẻ của card $name $money! Từ $oldRate sang $rate",
+                    'mgs' => "Admin thay đổi rate đổi thẻ $text của card $name $money! Từ $oldRate sang $rate",
                     'rate_trade_id' => $r->id
                 ]);
             }
@@ -294,8 +295,9 @@ class AdminService extends Service
 
             if($r->{$keySave} != (float)$rate) {
                 $oldRate = $r->{$keySave};
+                $text = $keySave == 'trace_slow' ? 'chậm' : 'nhanh';
                 TraceSystem::setTrace([
-                    'mgs' => "Admin thay đổi rate mua thẻ của card $name $money! Từ $oldRate sang $rate",
+                    'mgs' => "Admin thay đổi rate mua thẻ $text của card $name $money! Từ $oldRate sang $rate",
                     'rate_buy_id' => $r->id
                 ]);
             }

@@ -9,6 +9,7 @@ use App\Models\CardStore;
 use App\Models\RateCard;
 use App\Models\RateCardSell;
 use App\Models\SystemSetting;
+use App\Models\TraceSystem;
 use App\Models\TradeCard;
 use App\Models\User;
 use App\Models\WithdrawModel;
@@ -235,5 +236,12 @@ class AdminController extends Controller
         AdminService::saveSystemSetting($params);
         session()->flash('notif', "Thay đổi cài đặt thành công!");
         return back();
+    }
+
+    public function viewLogs(): Factory|View|Application
+    {
+        session()->flash('menu-active', 'trace-log');
+        $logs = TraceSystem::logs();
+        return view('admin.logs.history', compact('logs'));
     }
 }
