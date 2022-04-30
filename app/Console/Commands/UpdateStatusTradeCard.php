@@ -8,6 +8,7 @@ use App\Models\ApiCallData;
 use App\Models\ErrorLog;
 use App\Models\RateCard;
 use App\Models\SystemSetting;
+use App\Models\TraceSystem;
 use App\Models\TradeCard;
 use App\Models\User;
 use GuzzleHttp\Exception\GuzzleException;
@@ -99,6 +100,12 @@ class UpdateStatusTradeCard extends Command
             return false;
         }
 
+        $tradeRecord->change_fast = 1;
+        TraceSystem::setTrace([
+            'mgs' => 'Chuyển đổi bán chậm sang bán nhanh',
+            'card_id' => $tradeRecord->id
+        ]);
+
         if ($result['Code'] === 0 || $result['Code'] === 1) {
             $tradeRecord->status = TradeCard::S_WORKING;
             $tradeRecord->save();
@@ -141,7 +148,7 @@ class UpdateStatusTradeCard extends Command
         $result['real'] = $result['ValueReceive'] - $result['ValueReceive'] * $devian / 100;
 
         $tradeRecord->status = TradeCard::S_SUCCESS;
-        $tradeRecord->status_card = $result['CardValue'] != $result['CardSend'] ? TradeCard::S_CARD_SUCCESS : TradeCard::S_CARD_HALF;
+        $tradeRecord->status_card = $result['CardValue'] == $result['CardSend'] ? TradeCard::S_CARD_SUCCESS : TradeCard::S_CARD_HALF;
         $tradeRecord->contents = json_encode($result);
         $tradeRecord->save();
 

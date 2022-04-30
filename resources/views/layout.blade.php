@@ -14,7 +14,7 @@
     <meta property="og:title" content="{{ config('meta.title') }}">
     <meta property="og:type" content="{{ config('meta.type') }}">
     <meta property="og:url" content="{{ url('') }}"/>
-    <meta property="og:image" content="{{ asset('image/logo-trans.png') }}">
+    <meta property="og:image" content="{{ asset('image/logo.png') }}">
     <meta property="og:image:alt" content="{{ config('meta.name') }}">
     <meta property="og:description" content="{{ config('meta.description') }}">
     <meta property="og:site_name" content="{{ config('meta.name') }}">
@@ -23,7 +23,7 @@
 
     <title>{{ env('APP_FULL_NAME', 'Laravel') }}</title>
 
-    <link rel="shortcut icon" href="{{ asset('image/logo-trans.png') }}">
+    <link rel="shortcut icon" href="{{ asset('image/logo.png') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">

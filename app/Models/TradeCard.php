@@ -16,9 +16,9 @@ class TradeCard extends Model
     const S_ERROR = 4;
     const S_PUSH_TO_FAST = 99;
 
-    const S_CARD_ERROR = 3;
+    const S_CARD_HALF = 3;
     const S_CARD_SUCCESS = 1;
-    const S_CARD_HALF = 2;
+    const S_CARD_ERROR = 2;
     const S_CARD_WORKING = 0;
 
     protected $table = 'trade_card';

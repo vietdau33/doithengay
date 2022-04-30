@@ -6,6 +6,7 @@ use App\Http\Services\HttpService;
 use App\Models\CardStore;
 use App\Models\ErrorLog;
 use App\Models\SystemSetting;
+use App\Models\TraceSystem;
 use App\Models\User;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Console\Command;
@@ -49,6 +50,11 @@ class UpdateStatusBuyCard extends Command
             }
 
             $result = $this->buyCard($card->toArray());
+            $card->change_fast = 1;
+            TraceSystem::setTrace([
+                'mgs' => 'Chuyển đổi mua chậm sang mua nhanh',
+                'card_id' => $card->id
+            ]);
 
             if ($result === false) {
                 $this->refun($card);

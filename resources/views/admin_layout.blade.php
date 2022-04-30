@@ -146,6 +146,12 @@
                             <span class="sidebar-mini-hide">Quản trị hệ thống</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="{{ route('admin.system-setting') }}" data-id="system-setting">
+                            <i class="si si-calculator"></i>
+                            <span class="sidebar-mini-hide">Quản lý logs hệ thống</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
             <!-- END Side Navigation -->

@@ -9,6 +9,7 @@ use App\Http\Services\AuthService;
 use App\Http\Services\ModelService;
 use App\Mail\ForgotMail;
 use App\Models\ApiData;
+use App\Models\TraceSystem;
 use App\Models\User;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
@@ -39,6 +40,7 @@ class AuthController extends Controller
     {
         if ($this->authService->loginPost($request)) {
             session()->flash('notif', 'Đăng nhập thành công!');
+            TraceSystem::setTrace('Đăng nhập!');
 
             if (is_admin()) {
                 return redirect()->route('admin.home');
@@ -60,6 +62,7 @@ class AuthController extends Controller
     {
         $this->authService->registerPost($request);
         session()->flash('notif', 'Tạo tài khoản thành công!');
+        TraceSystem::setTrace("Có user vừa tạo tài khoản thành công. Username: {$request->username}!");
         return redirect()->route('auth.view');
     }
 
@@ -123,6 +126,8 @@ class AuthController extends Controller
             Mail::to($user->email)->send(new ForgotMail($details));
             $user->hash_forgot = $hash;
             $user->save();
+
+            TraceSystem::setTrace("User có username là \"{$username}\" đang thực hiện quên mật khẩu!");
         }catch (Exception $exception) {
             session()->flash('mgs_error', 'Chúng tôi không thể gửi mail xác nhận ngay bây giờ!');
             return back();
@@ -192,6 +197,7 @@ class AuthController extends Controller
         $user->save();
 
         session()->flash('notif', 'Mật khẩu đã được thay đổi thành công. Vui lòng đăng nhập lại!');
+        TraceSystem::setTrace("User có username là \"{$user->username}\" thực hiện quên mật khẩu thành công!");
         return redirect()->to('/login');
     }
 
