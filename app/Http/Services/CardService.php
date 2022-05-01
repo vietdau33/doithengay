@@ -3,6 +3,7 @@
 namespace App\Http\Services;
 
 use App\Http\Requests\TradeCardRequest;
+use App\Models\CardListModel;
 use App\Models\CardStore;
 use App\Models\RateCard;
 use App\Models\RateCardSell;
@@ -65,6 +66,13 @@ class CardService extends Service
     public static function buyCardPost($request, &$hash = ''): bool
     {
         $param = $request->validated();
+        $listNotAuto = CardListModel::whereAuto('0')->whereType('buy')->get()->toArray();
+        $listNotAuto = array_column($listNotAuto, 'name');
+        if(in_array($param['card_buy'], $listNotAuto)) {
+            session()->flash('mgs_error', 'Mua nhanh hiện không khả dụng!');
+            return false;
+        }
+
         $param['store_hash'] = self::generate_hash_store();
         $param['user_id'] = user()->id;
 

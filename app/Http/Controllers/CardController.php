@@ -8,6 +8,7 @@ use App\Http\Services\CardService;
 use App\Http\Services\HttpService;
 use App\Http\Services\ModelService;
 use App\Http\Services\TradeCardService;
+use App\Models\CardListModel;
 use App\Models\CardStore;
 use App\Models\RateCard;
 use App\Models\RateCardSell;
@@ -33,6 +34,10 @@ class CardController extends Controller
     public function buyCard(): Factory|View|Application
     {
         session()->flash('menu-active', 'menu-buy-card');
+
+        $listNotAuto = CardListModel::whereAuto('0')->whereType('buy')->get()->toArray();
+        $listNotAuto = array_column($listNotAuto, 'name');
+
         $rates = RateCardSell::getListCardBuy();
         $listCard = array_reduce($rates, function($result, $card){
             $card = end($card);
@@ -41,7 +46,8 @@ class CardController extends Controller
             ];
             return $result;
         }, []);
-        return view('card.buy', compact('listCard', 'rates'));
+
+        return view('card.buy', compact('listCard', 'rates', 'listNotAuto'));
     }
 
     /**
@@ -64,6 +70,8 @@ class CardController extends Controller
     public function tradeCard(): Factory|View|Application
     {
         session()->flash('menu-active', 'menu-trade-card');
+        $listNotAuto = CardListModel::whereAuto('0')->whereType('trade')->get()->toArray();
+        $listNotAuto = array_column($listNotAuto, 'name');
         $rates = RateCard::getListCardTrade();
         $cardList = array_reduce($rates, function($result, $card){
             $card = end($card);
@@ -73,7 +81,7 @@ class CardController extends Controller
             ];
             return $result;
         }, []);
-        return view('card.trade', compact('rates', 'cardList'));
+        return view('card.trade', compact('rates', 'cardList', 'listNotAuto'));
     }
 
     /**
@@ -83,6 +91,12 @@ class CardController extends Controller
     {
         if(empty($request->type_trade) || !in_array($request->type_trade, ['slow', 'fast'])) {
             session()->flash('mgs_error', "Loại gạch thẻ không chính xác!");
+            return back()->withInput();
+        }
+        $listNotAuto = CardListModel::whereAuto('0')->whereType('trade')->get()->toArray();
+        $listNotAuto = array_column($listNotAuto, 'name');
+        if(in_array($request->card_type, $listNotAuto)) {
+            session()->flash('mgs_error', 'Đổi thẻ nhanh hiện không khả dụng!');
             return back()->withInput();
         }
         if(TradeCard::whereCardSerial($request->card_serial)->orWhere('card_number', $request->card_number)->first() != null) {

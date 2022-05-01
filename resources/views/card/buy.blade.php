@@ -83,7 +83,7 @@
                         <span>Phương thức xử lý</span>
                     </div>
                     <div class="form-group mt-2">
-                        <div class="type_buy_response w-100 d-flex m-2">
+                        <div class="group-type-slow type_buy_response w-100 d-flex m-2">
                             <label class="box-card m-0" for="type-slow">
                                 <input
                                     type="radio"
@@ -99,7 +99,7 @@
                                 Mua chậm:&nbsp;<span id="rate_slow_show">0</span>% -&nbsp;<span id="money_slow_show">0</span> VNĐ
                             </div>
                         </div>
-                        <div class="type_buy_response w-100 d-flex m-2">
+                        <div class="group-type-fast type_buy_response w-100 d-flex m-2">
                             <label class="box-card m-0" for="type-fast">
                                 <input
                                     type="radio"
@@ -142,6 +142,7 @@
         let rates = {!! json_encode($rates) !!};
         let areaMoney = $('#area-money');
         let template = $('[data-template="label-money"]');
+        let listNotAuto = {!! json_encode($listNotAuto) !!};
 
         let activeMoney = function() {
             let dataActiveMoney = JSON.parse(areaMoney.attr('data-active'));
@@ -154,7 +155,24 @@
         }
 
         $('[name="card_buy"]').on('change', function(){
-            let val  = $(this).val();
+            $('#rate_slow_show').text('0');
+            $('#money_slow_show').text('0');
+            $('#rate_fast_show').text('0');
+            $('#money_fast_show').text('0');
+
+            let val = $(this).val();
+
+            try{
+                if(listNotAuto.indexOf(val) != -1) {
+                    $('.group-type-fast')[0].style.setProperty('display', 'none', 'important');
+                    $('.group-type-slow label').trigger('click');
+                }else{
+                    $('.group-type-fast')[0].style.removeProperty('display');
+                }
+            }catch (e) {
+                console.log(e)
+            }
+
             let rate = rates[val];
             areaMoney.empty();
             if(rate == undefined) {
@@ -177,11 +195,9 @@
             activeMoney();
         });
 
-        if($('#area-card').find('[name="card_buy"]:checked').length > 0){
-            $('#area-card').find('[name="card_buy"]:checked').trigger('change');
-        }
-
-        activeMoney();
+        setTimeout(function(){
+            $('[name="card_buy"]:checked').trigger('change');
+        }, 100);
     </script>
     <script>
         function incrementValue(e) {
