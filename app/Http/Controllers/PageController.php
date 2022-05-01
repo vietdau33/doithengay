@@ -27,8 +27,11 @@ class PageController extends Controller
         return view('logs');
     }
 
-    public function home(): Factory|View|Application
+    public function home(): Application|Factory|View|RedirectResponse
     {
+        if(logined() && user()->verified === 0){
+            return redirect()->to('/verify');
+        }
         return view('welcome');
     }
 

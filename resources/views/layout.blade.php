@@ -52,7 +52,7 @@
                 </a>
             </div>
             <div class="d-none d-lg-block col-lg-8">
-                <div class="header-menu d-none {{ logined() ? 'd-lg-block' : '' }}">
+                <div class="header-menu d-none {{ logined() && user()->verified === 1 ? 'd-lg-block' : '' }}">
                     <ul>
                         <li>
                             <div class="dropdown">
@@ -84,7 +84,7 @@
             </div>
             <div class="col-6 col-lg-2 text-center">
                 <div class="header-auth">
-                    @if(!logined())
+                    @if(!logined() || user()->verified === 0)
                         <a class="btn btn-success" href="{{ route('auth.view') }}">Đăng nhập</a>
                     @else
                         <div class="fas fa-bars bar-user-menu bar-user-icon">

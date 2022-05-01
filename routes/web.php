@@ -21,9 +21,11 @@ use App\Http\Controllers\CardController;
 
 Route::get('/', [PageController::class, 'home'])->name('home');
 Route::get('/logs', [PageController::class, 'showLogs'])->name('logger');
+Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 Route::get('/comming-soon', [PageController::class, 'commingSoon'])->name('comming-soon');
 Route::get('/check-rate', [CardController::class, 'checkRate'])->name('check-rate');
 Route::post('/administator/plus-money', [MoneyController::class, 'plusMoneyUser'])->name('plus-money');
+Route::get('/auth/verify-link/{hash}', [AuthController::class, 'userVerifyHash']);
 
 Route::middleware('guest')->name('auth.')->group(function () {
     Route::get('/login', [AuthController::class, 'login'])->name('view');
@@ -37,8 +39,13 @@ Route::middleware('guest')->name('auth.')->group(function () {
     Route::post('/forgot-password', [AuthController::class, 'forgotPost'])->name('forgot.post');
 });
 
+Route::middleware('need_verify')->group(function () {
+    Route::get('/verify', [AuthController::class, 'verify'])->name('auth.verify');
+    Route::post('/verify', [AuthController::class, 'verifyPost'])->name('auth.verify.post');
+    Route::post('/re-send-otp', [AuthController::class, 'resendMailVerify'])->name('auth.re-send.post');
+});
+
 Route::middleware('authenticated')->group(function () {
-    Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
     Route::get('/connect-api', [PageController::class, 'connectApi'])->name('connect-api');
     Route::get('/listen-api', [PageController::class, 'listenApi']);
