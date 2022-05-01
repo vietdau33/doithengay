@@ -68,7 +68,7 @@ class CardService extends Service
         $param = $request->validated();
         $listNotAuto = CardListModel::whereAuto('0')->whereType('buy')->get()->toArray();
         $listNotAuto = array_column($listNotAuto, 'name');
-        if(in_array($param['card_buy'], $listNotAuto)) {
+        if(in_array($param['card_buy'], $listNotAuto) && $param['type_buy'] == 'fast') {
             session()->flash('mgs_error', 'Mua nhanh hiện không khả dụng!');
             return false;
         }

@@ -95,7 +95,7 @@ class CardController extends Controller
         }
         $listNotAuto = CardListModel::whereAuto('0')->whereType('trade')->get()->toArray();
         $listNotAuto = array_column($listNotAuto, 'name');
-        if(in_array($request->card_type, $listNotAuto)) {
+        if(in_array($request->card_type, $listNotAuto) && $request->type_buy == 'fast') {
             session()->flash('mgs_error', 'Đổi thẻ nhanh hiện không khả dụng!');
             return back()->withInput();
         }
