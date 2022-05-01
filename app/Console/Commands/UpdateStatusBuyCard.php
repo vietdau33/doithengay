@@ -70,14 +70,15 @@ class UpdateStatusBuyCard extends Command
         return 0;
     }
 
-    private function refun(CardStore $cardStore): void
+    private function refun(CardStore &$cardStore): void
     {
         $user = User::whereId($cardStore->user_id)->first();
         if ($user == null) {
             return;
         }
-        $user->money = (int)$user->money + (int)$cardStore->money_buy;
+        $user->money = (int)$user->money + (int)$cardStore->money_after_rate;
         $user->save();
+        $cardStore->money_user_after = $user->money;
     }
 
     /**

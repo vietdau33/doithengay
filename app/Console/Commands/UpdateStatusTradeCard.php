@@ -150,7 +150,6 @@ class UpdateStatusTradeCard extends Command
         $tradeRecord->status = TradeCard::S_SUCCESS;
         $tradeRecord->status_card = $result['CardValue'] == $result['CardSend'] ? TradeCard::S_CARD_SUCCESS : TradeCard::S_CARD_HALF;
         $tradeRecord->contents = json_encode($result);
-        $tradeRecord->save();
 
         if($apiData != null) {
             $paramResponseApi['message'] = $result['Message'];
@@ -162,11 +161,14 @@ class UpdateStatusTradeCard extends Command
 
         $user = User::whereId($tradeRecord->user_id)->first();
         if ($user == null) {
+            $tradeRecord->save();
             return false;
         }
 
         $user->money = (int)$user->money + $result['real'];
         $user->save();
+        $tradeRecord->money_user_after = $user->money;
+        $tradeRecord->save();
 
         return true;
     }
