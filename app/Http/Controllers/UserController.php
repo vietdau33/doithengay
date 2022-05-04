@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Services\OtpService;
+use App\Mail\SendOtp;
 use App\Models\User;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
@@ -15,7 +19,8 @@ class UserController extends Controller
         return view('security.setting');
     }
 
-    public function securitySettingPost(Request $request){
+    public function securitySettingPost(Request $request): JsonResponse
+    {
         $security_level_2 = $request->security_level_2;
         if($security_level_2 == 'true'){
             $security_level_2 = 1;
@@ -41,5 +46,29 @@ class UserController extends Controller
             'success' => true,
             'message' => 'Thành công!'
         ]);
+    }
+
+    public function sendOtp(): JsonResponse
+    {
+        $result = OtpService::MakeOtp();
+        if($result === false){
+            return response()->json([
+                'success' => false,
+                'message' => 'Đã có lỗi trong lúc tạo mã OTP. Vui lòng thử lại sau!'
+            ]);
+        }
+        try {
+            Mail::to(user()->email)->send(new SendOtp($result));
+            return response()->json([
+                'success' => true,
+                'message' => 'Đã gửi OTP qua email. Hãy kiểm tra hộp thư SPAM nếu không thấy trong hộp thư đến!',
+                'data' => ['hash' => $result['hash']]
+            ]);
+        } catch (Exception $exception) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Đã có lỗi trong lúc tạo mã OTP. Vui lòng thử lại sau!'
+            ]);
+        }
     }
 }

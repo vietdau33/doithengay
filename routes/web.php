@@ -91,6 +91,8 @@ Route::middleware('authenticated')->group(function () {
     Route::prefix('security')->name('security.')->group(function () {
         Route::get('setting', [UserController::class, 'securitySetting'])->name('setting');
         Route::post('setting/security_level_2', [UserController::class, 'securitySettingPost']);
+
+        Route::post('send-otp', [UserController::class, 'sendOtp'])->name('send-otp');
     });
 });
 Route::post('create/api', [AuthController::class, 'createApiKey'])->name('create_api');

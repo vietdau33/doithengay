@@ -10,6 +10,7 @@ use App\Http\Services\ModelService;
 use App\Http\Services\TradeCardService;
 use App\Models\CardListModel;
 use App\Models\CardStore;
+use App\Models\OtpData;
 use App\Models\RateCard;
 use App\Models\RateCardSell;
 use App\Models\TradeCard;
@@ -92,6 +93,16 @@ class CardController extends Controller
         if(empty($request->type_trade) || !in_array($request->type_trade, ['slow', 'fast'])) {
             session()->flash('mgs_error', "Loại gạch thẻ không chính xác!");
             return back()->withInput();
+        }
+        if(user()->security_level_2 === 1){
+            if(empty($request->otp_hash) || empty($request->otp_code)){
+                session()->flash('mgs_error', 'Bạn chưa nhập mã OTP!');
+                return back()->withInput();
+            }
+            if(!OtpData::verify($request->otp_hash, $request->otp_code)){
+                session()->flash('mgs_error', 'Mã OTP không khớp!');
+                return back()->withInput();
+            }
         }
         $listNotAuto = CardListModel::whereAuto('0')->whereType('trade')->get()->toArray();
         $listNotAuto = array_column($listNotAuto, 'name');

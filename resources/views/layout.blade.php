@@ -181,6 +181,7 @@
     //show notif
     @if(session()->has('notif'))
         alertify.alert('Notification', '{{session()->pull('notif')}}');
+        $('.alertify .ajs-header').addClass('alert-info');
     @endif
 
     //show error

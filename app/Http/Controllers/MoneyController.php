@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\WithdrawRequest;
 use App\Http\Services\MoneyService;
 use App\Models\BankModel;
+use App\Models\OtpData;
 use App\Models\User;
 use App\Models\WithdrawModel;
 use Illuminate\Contracts\Foundation\Application;
@@ -30,6 +31,17 @@ class MoneyController extends Controller
 
     public function withdrawPost(WithdrawRequest $request): RedirectResponse
     {
+        if(user()->security_level_2 === 1){
+            if(empty($request->otp_hash) || empty($request->otp_code)){
+                session()->flash('mgs_error', 'Bạn chưa nhập mã OTP!');
+                return redirect()->back();
+            }
+            if(!OtpData::verify($request->otp_hash, $request->otp_code)){
+                session()->flash('mgs_error', 'Mã OTP không khớp!');
+                return redirect()->back()->withInput();
+            }
+        }
+
         $user = User::whereId(user()->id)->first();
         if((int)$request->money < 100000) {
             session()->flash('mgs_error', 'Số tiền rút ít nhất là 100.000đ!');
