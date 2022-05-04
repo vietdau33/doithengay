@@ -3,6 +3,7 @@
 use App\Http\Controllers\BankController;
 use App\Http\Controllers\BillController;
 use App\Http\Controllers\MoneyController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PageController;
@@ -87,7 +88,10 @@ Route::middleware('authenticated')->group(function () {
         Route::get('/remove/{id}', [BankController::class, 'remove'])->name('remove');
     });
 
-
+    Route::prefix('security')->name('security.')->group(function () {
+        Route::get('setting', [UserController::class, 'securitySetting'])->name('setting');
+        Route::post('setting/security_level_2', [UserController::class, 'securitySettingPost']);
+    });
 });
 Route::post('create/api', [AuthController::class, 'createApiKey'])->name('create_api');
 Route::middleware('is_admin')->prefix('admin')->name('admin.')->group(function () {
