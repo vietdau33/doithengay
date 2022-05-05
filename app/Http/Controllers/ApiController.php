@@ -10,6 +10,7 @@ use App\Models\ApiCallData;
 use App\Models\ApiData;
 use App\Models\RateCard;
 use App\Models\SystemSetting;
+use App\Models\TraceSystem;
 use App\Models\TradeCard;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\JsonResponse;
@@ -75,6 +76,13 @@ class ApiController extends Controller
         $allRequest = $request->all();
         $allRequest['hash'] = $hash;
         ModelService::insert(ApiCallData::class, $allRequest);
+
+        if($mgs === true){
+            TraceSystem::setTrace([
+                'mgs' => 'API đổi thẻ!',
+                ...$request->all()
+            ]);
+        }
 
         return $mgs === true ? $this->returnSuccess($hash) : $this->returnFail($mgs);
     }
@@ -147,7 +155,7 @@ class ApiController extends Controller
         //
     }
 
-    public function checkCard(Request $request)
+    public function checkCard(Request $request): JsonResponse
     {
         if($request->hash == null) {
             return $this->returnFail('Hash không được truyền lên!');
@@ -187,12 +195,17 @@ class ApiController extends Controller
         ]);
     }
 
-    private function returnSuccess($hash, $mgs = 'Thành công'): JsonResponse
+    private function returnSuccess($hash): JsonResponse
     {
         return response()->json([
             'success' => 1,
-            'message' => $mgs,
+            'message' => 'Thành công',
             'hash' => $hash
         ]);
+    }
+
+    public function plusMoney(Request $request): JsonResponse
+    {
+        return $this->returnSuccess('ds');
     }
 }
