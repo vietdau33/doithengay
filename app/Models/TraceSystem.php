@@ -56,12 +56,16 @@ class TraceSystem extends Model
         return self::with('user')->orderBy('created_at', 'DESC')->paginate(20);
     }
 
+    public function getContentsAttribute(){
+        return json_decode($this->attributes['contents'], 1);
+    }
+
     public static function setTrace($mgs, $user_id = null) {
         if($user_id == null) {
             $user_id = auth()->user()->id ?? null;
         }
         if(gettype($mgs) != 'array') {
-            $mgs = ['content' => $mgs];
+            $mgs = ['mgs' => $mgs];
         }
         ModelService::insert(self::class, [
             'user_id' => $user_id,

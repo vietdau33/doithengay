@@ -20,7 +20,7 @@ class OtpData extends Model
 
     public static function verify($hash, $otp, $removeIfSuccess = true): bool
     {
-        $otp = self::whereOtpHash($hash)->whereOtpCode($otp)->where('otp_expire', '<=', Carbon::now())->first();
+        $otp = self::whereOtpHash($hash)->whereOtpCode($otp)->where('otp_expire', '>=', strtotime(Carbon::now()))->first();
         if (empty($otp)) {
             return false;
         }

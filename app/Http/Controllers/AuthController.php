@@ -41,7 +41,10 @@ class AuthController extends Controller
     {
         if ($this->authService->loginPost($request)) {
             session()->flash('notif', 'Đăng nhập thành công!');
-            TraceSystem::setTrace('Đăng nhập!');
+            TraceSystem::setTrace([
+                'mgs' => 'Đăng nhập!',
+                'ip' => $request->ip()
+            ]);
 
             if (is_admin()) {
                 return redirect()->route('admin.home');
@@ -71,7 +74,11 @@ class AuthController extends Controller
             ]);
             session()->flash('notif', 'Chúng tôi đã gửi 1 mã xác minh tới email của bạn!');
         }
-        TraceSystem::setTrace("Có user vừa tạo tài khoản thành công. Username: {$request->username}!");
+        TraceSystem::setTrace([
+            'mgs' => "Tạo tài khoản",
+            'ip' => $request->ip(),
+            'user_name' => $request->username
+        ]);
         return redirect()->route('auth.view');
     }
 

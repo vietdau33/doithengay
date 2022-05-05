@@ -29,8 +29,6 @@ class TradeCardRequest extends FormRequest
             'card_serial' => 'required',
             'card_number' => 'required',
             'type_trade' => 'required',
-            'otp_hash' => 'nullable',
-            'otp_code' => 'nullable',
         ];
     }
 

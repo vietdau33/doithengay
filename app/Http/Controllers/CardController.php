@@ -13,6 +13,7 @@ use App\Models\CardStore;
 use App\Models\OtpData;
 use App\Models\RateCard;
 use App\Models\RateCardSell;
+use App\Models\TraceSystem;
 use App\Models\TradeCard;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Contracts\Foundation\Application;
@@ -74,6 +75,13 @@ class CardController extends Controller
         if($request->type_buy == 'fast') {
             return redirect()->route('list-card', ['hash' => $hash]);
         }
+
+        TraceSystem::setTrace([
+            'mgs' => 'Có user mua thẻ',
+            'username' => user()->username,
+            ...$request->validated()
+        ]);
+
         session()->flash('notif', 'Thẻ đã được đặt mua thành công! Sau 5 phút chưa được xử lý sẽ tự động chuyển sang mua thường!');
         return back();
     }
@@ -120,6 +128,11 @@ class CardController extends Controller
         if ($request->type_trade == 'slow' && !CardService::saveTradeCardSlow($request)) {
             return back()->withInput();
         }
+        TraceSystem::setTrace([
+            'mgs' => 'Có user đổi thẻ',
+            'username' => user()->username,
+            ...$request->validated()
+        ]);
         session()->flash('notif', 'Đã gửi yêu cầu! Hãy kiểm tra lịch sử để xem trạng thái gạch thẻ.');
         return back();
     }

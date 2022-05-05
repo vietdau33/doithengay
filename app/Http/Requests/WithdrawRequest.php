@@ -27,8 +27,6 @@ class WithdrawRequest extends FormRequest
             'bank' => 'required',
             'money' => 'required',
             'note' => 'required',
-            'otp_code' => 'nullable',
-            'otp_hash' => 'nullable'
         ];
     }
 

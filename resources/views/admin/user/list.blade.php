@@ -97,6 +97,7 @@
             let username = $(this).attr('data-username');
             model.find('.username').text(username);
             model.find('[name="username"]').attr('value', username);
+            model.find('[name="money_plus"]').val('');
             model.modal('show');
         });
         $('.btn-submit-plus-money').on('click', function(e){

@@ -20,8 +20,8 @@ use App\Http\Controllers\CardController;
 |
 */
 
+//Route::get('/logs', [PageController::class, 'showLogs'])->name('logger');
 Route::get('/', [PageController::class, 'home'])->name('home');
-Route::get('/logs', [PageController::class, 'showLogs'])->name('logger');
 Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 Route::get('/comming-soon', [PageController::class, 'commingSoon'])->name('comming-soon');
 Route::get('/check-rate', [CardController::class, 'checkRate'])->name('check-rate');

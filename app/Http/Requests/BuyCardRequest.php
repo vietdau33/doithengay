@@ -30,8 +30,6 @@ class BuyCardRequest extends FormRequest
             'method_buy' => ['required'],
             'type_buy' => ['required'],
             'quantity' => ['required', 'numeric', 'min:1'],
-            'otp_hash' => 'nullable',
-            'otp_code' => 'nullable',
         ];
     }
 

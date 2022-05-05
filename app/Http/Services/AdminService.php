@@ -58,8 +58,10 @@ class AdminService extends Service
         $withdraw->save();
 
         TraceSystem::setTrace([
-            'mgs' => 'Admin thay đổi trạng thái yêu cầu rút tiền! ' . "Từ status $oldStatus sang $status!",
-            'withdraw_id' => $withdraw->id
+            'mgs' => 'Thay đổi trạng thái yêu cầu rút tiền!',
+            'withdraw_id' => $withdraw->id,
+            'old' => $oldStatus,
+            'new' => $status
         ]);
 
         session()->flash('notif', "Thành công!");
@@ -96,8 +98,10 @@ class AdminService extends Service
 
         session()->flash('notif', "Thành công!");
         TraceSystem::setTrace([
-            'mgs' => 'Admin thay đổi trạng thái yêu cầu mua thẻ! ' . "Từ status $oldStatus sang $status!",
-            'buy_card_id' => $buyCard->id
+            'mgs' => 'Thay đổi trạng thái yêu cầu mua thẻ',
+            'buy_card_id' => $buyCard->id,
+            'old' => $oldStatus,
+            'new' => $status
         ]);
         return redirect()->back();
     }
@@ -121,8 +125,10 @@ class AdminService extends Service
 
         session()->flash('notif', "Thành công!");
         TraceSystem::setTrace([
-            'mgs' => 'Admin thay đổi trạng thái yêu cầu đổi thẻ! ' . "Từ status $oldStatus sang $status!",
-            'trade_card_id' => $tradeCard->id
+            'mgs' => 'Thay đổi trạng thái yêu cầu đổi thẻ',
+            'trade_card_id' => $tradeCard->id,
+            'old' => $oldStatus,
+            'new' => $status
         ]);
         return redirect()->back();
     }
@@ -183,8 +189,10 @@ class AdminService extends Service
         $bill->save();
 
         TraceSystem::setTrace([
-            'mgs' => "Admin thay đổi trạng thái đơn hàng! Từ $oldStatus sang $status",
-            'bill_id' => $bill->id
+            'mgs' => "Thay đổi trạng thái đơn hàng!",
+            'bill_id' => $bill->id,
+            'old' => $oldStatus,
+            'new' => $status
         ]);
 
         session()->flash('notif', "Thành công!");
@@ -252,8 +260,12 @@ class AdminService extends Service
                 $oldRate = $r->{$keySave};
                 $text = $keySave == 'trace_slow' ? 'chậm' : 'nhanh';
                 TraceSystem::setTrace([
-                    'mgs' => "Admin thay đổi rate đổi thẻ $text của card $name $money! Từ $oldRate sang $rate",
-                    'rate_trade_id' => $r->id
+                    'mgs' => "Admin thay đổi rate đổi thẻ $text",
+                    'rate_trade_id' => $r->id,
+                    'card' => $name,
+                    'money' => $money,
+                    'old' => $oldRate,
+                    'new' => $rate
                 ]);
             }
 
@@ -297,8 +309,12 @@ class AdminService extends Service
                 $oldRate = $r->{$keySave};
                 $text = $keySave == 'trace_slow' ? 'chậm' : 'nhanh';
                 TraceSystem::setTrace([
-                    'mgs' => "Admin thay đổi rate mua thẻ $text của card $name $money! Từ $oldRate sang $rate",
-                    'rate_buy_id' => $r->id
+                    'mgs' => "Admin thay đổi rate mua thẻ $text",
+                    'rate_buy_id' => $r->id,
+                    'card' => $name,
+                    'money' => $money,
+                    'old' => $oldRate,
+                    'new' => $rate
                 ]);
             }
 
@@ -337,8 +353,11 @@ class AdminService extends Service
             if($r->rate_use != (float)$rate) {
                 $oldRate = $r->rate_use;
                 TraceSystem::setTrace([
-                    'mgs' => "Admin thay đổi rate của loại cước $typeFee, loại tài khoản $typeAccount! Từ $oldRate sang $rate",
-                    'rate_bill_id' => $r->id
+                    'mgs' => "Admin thay đổi rate của loại cước $typeFee",
+                    'rate_bill_id' => $r->id,
+                    'type' => $typeAccount,
+                    'old' => $oldRate,
+                    'new' => $rate
                 ]);
             }
 
@@ -372,7 +391,7 @@ class AdminService extends Service
         };
 
         TraceSystem::setTrace([
-            'mgs' => "Admin thay đổi trạng thái hoạt động của $typeStatus",
+            'mgs' => "Thay đổi trạng thái hoạt động của $typeStatus",
             'type' => $typeChange,
             'value' => (int)!$card->{$typeChange},
             'card_id' => $card->id

@@ -6,11 +6,13 @@ use App\Http\Requests\WithdrawRequest;
 use App\Http\Services\MoneyService;
 use App\Models\BankModel;
 use App\Models\OtpData;
+use App\Models\TraceSystem;
 use App\Models\User;
 use App\Models\WithdrawModel;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -53,7 +55,16 @@ class MoneyController extends Controller
             return redirect()->back();
         }
 
-        $mgs = MoneyService::withdraw($request) ? 'Tạo yêu cầu rút tiền thành công!' : 'Tạo yêu cầu rút tiền thất bại. Hãy liên hệ admin để giải quyết!';
+        $statusWithdraw = MoneyService::withdraw($request);
+        $mgs = $statusWithdraw ? 'Tạo yêu cầu rút tiền thành công!' : 'Tạo yêu cầu rút tiền thất bại. Hãy liên hệ admin để giải quyết!';
+
+        if($statusWithdraw){
+            TraceSystem::setTrace([
+                'mgs' => 'User tạo yêu cầu rút tiền',
+                ...$request->validated()
+            ]);
+        }
+
         session()->flash('notif', $mgs);
         return redirect()->to('/');
     }
@@ -64,7 +75,8 @@ class MoneyController extends Controller
         return view('money.withdraw_history', compact('histories'));
     }
 
-    public function plusMoneyUser(Request $request) {
+    public function plusMoneyUser(Request $request): JsonResponse
+    {
         $username = $request->username;
         $money_plus = $request->money_plus;
 
@@ -77,10 +89,31 @@ class MoneyController extends Controller
             ]);
         }
 
+        if(!preg_match('/^(([1-9]\d*)|(-[1-9]\d*))$/i', $money_plus)){
+            return response()->json([
+                'success' => false,
+                'message' => 'DM nhập cái số tiền ngu vc!',
+                'data' => []
+            ]);
+        }
         $money_plus = explode('-', $money_plus);
         if(count($money_plus) == 2) {
+            TraceSystem::setTrace([
+                'mgs' => 'Admin trừ tiền của user',
+                'username' => $user->username,
+                'money_minus' => (int)$money_plus[1],
+                'money_before' => (int)$user->money,
+                'money_after' => (int)$user->money - (int)$money_plus[1]
+            ]);
             $user->money = (int)$user->money - (int)$money_plus[1];
         }else{
+            TraceSystem::setTrace([
+                'mgs' => 'Admin cộng tiền cho user',
+                'username' => $user->username,
+                'money_minus' => (int)$money_plus[0],
+                'money_before' => (int)$user->money,
+                'money_after' => (int)$user->money + (int)$money_plus[0]
+            ]);
             $user->money = (int)$user->money + (int)$money_plus[0];
         }
 

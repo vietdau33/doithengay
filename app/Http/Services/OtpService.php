@@ -30,14 +30,14 @@ class OtpService extends Service
             'user_id' => $userId,
             'otp_hash' => $otpHash,
             'otp_code' => $otpCode,
-            'otp_expire' => Carbon::now()->addMinutes(5)
+            'otp_expire' => strtotime(Carbon::now()->addMinutes(5))
         ]) !== false;
         return !$result ? false : ['code' => $otpCode, 'hash' => $otpHash];
     }
 
     public static function clearOtp(): void
     {
-        foreach (OtpData::where('otp_expire', '<', Carbon::now())->get() as $otp) {
+        foreach (OtpData::where('otp_expire', '<', strtotime(Carbon::now()))->get() as $otp) {
             $otp->delete();
         }
     }
