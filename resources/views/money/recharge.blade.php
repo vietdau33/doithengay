@@ -16,19 +16,19 @@
                     <div class="col-3"><img src="{{ asset('image/bank/momo.png') }}" alt="MOMO" class="w-100"></div>
                     <div class="col-9 pl-4">
                         <ul class="text-left">
-                            <li>Số tài khoản: <b>0123456789</b></li>
-                            <li>Chủ tài khoản: <b>Phạm Văn A</b></li>
+                            <li>Số tài khoản: <b>0847474751</b></li>
+                            <li>Chủ tài khoản: <b>Tran Van Lao</b></li>
                             <li>Số tiền nạp tối thiểu: <b>20.000 VND</b></li>
                             <li>Nội dung: <b>naptien_{{ user()->username }}</b></li>
                         </ul>
                     </div>
                 </div>
                 <div class="row align-items-center mt-3">
-                    <div class="col-3"><img src="{{ asset('image/bank/mb.png') }}" alt="MB Bank" class="w-100"></div>
+                    <div class="col-3"><img src="{{ asset('image/bank/ocb.png') }}" alt="MB Bank" class="w-100"></div>
                     <div class="col-9 pl-4">
                         <ul class="text-left">
-                            <li>Số tài khoản: <b>0020180175009</b></li>
-                            <li>Chủ tài khoản: <b>Phạm Văn A</b></li>
+                            <li>Số tài khoản: <b>0847474751</b></li>
+                            <li>Chủ tài khoản: <b>Tran Van Lao</b></li>
                             <li>Số tiền nạp tối thiểu: <b>20.000 VND</b></li>
                             <li>Nội dung: <b>naptien_{{ user()->username }}</b></li>
                         </ul>

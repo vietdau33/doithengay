@@ -82,7 +82,7 @@ body.full-height #copyright {
 }
 #header .header-logo {
   max-width: 100%;
-  width: 100px;
+  width: autopx;
 }
 #header .header-menu ul {
   list-style: none;
