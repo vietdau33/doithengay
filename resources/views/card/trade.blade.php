@@ -97,17 +97,6 @@
                         </ul>
                     </div>
                     <hr />
-                    @if(user()->security_level_2 === 1)
-                        <div class="row m-0 mt-3">
-                            <label class="w-100 text-left ignore" for="otp_code">OTP Code *</label>
-                            <div class="d-flex w-100">
-                                <input type="hidden" class="form-control" name="otp_hash" id="otp_hash" value="{{ old('otp_hash') }}">
-                                <input type="text" class="form-control" name="otp_code" id="otp_code" value="{{ old('otp_code') }}" placeholder="123456">
-                                <div class="btn btn-primary ml-2 send-otp" style="min-width: 110px;">Send OTP</div>
-                            </div>
-                        </div>
-                        <hr />
-                    @endif
                     <div class="footer-button d-flex justify-content-center">
                         <button class="btn btn-primary ml-2">Tiếp tục</button>
                     </div>

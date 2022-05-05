@@ -98,7 +98,7 @@
                                         <hr />
                                     @endif
                                     <li><a href="{{ route('profile.home') }}">Thông tin cá nhân</a></li>
-                                    <li><a href="{{ route('security.setting') }}">Cài đặt bảo mật</a></li>
+                                    {{--<li><a href="{{ route('security.setting') }}">Cài đặt bảo mật</a></li>--}}
                                     <li><a href="{{ route('bank.list') }}">Thẻ ngân hàng</a></li>
                                     <hr />
                                     <div class="d-lg-none">
