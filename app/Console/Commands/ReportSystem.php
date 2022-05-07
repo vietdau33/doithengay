@@ -166,7 +166,7 @@ class ReportSystem extends Command
             if ($card->status_card === 1 || $card->status_card === 3) {
                 $contents = json_decode($card->contents, 1);
                 $slow['money'] += (int)$contents['CardValue'];
-                $slow['money_after_rate'] += (int)$contents['real'];
+                $slow['money_after_rate'] += (int)$card->money_real;
             }
         };
         $typeFast = function ($card) use (&$fast) {
@@ -188,7 +188,7 @@ class ReportSystem extends Command
             if ($card->status_card === 1 || $card->status_card === 3) {
                 $contents = json_decode($card->contents, 1);
                 $fast['money'] += (int)$contents['CardValue'];
-                $fast['money_after_rate'] += (int)$contents['real'];
+                $fast['money_after_rate'] += (int)$card->money_real;
             }
         };
         foreach (TradeCard::whereTypeCall($env)->get() as $card) {
