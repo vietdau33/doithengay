@@ -221,8 +221,10 @@ class ReportSystem extends Command
         ];
         foreach (BillModel::all() as $billRequest) {
             $bill['all']++;
-            $bill['money'] += (int)$billRequest->money;
-            $bill['money_after_rate'] += (int)$billRequest->money_after_rate;
+            if ($billRequest->status === 2) {
+                $bill['money'] += (int)$billRequest->money;
+                $bill['money_after_rate'] += (int)$billRequest->money_after_rate;
+            }
             switch ($billRequest->status) {
                 case 0:
                 case 1:
@@ -236,10 +238,8 @@ class ReportSystem extends Command
                     break;
             }
         }
-        if ($billRequest->status === 2) {
-            $bill['money'] = number_format($bill['money']);
-            $bill['money_after_rate'] = number_format($bill['money_after_rate']);
-        }
+        $bill['money'] = number_format($bill['money']);
+        $bill['money_after_rate'] = number_format($bill['money_after_rate']);
         foreach ($bill as $key => $val) {
             Report::setReport('bill', $key, $val);
         }
@@ -272,9 +272,7 @@ class ReportSystem extends Command
                     break;
             }
         }
-        if ($w->status === 2) {
-            $withdraw['money'] = number_format($withdraw['money']);
-        }
+        $withdraw['money'] = number_format($withdraw['money']);
         foreach ($withdraw as $key => $val) {
             Report::setReport('withdraw', $key, $val);
         }
