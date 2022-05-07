@@ -185,8 +185,8 @@
 @endsection
 @section('script')
     <script>
-        $('.block-report').on('click', function(){
-            const self = $(this);
+        $('.block-report > h5.alert').on('click', function(){
+            const self = $(this).parent();
             const icon = self.find('.icon-up-down');
             if(self.hasClass('opended')) {
                 self.removeClass('opended');
