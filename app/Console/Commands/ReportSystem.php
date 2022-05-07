@@ -81,7 +81,7 @@ class ReportSystem extends Command
             if ($card->change_fast === 1) {
                 $slow['to_fast']++;
             }
-            if($card->status === 2){
+            if ($card->status === 2) {
                 $slow['money'] += (int)$card->money_buy;
                 $slow['money_after_rate'] += (int)$card->money_after_rate;
             }
@@ -100,7 +100,7 @@ class ReportSystem extends Command
                     $fast['error']++;
                     break;
             }
-            if($card->status === 2){
+            if ($card->status === 2) {
                 $fast['money'] += (int)$card->money_buy;
                 $fast['money_after_rate'] += (int)$card->money_after_rate;
             }
@@ -112,10 +112,10 @@ class ReportSystem extends Command
                 $typeFast($card);
             }
         }
-        $setReport = function($report, $type) {
+        $setReport = function ($report, $type) {
             $report['money'] = number_format($report['money']);
             $report['money_after_rate'] = number_format($report['money_after_rate']);
-            foreach ($report as $name => $val){
+            foreach ($report as $name => $val) {
                 Report::setReport('buy_card', "$type.$name", $val);
             }
         };
@@ -163,7 +163,7 @@ class ReportSystem extends Command
             if ($card->change_fast === 1) {
                 $slow['to_fast']++;
             }
-            if($card->status_card === 1 || $card->status_card === 3){
+            if ($card->status_card === 1 || $card->status_card === 3) {
                 $contents = json_decode($card->contents, 1);
                 $slow['money'] += (int)$contents['CardValue'];
                 $slow['money_after_rate'] += (int)$contents['real'];
@@ -185,7 +185,7 @@ class ReportSystem extends Command
                     $fast['error_money']++;
                     break;
             }
-            if($card->status_card === 1 || $card->status_card === 3){
+            if ($card->status_card === 1 || $card->status_card === 3) {
                 $contents = json_decode($card->contents, 1);
                 $fast['money'] += (int)$contents['CardValue'];
                 $fast['money_after_rate'] += (int)$contents['real'];
@@ -198,10 +198,10 @@ class ReportSystem extends Command
                 $typeFast($card);
             }
         }
-        $setReport = function($report, $type) use ($env) {
+        $setReport = function ($report, $type) use ($env) {
             $report['money'] = number_format($report['money']);
             $report['money_after_rate'] = number_format($report['money_after_rate']);
-            foreach ($report as $name => $val){
+            foreach ($report as $name => $val) {
                 Report::setReport('trade_card', "$env.$type.$name", $val);
             }
         };
@@ -219,7 +219,7 @@ class ReportSystem extends Command
             'money' => 0,
             'money_after_rate' => 0
         ];
-        foreach (BillModel::all() as $billRequest){
+        foreach (BillModel::all() as $billRequest) {
             $bill['all']++;
             $bill['money'] += (int)$billRequest->money;
             $bill['money_after_rate'] += (int)$billRequest->money_after_rate;
@@ -236,9 +236,11 @@ class ReportSystem extends Command
                     break;
             }
         }
-        $bill['money'] = number_format($bill['money']);
-        $bill['money_after_rate'] = number_format($bill['money_after_rate']);
-        foreach ($bill as $key => $val){
+        if ($billRequest->status === 2) {
+            $bill['money'] = number_format($bill['money']);
+            $bill['money_after_rate'] = number_format($bill['money_after_rate']);
+        }
+        foreach ($bill as $key => $val) {
             Report::setReport('bill', $key, $val);
         }
     }
@@ -252,9 +254,9 @@ class ReportSystem extends Command
             'error' => 0,
             'money' => 0
         ];
-        foreach (WithdrawModel::all() as $w){
+        foreach (WithdrawModel::all() as $w) {
             $withdraw['all']++;
-            if($w->status === 2){
+            if ($w->status === 2) {
                 $withdraw['money'] += (int)$w->money;
             }
             switch ($w->status) {
@@ -270,8 +272,10 @@ class ReportSystem extends Command
                     break;
             }
         }
-        $withdraw['money'] = number_format($withdraw['money']);
-        foreach ($withdraw as $key => $val){
+        if ($w->status === 2) {
+            $withdraw['money'] = number_format($withdraw['money']);
+        }
+        foreach ($withdraw as $key => $val) {
             Report::setReport('withdraw', $key, $val);
         }
     }
