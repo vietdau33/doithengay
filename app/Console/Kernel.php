@@ -19,6 +19,7 @@ class Kernel extends ConsoleKernel
          $schedule->command('update-status:buy-card')->everyMinute();
          $schedule->command('rate-card:refresh')->dailyAt("06:00");
          $schedule->command('check-schedule')->everyMinute();
+         $schedule->command('report:system')->everyTenMinutes();
     }
 
     /**

@@ -2,14 +2,14 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\SystemSetting;
 use Closure;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\App;
 
-class HttpsProtocol
+class CountVisit
 {
     /**
      * Handle an incoming request.
@@ -20,10 +20,11 @@ class HttpsProtocol
      */
     public function handle(Request $request, Closure $next): mixed
     {
-        if (!$request->secure() && App::environment() === 'production') {
-            return redirect()->secure($request->getRequestUri());
+        if(!session()->has('____counted_visit____')){
+            $couting = (int)SystemSetting::getSetting('____counted_visit____', 'system', 0);
+            SystemSetting::setSetting('____counted_visit____', $couting + 1);
+            session()->put('____counted_visit____', true);
         }
-
         return $next($request);
     }
 }

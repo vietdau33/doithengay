@@ -15,6 +15,7 @@
                             <th scope="col">Loại thanh toán</th>
                             <th scope="col">Loại tài khoản</th>
                             <th scope="col">Số tiền</th>
+                            <th scope="col">Thực trả</th>
                             <th scope="col">Mã KH / SĐT</th>
                             <th scope="col">Ngày tạo</th>
                         </tr>
@@ -23,13 +24,15 @@
                         @php($stt = 1)
                         @foreach($bills as $bill)
                             <tr>
-                                <th scope="row">{{ $stt++ }}</th>
-                                <td style="min-width: 120px;">{!! $bill->getStatusHtml() !!}</td>
-                                <td style="min-width: 200px;">{{ config("bill.{$bill->type}.text") }}</td>
-                                <td style="min-width: 150px;">{{ config("bill.{$bill->type}.vendor.{$bill->vendor_id}.name") }}</td>
-                                <td style="min-width: 140px;">{{ number_format($bill->money) }}</td>
-                                <td style="min-width: 130px;">{{ config("payment.method.{$bill->type_pay}.name") }}</td>
-                                <td>{{ date('d/m/Y', strtotime($bill->created_at)) }}</td>
+                                <th scope="row" style="vertical-align: middle">{{ $stt++ }}</th>
+                                <td style="min-width: 120px;vertical-align: middle;">{!! $bill->getStatusHtml() !!}</td>
+                                <td style="min-width: 200px;vertical-align: middle">{{ config("bill.{$bill->type}.text") }}</td>
+                                <td style="min-width: 150px;vertical-align: middle">{{ config("bill.{$bill->type}.vendor.{$bill->vendor_id}.name") }}</td>
+                                <td style="min-width: 140px;vertical-align: middle">{{ number_format($bill->money) }}</td>
+                                <td style="min-width: 140px;vertical-align: middle">{{ number_format($bill->money_after_rate) }}</td>
+{{--                                <td style="min-width: 130px;">{{ config("payment.method.{$bill->type_pay}.name") }}</td>--}}
+                                <td style="min-width: 130px;vertical-align: middle">{{ $bill->bill_number }}</td>
+                                <td>{{ date('H:i d/m/Y', strtotime($bill->created_at)) }}</td>
                             </tr>
                         @endforeach
                         @if($bills->count() == 0)

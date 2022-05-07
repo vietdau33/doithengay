@@ -18,10 +18,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,400i,600,700&display=swap">
-    <link rel="stylesheet" href="{{ asset('vendor/fontawesome/all.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/alertify/css/alertify.min.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/alertify/css/themes/bootstrap.min.css') }}">
-    <link rel="stylesheet" id="css-main" href="{{ asset('_admin_/css/codebase.css') }}">
+    <link rel="stylesheet" href="{{ asset('_admin_/css/codebase.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/fontawesome/all.css') }}">
+
+    @yield('style')
 </head>
 <body class="custom-scrollbar">
 

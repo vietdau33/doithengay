@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,24 +12,30 @@ class SystemSetting extends Model
     protected $table = 'system_setting';
     protected static array $settings = [];
 
-    public static function setSetting($name, $value, $type = 'system'): SystemSetting
+    public static function setSetting($name, $value, $type = 'system'): ?SystemSetting
     {
-        $setting = self::getSetting($name, $type);
-        self::$settings[$name.$type] = $value;
+        try{
+            $setting = self::whereName($name)->whereType($type)->first();
 
-        if($setting instanceof SystemSetting) {
+            if($setting instanceof SystemSetting) {
+                $setting->value = $value;
+                $setting->save();
+
+                self::$settings[$name.$type] = $value;
+                return $setting;
+            }
+
+            $setting = new self;
+            $setting->name = $name;
+            $setting->type = $type;
             $setting->value = $value;
             $setting->save();
+
+            self::$settings[$name.$type] = $value;
             return $setting;
+        }catch (Exception $exception) {
+            return null;
         }
-
-        $setting = new self;
-        $setting->name = $name;
-        $setting->type = $type;
-        $setting->value = $value;
-        $setting->save();
-
-        return $setting;
     }
 
     public static function getSetting($name, $type = 'system', $default = null): ?string

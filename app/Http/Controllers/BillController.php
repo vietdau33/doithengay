@@ -44,7 +44,7 @@ class BillController extends Controller
     public function payBillHistory(): Factory|View|Application
     {
         session()->flash('menu-active', 'menu-pay-bill');
-        $bills = BillModel::whereUserId(user()->id)->get();
+        $bills = BillModel::whereUserId(user()->id)->orderBy('created_at', 'DESC')->get();
         return view('bill.history', compact('bills'));
     }
 }

@@ -121,3 +121,17 @@ if (!function_exists('time_elapsed_string')) {
         return $string ? implode(', ', $string) . ' trước' : 'Vừa tạo';
     }
 }
+
+function getTextReport(): array
+{
+    return [
+        'all' => 'Tất cả',
+        'success' => 'Thành công',
+        'error' => 'Thất bại / Hủy bỏ',
+        'pending' => 'Đang xử lý',
+        'to_fast' => 'Chuyển sang nhanh',
+        'money' => 'Tổng tiền',
+        'money_after_rate' => 'Tổng tiền sau chiết khấu',
+        'error_money' => 'Sai mệnh giá'
+    ];
+}

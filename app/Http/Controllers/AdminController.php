@@ -8,6 +8,7 @@ use App\Models\CardListModel;
 use App\Models\CardStore;
 use App\Models\RateCard;
 use App\Models\RateCardSell;
+use App\Models\Report;
 use App\Models\SystemSetting;
 use App\Models\TraceSystem;
 use App\Models\TradeCard;
@@ -25,7 +26,8 @@ class AdminController extends Controller
     public function home(): Factory|View|Application
     {
         session()->flash('menu-active', 'dashboard');
-        return view('admin.home');
+        $reports = Report::getReports();
+        return view('admin.home', compact('reports'));
     }
 
     public function changePassword(): Factory|View|Application
@@ -231,7 +233,8 @@ class AdminController extends Controller
     public function systemSettingSave(Request $request): RedirectResponse
     {
         $params = $request->only([
-            'api_key_365'
+            'api_key_365',
+            'system_active'
         ]);
         AdminService::saveSystemSetting($params);
         session()->flash('notif', "Thay đổi cài đặt thành công!");

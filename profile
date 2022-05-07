@@ -1,0 +1,15 @@
+exec(){
+	docker-compose exec app sh
+}
+run(){
+	docker-compose exec app sh -c "$1"
+}
+art(){
+	run "php artisan $1"
+}
+make(){
+	art "make:$1 $2"
+}
+migrate(){
+    art "migrate"
+}
