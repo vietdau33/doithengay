@@ -77,12 +77,12 @@ class CardController extends Controller
         }
 
         TraceSystem::setTrace([
-            'mgs' => 'Có user mua thẻ',
+            'mgs' => 'mua thẻ',
             'username' => user()->username,
             ...$request->validated()
         ]);
 
-        session()->flash('notif', 'Thẻ đã được đặt mua thành công! Sau 5 phút chưa được xử lý sẽ tự động chuyển sang mua thường!');
+        session()->flash('notif', 'Thẻ đã được đặt mua thành công! Sau 5 phút chưa được xử lý sẽ tự động chuyển sang mua nhanh!');
         return back();
     }
 
@@ -129,7 +129,7 @@ class CardController extends Controller
             return back()->withInput();
         }
         TraceSystem::setTrace([
-            'mgs' => 'Có user đổi thẻ',
+            'mgs' => 'đổi thẻ',
             'username' => user()->username,
             ...$request->validated()
         ]);

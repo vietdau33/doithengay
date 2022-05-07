@@ -159,7 +159,9 @@
 @endif
 <div id="copyright">
     <hr class="m-0">
-    <p class="m-0 p-3 text-center">Bản quyền &copy; {{ request()->getHost() }} {{ date('Y') }}</p>
+	<p class="m-0 p-3 text-center">Hotline: 052 8059321<br>
+	Email: support@autocardvn.com<br>
+    Bản quyền &copy; {{ request()->getHost() }} {{ date('Y') }}  - Thu mua mã thẻ, đổi thẻ sang tiền mặt</p>
 </div>
 
 <script src="{{ asset('vendor/alertify/alertify.js') }}"></script>

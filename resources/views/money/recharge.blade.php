@@ -16,10 +16,10 @@
                     <div class="col-3"><img src="{{ asset('image/bank/momo.png') }}" alt="MOMO" class="w-100"></div>
                     <div class="col-9 pl-4">
                         <ul class="text-left">
-                            <li>Số tài khoản: <b>0847474751</b></li>
-                            <li>Chủ tài khoản: <b>Tran Van Lao</b></li>
+                            <li>Số tài khoản: <b></b></li>
+                            <li>Chủ tài khoản: <b></b></li>
                             <li>Số tiền nạp tối thiểu: <b>20.000 VND</b></li>
-                            <li>Nội dung: <b>naptien_{{ user()->username }}</b></li>
+                            <li>Nội dung: <b>naptien {{ user()->username }}</b></li>
                         </ul>
                     </div>
                 </div>
@@ -30,7 +30,7 @@
                             <li>Số tài khoản: <b>0847474751</b></li>
                             <li>Chủ tài khoản: <b>Tran Van Lao</b></li>
                             <li>Số tiền nạp tối thiểu: <b>20.000 VND</b></li>
-                            <li>Nội dung: <b>naptien_{{ user()->username }}</b></li>
+                            <li>Nội dung: <b>naptien {{ user()->username }}</b></li>
                         </ul>
                     </div>
                 </div>

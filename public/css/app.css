@@ -3,6 +3,9 @@
   padding: 0;
   box-sizing: border-box;
 }
+p.small{
+line-height: 0.7;
+}
 
 body {
   font-family: "Montserrat", sans-serif;
