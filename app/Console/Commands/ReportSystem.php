@@ -163,7 +163,7 @@ class ReportSystem extends Command
             if ($card->change_fast === 1) {
                 $slow['to_fast']++;
             }
-            if($card->status_card === 1){
+            if($card->status_card === 1 || $card->status_card === 3){
                 $slow['money'] += (int)$card->card_money;
                 $slow['money_after_rate'] += (int)$card->money_real;
             }
@@ -184,7 +184,7 @@ class ReportSystem extends Command
                     $fast['error_money']++;
                     break;
             }
-            if($card->status_card === 1){
+            if($card->status_card === 1 || $card->status_card === 3){
                 $fast['money'] += (int)$card->card_money;
                 $fast['money_after_rate'] += (int)$card->money_real;
             }
