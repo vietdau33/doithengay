@@ -1,6 +1,16 @@
+@media (max-width: 575px) {
+    > .container {
+        > .row {
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+        }
+    }
+}
+
 .header-logo {
     max-width: 100%;
-    width: 100px;
+    width: auto;
+    max-height: 80px;
 }
 
 .header-menu ul {

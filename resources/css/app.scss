@@ -86,6 +86,10 @@ body {
     font-size: 15px;
 }
 
+p.small {
+    line-height: 0.7;
+}
+
 #header {
     background: #fff;
     position: fixed;
@@ -556,5 +560,24 @@ $focus-ring: 0px 0px 0px 2px $dark;
 @media screen and (-ms-high-contrast: active) {
     .toggle-track {
         border-radius: 0;
+    }
+}
+
+@media (max-width: 991px) {
+    #bottom_menu {
+        flex-wrap: wrap;
+        justify-content: center;
+
+        > a{
+            width: calc(100% / 4);
+        }
+    }
+}
+
+@media (max-width: 575px) {
+    #bottom_menu {
+        > a{
+            width: calc(100% / 3);
+        }
     }
 }

@@ -33,6 +33,7 @@
     <link rel="stylesheet" href="{{ asset('vendor/alertify/css/alertify.min.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/alertify/css/themes/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
     @yield('style')
 
     <script src="{{ asset('vendor/jquery/jquery-3.6.0.min.js') }}"></script>
@@ -46,13 +47,14 @@
 <div id="header">
     <div class="container">
         <div class="row align-items-center">
-            <div class="col-6 col-lg-2">
+            @php($showLogin = !logined() || user()->verified === 0)
+            <div class="col-12 col-sm-6 col-lg-2 text-center">
                 <a href="{{ url('') }}" class="d-block">
                     <img src="{{ asset('image/logo.png') }}" alt="Logo" class="header-logo">
                 </a>
             </div>
-            <div class="d-none d-lg-block col-lg-8">
-                <div class="header-menu d-none {{ logined() && user()->verified === 1 ? 'd-lg-block' : '' }}">
+            <div class="d-none d-lg-block {{ $showLogin ? 'col-lg-6' : 'col-lg-8' }}">
+                <div class="header-menu d-none {{ !$showLogin ? 'd-lg-block' : '' }}">
                     <ul>
                         <li>
                             <div class="dropdown">
@@ -82,10 +84,11 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-6 col-lg-2 text-center">
+            <div class="col-12 col-sm-6 {{ $showLogin ? 'col-lg-4' : 'col-lg-2' }} text-center">
                 <div class="header-auth">
-                    @if(!logined() || user()->verified === 0)
+                    @if($showLogin)
                         <a class="btn btn-success" href="{{ route('auth.view') }}">Đăng nhập</a>
+                        <a class="btn btn-info" href="{{ route('auth.register.view') }}">Đăng ký</a>
                     @else
                         <div class="fas fa-bars bar-user-menu bar-user-icon">
                             <div class="menu-user cursor-nomal" style="display: none">
@@ -157,12 +160,19 @@
         </a>
     </div>
 @endif
-<div id="copyright">
-    <hr class="m-0">
-	<p class="m-0 p-3 text-center">Hotline: 052 8059321<br>
-	Email: support@autocardvn.com<br>
-    Bản quyền &copy; {{ request()->getHost() }} {{ date('Y') }}  - Thu mua mã thẻ, đổi thẻ sang tiền mặt</p>
+<div id="copyright" class="p-3">
+    <hr class="m-0 mb-2">
+    <p class="m-0 text-center">Hotline: 052.805.9321</p>
+	<p class="m-0 text-center">Email: support@autocardvn.com</p>
+    <p class="m-0 text-center">Bản quyền &copy; {{ request()->getHost() }} {{ date('Y') }}  - Thu mua mã thẻ, đổi thẻ sang tiền mặt</p>
 </div>
+
+@if(env('APP_ENV', 'local') == 'production')
+    <!-- Messenger Plugin chat Code -->
+    <div id="fb-root"></div>
+    <!-- Your Plugin chat code -->
+    <div id="fb-customer-chat" class="fb-customerchat"></div>
+@endif
 
 <script src="{{ asset('vendor/alertify/alertify.js') }}"></script>
 <script src="{{ asset('js/autosize.js') }}"></script>
@@ -205,6 +215,30 @@
     //remove elm script
     document.querySelector('#script_save_error').remove();
 </script>
+
+@if(env('APP_ENV', 'local') == 'production')
+    <!-- Your SDK code -->
+    <script>
+        const chatbox = document.getElementById('fb-customer-chat');
+        chatbox.setAttribute("page_id", "103796658998165");
+        chatbox.setAttribute("attribution", "biz_inbox");
+
+        window.fbAsyncInit = function() {
+            FB.init({
+                xfbml   : true,
+                version : 'v13.0'
+            });
+        };
+
+        (function(d, s, id) {
+            let js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = 'https://connect.facebook.net/vi_VN/sdk/xfbml.customerchat.js';
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+@endif
 
 @yield('script')
 
