@@ -162,9 +162,9 @@
 @endif
 <div id="copyright" class="p-3">
     <hr class="m-0 mb-2">
-    <p class="m-0 text-center">Hotline: 052.805.9321</p>
-	<p class="m-0 text-center">Email: support@autocardvn.com</p>
-    <p class="m-0 text-center">Bản quyền &copy; {{ request()->getHost() }} {{ date('Y') }}  - Thu mua mã thẻ, đổi thẻ sang tiền mặt</p>
+    <p class="m-0 text-center">Email: support@autocardvn.com</p>
+	<p class="m-0 text-center">Hotline: 058.576.6666 - 086.515.1815 - 086.715.1815</p>
+    <p class="m-0 text-center">Bản quyền &copy; 2015 - 2022  - Thu mua mã thẻ, đổi thẻ sang tiền mặt</p>
 </div>
 
 @if(env('APP_ENV', 'local') == 'production')
