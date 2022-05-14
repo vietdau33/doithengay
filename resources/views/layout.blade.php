@@ -39,6 +39,7 @@
     <script src="{{ asset('vendor/jquery/jquery-3.6.0.min.js') }}"></script>
     <script src="{{ asset('vendor/bs4/popper.min.js') }}"></script>
     <script src="{{ asset('vendor/bs4/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('vendor/marquee/marquee.js') }}"></script>
     <script src="{{ asset('vendor/swiper/swiper.min.js') }}"></script>
     <script src="{{ asset('js/request.js') }}"></script>
 </head>

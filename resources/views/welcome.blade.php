@@ -4,9 +4,9 @@
     @if(!empty($notification))
         <div id="notification" class="container-fluid">
             <div class="alert alert-light color-primary d-flex mb-0">
-                <marquee class="font-weight-bold" behavior="scroll" direction="left" onmouseover="this.stop();" onmouseout="this.start();">
+                <div class="font-weight-bold marquee marquee-notification overflow-hidden">
                     {!! $notification !!}
-                </marquee>
+                </div>
             </div>
         </div>
     @endif
@@ -33,7 +33,8 @@
         <ul class="list-notif mb-4">
             <li>
                 <img src="{{ asset('image/arrow-1.gif') }}" alt="Arrow">
-                <span class="font-weight-bold">Viettel cần điền đúng cả seri, điền sai seri khi lỗi sẽ bị xử lý chậm.</span>
+                <span
+                    class="font-weight-bold">Viettel cần điền đúng cả seri, điền sai seri khi lỗi sẽ bị xử lý chậm.</span>
             </li>
             <li>
                 <img src="{{ asset('image/arrow-1.gif') }}" alt="Arrow">
@@ -69,6 +70,12 @@
                 nextEl: '.swiper-button-next',
                 prevEl: '.swiper-button-prev',
             },
+        });
+        $('.marquee-notification').marquee({
+            duration: 10000,
+            delayBeforeStart: 1000,
+            pauseOnHover: true,
+            startVisible: true
         });
     </script>
 @endsection
