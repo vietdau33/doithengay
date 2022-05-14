@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Exception;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -47,7 +48,7 @@ class Notification extends Model
             $new_notif->user_id = user()->id;
             $new_notif->content_alias = $contentAlias;
             $new_notif->content = $notif;
-            $new_notif->expired = 0;
+            $new_notif->order = 999999;
             $new_notif->save();
 
             return $new_notif;
@@ -84,19 +85,20 @@ class Notification extends Model
         }
     }
 
-    public static function getNotification($getAll = false): array
+    public static function getNotification($getAll = false): Collection
     {
-        if ($getAll) {
-            return self::all()->toArray();
+        $collection = self::orderBy('order');
+        if (!$getAll) {
+            $collection->whereActive(1);
         }
-        return self::whereActive(1)->get()->toArray();
+        return $collection->get();
     }
 
     public static function buildNotificationShow(): string
     {
         $separatorNotif = SystemSetting::getSetting('separator_notification');
         $separatorNotif = "<span class='space'></span>$separatorNotif<span class='space'></span>";
-        $notification = Notification::getNotification();
+        $notification = Notification::getNotification()->toArray();
         $notification = array_map('htmlspecialchars', array_column($notification, 'content'));
         return implode($separatorNotif, $notification);
     }

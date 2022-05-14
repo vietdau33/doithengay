@@ -466,4 +466,24 @@ class AdminService extends Service
             'message' => 'Thành công'
         ]);
     }
+
+    public static function changeOrderNotification($aryOrder) {
+        try{
+            foreach ($aryOrder as $alias => $order) {
+                $notif = Notification::whereAlias($alias)->first();
+                if($notif == null) continue;
+                $notif->order = (int)$order;
+                $notif->save();
+            }
+            return response()->json([
+                'success' => true,
+                'message' => 'Thay đổi order thông báo thành công!'
+            ]);
+        }catch (Exception $exception) {
+            return response()->json([
+                'success' => false,
+                'message' => $exception->getMessage()
+            ]);
+        }
+    }
 }

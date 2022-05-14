@@ -254,7 +254,7 @@ class AdminController extends Controller
     public function notification(): Factory|View|Application
     {
         session()->flash('menu-active', 'notification');
-        $notification = Notification::all();
+        $notification = Notification::getNotification(true);
         return view('admin.notification.list', compact('notification'));
     }
 
@@ -269,7 +269,7 @@ class AdminController extends Controller
         return AdminService::notificationSave($request->content_new);
     }
 
-    public static function notificationChangeStatus(Request $request): JsonResponse
+    public function notificationChangeStatus(Request $request): JsonResponse
     {
         $alias = $request->alias;
         if (empty($alias)) {
@@ -281,7 +281,7 @@ class AdminController extends Controller
         return AdminService::changeStatusNotification($alias);
     }
 
-    public static function notificationDelete(Request $request): JsonResponse
+    public function notificationDelete(Request $request): JsonResponse
     {
         $alias = $request->alias;
         if (empty($alias)) {
@@ -291,5 +291,25 @@ class AdminController extends Controller
             ]);
         }
         return AdminService::deleteNotification($alias);
+    }
+
+    public function notificationGetList(): JsonResponse
+    {
+        $notification = Notification::getNotification(true)->toArray();
+        return response()->json([
+            'success' => true,
+            'datas' => $notification
+        ]);
+    }
+
+    public function notificationChangeOrder(Request $request) {
+        $resultOrder = $request->results;
+        if(empty($resultOrder)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data order notification error!'
+            ]);
+        }
+        return AdminService::changeOrderNotification($resultOrder);
     }
 }

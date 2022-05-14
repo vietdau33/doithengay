@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="{{ asset('vendor/alertify/css/themes/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('_admin_/css/codebase.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/fontawesome/all.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/jquery-ui/jquery-ui.css') }}">
 
     @yield('style')
 </head>
@@ -225,6 +226,7 @@
 
 <script src="{{ asset('_admin_/js/codebase.core.min.js') }}"></script>
 <script src="{{ asset('_admin_/js/codebase.app.min.js') }}"></script>
+<script src="{{ asset('vendor/jquery-ui/jquery-ui.js') }}"></script>
 
 <!-- Page JS Plugins -->
 <script src="{{ asset('_admin_/js/plugins/chartjs/Chart.bundle.min.js') }}"></script>

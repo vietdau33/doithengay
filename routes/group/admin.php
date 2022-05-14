@@ -69,4 +69,6 @@ Route::prefix('notification')->name('notification.')->group(function () {
     Route::post('', [AdminController::class, 'notificationSave'])->name('save_notif');
     Route::post('change_status', [AdminController::class, 'notificationChangeStatus'])->name('change_status');
     Route::post('delete', [AdminController::class, 'notificationDelete'])->name('delete');
+    Route::post('get-list-notif', [AdminController::class, 'notificationGetList'])->name('get_list');
+    Route::post('change-order', [AdminController::class, 'notificationChangeOrder'])->name('change_order');
 });

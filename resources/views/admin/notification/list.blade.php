@@ -4,6 +4,9 @@
         <div class="block">
             <div class="block-header block-header-default">
                 <h3 class="block-title">Danh sách thông báo ở màn hình chính</h3>
+                @if($notification->count() > 1)
+                    <button class="btn btn-secondary mr-1 btn-change-order">Sửa order</button>
+                @endif
                 <button class="btn btn-primary btn-add-notification" data-toggle="modal"
                         data-target="#modal_add_new_notification">Thêm mới
                 </button>
@@ -129,6 +132,34 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="modal_change_order_notification" tabindex="-1" role="dialog"
+         aria-labelledby="modal_change_order_notification" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-fromright" role="document">
+            <div class="modal-content">
+                <div class="block block-themed block-transparent mb-0">
+                    <div class="block-header bg-primary-dark">
+                        <h3 class="block-title">Thay đổi order của thông báo</h3>
+                        <div class="block-options">
+                            <button type="button" class="btn-block-option" data-dismiss="modal" aria-label="Close">
+                                <i class="si si-close"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="block-content pt-3 pb-3">
+                        <div class="alert alert-info">
+                            Thực hiện kéo thả các thông báo để thay đổi order!
+                        </div>
+                        <hr>
+                        <div class="box-list-notif custom-scrollbar"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-alt-secondary" data-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-alt-success btn-submit-change-order">Thay đổi</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('script')
@@ -198,6 +229,32 @@
                 $("#tbody-notification").find("tr:not([id='template_tr_data'])").each(function (index, el) {
                     $(this).find('td:first-child').text(index + 1);
                 });
+            });
+        });
+        $(".btn-change-order").on('click', function(){
+            const modal = $("#modal_change_order_notification");
+            const aryContentEl = [];
+            Request.ajax('{{ route('admin.notification.get_list') }}', function(result) {
+                for(const data of result.datas) {
+                    const notifEl = $('<div />').addClass('notif');
+                    notifEl.attr('data-alias', data.alias);
+                    notifEl.text(data.content);
+                    aryContentEl.push(notifEl);
+                }
+                $('.box-list-notif').empty().append(aryContentEl).sortable();
+            });
+            modal.modal();
+        });
+        $('.btn-submit-change-order').on('click', function(){
+            let results = {};
+            $('.box-list-notif .notif').each(function(index, el) {
+                results[$(el).attr('data-alias')] = index + 1;
+            });
+            Request.ajax('{{ route('admin.notification.change_order') }}', { results }, function(result) {
+                if(!result.success) {
+                    alert(result.message);
+                }
+                return window.location.reload();
             });
         });
     </script>
