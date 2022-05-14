@@ -5,6 +5,7 @@
         <div id="notification" class="container-fluid">
             <div class="alert alert-light color-primary d-flex mb-0">
                 <div class="font-weight-bold marquee marquee-notification overflow-hidden">
+                    <span class="d-inline-block span-remove-after-first" style="width: 35vw"></span>
                     {!! $notification !!}
                 </div>
             </div>
@@ -71,7 +72,9 @@
                 prevEl: '.swiper-button-prev',
             },
         });
-        $('.marquee-notification').marquee({
+        $('.marquee-notification').bind('finished', function(){
+            $('.span-remove-after-first').remove();
+        }).marquee({
             duration: 10000,
             delayBeforeStart: 1000,
             pauseOnHover: true,
