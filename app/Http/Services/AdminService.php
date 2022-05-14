@@ -7,6 +7,7 @@ use App\Models\BankModel;
 use App\Models\BillModel;
 use App\Models\CardListModel;
 use App\Models\CardStore;
+use App\Models\Notification;
 use App\Models\RateCard;
 use App\Models\RateCardSell;
 use App\Models\SystemSetting;
@@ -14,6 +15,7 @@ use App\Models\TraceSystem;
 use App\Models\TradeCard;
 use App\Models\User;
 use App\Models\WithdrawModel;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -256,7 +258,7 @@ class AdminService extends Service
                 continue;
             }
 
-            if($r->{$keySave} != (float)$rate) {
+            if ($r->{$keySave} != (float)$rate) {
                 $oldRate = $r->{$keySave};
                 $text = $keySave == 'trace_slow' ? 'chậm' : 'nhanh';
                 TraceSystem::setTrace([
@@ -305,7 +307,7 @@ class AdminService extends Service
                 continue;
             }
 
-            if($r->{$keySave} != (float)$rate) {
+            if ($r->{$keySave} != (float)$rate) {
                 $oldRate = $r->{$keySave};
                 $text = $keySave == 'trace_slow' ? 'chậm' : 'nhanh';
                 TraceSystem::setTrace([
@@ -350,7 +352,7 @@ class AdminService extends Service
                 continue;
             }
 
-            if($r->rate_use != (float)$rate) {
+            if ($r->rate_use != (float)$rate) {
                 $oldRate = $r->rate_use;
                 TraceSystem::setTrace([
                     'mgs' => "Admin thay đổi rate của loại cước $typeFee",
@@ -384,7 +386,7 @@ class AdminService extends Service
             return back();
         }
 
-        $typeStatus = match($typeCard) {
+        $typeStatus = match ($typeCard) {
             'buy' => 'bán thẻ',
             'trade' => 'đổi thẻ',
             'bill' => 'gạch cước'
@@ -414,5 +416,54 @@ class AdminService extends Service
                 'value' => $param
             ]);
         }
+    }
+
+    public static function notificationSave($content): JsonResponse
+    {
+        $notif = Notification::setNotification($content);
+        if (!($notif instanceof Notification)) {
+            return response()->json($notif);
+        }
+        $datas = $notif->toArray();
+        $datas['created_at'] = date('d/m/Y', strtotime($datas['created_at']));
+        return response()->json([
+            'success' => true,
+            'message' => 'Thêm thông báo mới thành công!',
+            'datas' => $datas
+        ]);
+    }
+
+    public static function changeStatusNotification(string $alias): JsonResponse
+    {
+        $notification = Notification::whereAlias($alias)->first();
+        if($notification == null) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Notification không tồn tại!'
+            ]);
+        }
+        $notification->active = $notification->active === 1 ? 0 : 1;
+        $notification->save();
+        return response()->json([
+            'success' => true,
+            'message' => 'Thành công',
+            'active' => $notification->active
+        ]);
+    }
+
+    public static function deleteNotification(string $alias): JsonResponse
+    {
+        $notification = Notification::whereAlias($alias)->first();
+        if($notification == null) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Notification không tồn tại!'
+            ]);
+        }
+        $notification->delete();
+        return response()->json([
+            'success' => true,
+            'message' => 'Thành công'
+        ]);
     }
 }

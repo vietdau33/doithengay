@@ -63,3 +63,10 @@ Route::prefix('system-setting')->group(function () {
     Route::get('/', [AdminController::class, 'systemSettings'])->name('system-setting');
     Route::post('/', [AdminController::class, 'systemSettingSave']);
 });
+
+Route::prefix('notification')->name('notification.')->group(function () {
+    Route::get('', [AdminController::class, 'notification'])->name('home');
+    Route::post('', [AdminController::class, 'notificationSave'])->name('save_notif');
+    Route::post('change_status', [AdminController::class, 'notificationChangeStatus'])->name('change_status');
+    Route::post('delete', [AdminController::class, 'notificationDelete'])->name('delete');
+});

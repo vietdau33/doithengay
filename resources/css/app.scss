@@ -106,7 +106,7 @@ p.small {
 
 #slide-home .swiper {
     width: 100%;
-    height: auto;
+    height: 315px;
     max-height: 75vh;
 }
 
@@ -580,4 +580,13 @@ $focus-ring: 0px 0px 0px 2px $dark;
             width: calc(100% / 3);
         }
     }
+}
+
+span.space {
+    width: 25px;
+    display: inline-block;
+}
+
+.color-primary {
+    color: #007bff !important;
 }

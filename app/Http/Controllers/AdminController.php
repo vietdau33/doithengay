@@ -6,6 +6,7 @@ use App\Http\Services\AdminService;
 use App\Models\BillModel;
 use App\Models\CardListModel;
 use App\Models\CardStore;
+use App\Models\Notification;
 use App\Models\RateCard;
 use App\Models\RateCardSell;
 use App\Models\Report;
@@ -14,6 +15,7 @@ use App\Models\TraceSystem;
 use App\Models\TradeCard;
 use App\Models\User;
 use App\Models\WithdrawModel;
+use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -234,7 +236,8 @@ class AdminController extends Controller
     {
         $params = $request->only([
             'api_key_365',
-            'system_active'
+            'system_active',
+            'separator_notification'
         ]);
         AdminService::saveSystemSetting($params);
         session()->flash('notif', "Thay đổi cài đặt thành công!");
@@ -246,5 +249,47 @@ class AdminController extends Controller
         session()->flash('menu-active', 'trace-log');
         $logs = TraceSystem::logs();
         return view('admin.logs.history', compact('logs'));
+    }
+
+    public function notification(): Factory|View|Application
+    {
+        session()->flash('menu-active', 'notification');
+        $notification = Notification::all();
+        return view('admin.notification.list', compact('notification'));
+    }
+
+    public function notificationSave(Request $request): JsonResponse
+    {
+        if (empty($request->content_new)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Not see new content to save!'
+            ]);
+        }
+        return AdminService::notificationSave($request->content_new);
+    }
+
+    public static function notificationChangeStatus(Request $request): JsonResponse
+    {
+        $alias = $request->alias;
+        if (empty($alias)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Alias của notification không hợp lệ!'
+            ]);
+        }
+        return AdminService::changeStatusNotification($alias);
+    }
+
+    public static function notificationDelete(Request $request): JsonResponse
+    {
+        $alias = $request->alias;
+        if (empty($alias)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Alias của notification không hợp lệ!'
+            ]);
+        }
+        return AdminService::deleteNotification($alias);
     }
 }

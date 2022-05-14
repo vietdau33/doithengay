@@ -42,6 +42,17 @@
                             </span>
                         </label>
                     </div>
+                    <div class="form-group">
+                        <label for="api_key_365">Dấu phân cách giữa các thông báo ở màn hình chính</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="separator_notification"
+                            name="separator_notification"
+                            autocomplete="off"
+                            value="{{ $settings['separator_notification'] ?? '' }}"
+                        />
+                    </div>
                     <div class="text-right mb-3 mt-3">
                         <button class="btn btn-primary">Lưu thay đổi</button>
                     </div>

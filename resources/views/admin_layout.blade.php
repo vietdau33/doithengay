@@ -140,6 +140,7 @@
                             <li><a href="{{ route('admin.feature.trade') }}" data-id="trade">Thu thẻ cào</a></li>
                             <li><a href="{{ route('admin.feature.buy') }}" data-id="buy">Bán thẻ cào</a></li>
                             <li><a href="{{ route('admin.feature.bill') }}" data-id="bill">Gạch cước</a></li>
+                            <li><a href="{{ route('admin.notification.home') }}" data-id="notification">Thông báo ở trang chủ</a></li>
                         </ul>
                     </li>
                     <li>
