@@ -24544,6 +24544,7 @@ div.tagsinput span.tag a:hover {
 
 .toggle {
     align-items: center;
+    justify-content: center;
     border-radius: 100px;
     display: flex;
     font-weight: 700;

@@ -91,7 +91,7 @@
                         @endforeach
                         @if($notification->count() <= 0)
                             <tr id="no_have_notification">
-                                <td colspan="5">Không có thông báo nào</td>
+                                <td colspan="6">Không có thông báo nào</td>
                             </tr>
                         @endif
                         </tbody>
