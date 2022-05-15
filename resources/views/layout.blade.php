@@ -46,79 +46,90 @@
 <body class="custom-scrollbar">
 
 <div id="header">
-    <div class="container">
+    <div class="container-fluid">
         <div class="row align-items-center">
             @php($showLogin = !logined() || user()->verified === 0)
-            <div class="col-12 col-sm-6 col-lg-2 text-center">
+            <div class="col-9 col-sm-6 col-lg-2 text-center">
                 <a href="{{ url('') }}" class="d-block">
                     <img src="{{ asset('image/logo.png') }}" alt="Logo" class="header-logo">
                 </a>
             </div>
-            <div class="d-none d-lg-block {{ $showLogin ? 'col-lg-6' : 'col-lg-8' }}">
-                <div class="header-menu d-none {{ !$showLogin ? 'd-lg-block' : '' }}">
-                    <ul>
-                        <li>
-                            <div class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Thẻ cào</a>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="{{ route('buy-card') }}" data-id="menu-buy-card">Mua thẻ</a>
-                                    <a class="dropdown-item" href="{{ route('trade-card') }}" data-id="menu-trade-card">Đổi thẻ</a>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Dịch vụ</a>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="{{ route('recharge') }}" data-id="menu-recharge">Nạp tiền</a>
-                                    <a class="dropdown-item" href="{{ route('withdraw') }}" data-id="menu-withdraw">Rút tiền</a>
-                                    <a class="dropdown-item" href="{{ route('pay-bill') }}" data-id="menu-pay-bill">Thanh toán cước</a>
-                                </div>
-                            </div>
-                        </li>
-                        <li data-id="menu-discount">
-                            <a href="{{ route('chiet-khau') }}">Chiết khấu</a>
-                        </li>
-                        <li data-id="connect-api">
-                            <a href="{{ route('connect-api') }}">Kết nối API</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-12 col-sm-6 {{ $showLogin ? 'col-lg-4' : 'col-lg-2' }} text-center">
-                <div class="header-auth">
-                    @if($showLogin)
-                        <a class="btn btn-success" href="{{ route('auth.view') }}">Đăng nhập</a>
-                        <a class="btn btn-info" href="{{ route('auth.register.view') }}">Đăng ký</a>
-                    @else
-                        <div class="fas fa-bars bar-user-menu bar-user-icon">
-                            <div class="menu-user cursor-nomal" style="display: none">
-                                <p class="text-center">{{ user()->fullname }}</p>
-                                <p class="text-center font-weight-normal">{{ number_format(user()->money) }} đ</p>
-                                <hr />
-                                <ul>
-                                    @if(is_admin())
-                                        <li><a href="{{ route('admin.home') }}">Admin Panel</a></li>
-                                        <hr />
-                                    @endif
-                                    <li><a href="{{ route('profile.home') }}">Thông tin cá nhân</a></li>
-                                    {{--<li><a href="{{ route('security.setting') }}">Cài đặt bảo mật</a></li>--}}
-                                    <li><a href="{{ route('bank.list') }}">Thẻ ngân hàng</a></li>
-                                    <hr />
-                                    <div class="d-lg-none">
-                                        <li data-id="menu-trade-card"><a href="{{ route('trade-card') }}">Đổi thẻ cào</a></li>
-                                        <li data-id="menu-buy-card"><a href="{{ route('buy-card') }}">Mua thẻ cào</a></li>
-                                        <li data-id="menu-recharge"><a href="{{ route('recharge') }}">Nạp tiền</a></li>
-                                        <li data-id="menu-withdraw"><a href="{{ route('withdraw') }}">Rút tiền</a></li>
-                                        <li data-id="menu-discount"><a href="{{ route('chiet-khau') }}">Chiết khấu</a></li>
-                                        <li data-id="connect-api"><a href="{{ route('connect-api') }}">Kết nối API</a></li>
-                                        <hr />
+            <div class="col-3 col-sm-6 col-lg-10">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-lg-none"></div>
+                    <div class="d-none d-lg-block">
+                        <div class="header-menu d-none {{ !$showLogin ? 'd-lg-block' : '' }}">
+                            <ul>
+                                <li>
+                                    <div class="dropdown">
+                                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Thẻ cào</a>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="{{ route('buy-card') }}" data-id="menu-buy-card">Mua thẻ</a>
+                                            <a class="dropdown-item" href="{{ route('trade-card') }}" data-id="menu-trade-card">Đổi thẻ</a>
+                                        </div>
                                     </div>
-                                    <li><a href="{{ route('auth.logout') }}">Đăng xuất</a></li>
-                                </ul>
-                            </div>
+                                </li>
+                                <li>
+                                    <div class="dropdown">
+                                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Dịch vụ</a>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="{{ route('recharge') }}" data-id="menu-recharge">Nạp tiền</a>
+                                            <a class="dropdown-item" href="{{ route('withdraw') }}" data-id="menu-withdraw">Rút tiền</a>
+                                            <a class="dropdown-item" href="{{ route('pay-bill') }}" data-id="menu-pay-bill">Thanh toán cước</a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li data-id="menu-discount">
+                                    <a href="{{ route('chiet-khau') }}">Chiết khấu</a>
+                                </li>
+                                <li data-id="connect-api">
+                                    <a href="{{ route('connect-api') }}">Kết nối API</a>
+                                </li>
+                            </ul>
                         </div>
-                    @endif
+                    </div>
+                    <div class="text-center d-flex align-items-center">
+                        @if(!$showLogin)
+                            <div class="user-info-header d-none d-md-block mr-2">
+                                <h6 class="m-0 font-weight-bold">{{ user()->fullname }}</h6>
+                                <span>( {{ number_format(user()->money) }} đ )</span>
+                            </div>
+                        @endif
+                        <div class="header-auth">
+                            @if($showLogin)
+                                <a class="btn btn-success" href="{{ route('auth.view') }}">Đăng nhập</a>
+                                <a class="btn btn-info" href="{{ route('auth.register.view') }}">Đăng ký</a>
+                            @else
+                                <div class="fas fa-bars bar-user-menu bar-user-icon">
+                                    <div class="menu-user cursor-nomal" style="display: none">
+                                        <p class="text-center">{{ user()->fullname }}</p>
+                                        <p class="text-center font-weight-normal">{{ number_format(user()->money) }} đ</p>
+                                        <hr />
+                                        <ul>
+                                            @if(is_admin())
+                                                <li><a href="{{ route('admin.home') }}">Admin Panel</a></li>
+                                                <hr />
+                                            @endif
+                                            <li><a href="{{ route('profile.home') }}">Thông tin cá nhân</a></li>
+                                            <li><a href="{{ route('security.setting') }}">Cài đặt bảo mật</a></li>
+                                            <li><a href="{{ route('bank.list') }}">Thẻ ngân hàng</a></li>
+                                            <hr />
+                                            <div class="d-lg-none">
+                                                <li data-id="menu-trade-card"><a href="{{ route('trade-card') }}">Đổi thẻ cào</a></li>
+                                                <li data-id="menu-buy-card"><a href="{{ route('buy-card') }}">Mua thẻ cào</a></li>
+                                                <li data-id="menu-recharge"><a href="{{ route('recharge') }}">Nạp tiền</a></li>
+                                                <li data-id="menu-withdraw"><a href="{{ route('withdraw') }}">Rút tiền</a></li>
+                                                <li data-id="menu-discount"><a href="{{ route('chiet-khau') }}">Chiết khấu</a></li>
+                                                <li data-id="connect-api"><a href="{{ route('connect-api') }}">Kết nối API</a></li>
+                                                <hr />
+                                            </div>
+                                            <li><a href="{{ route('auth.logout') }}">Đăng xuất</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
