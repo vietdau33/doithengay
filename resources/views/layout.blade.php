@@ -125,7 +125,18 @@
     </div>
 </div>
 
-<div id="main-contents">
+<div id="main-contents" class="{{ request()->is('/') ? 'no-bg-image' : '' }}">
+    @php($notification = notification())
+    @if(!empty($notification))
+        <div id="notification" class="container-fluid">
+            <div class="alert alert-light alert-notification d-flex mb-0">
+                <div class="font-weight-bold marquee marquee-notification overflow-hidden">
+                    <span class="d-inline-block span-remove-after-first" style="width: 35vw"></span>
+                    {!! $notification !!}
+                </div>
+            </div>
+        </div>
+    @endif
     @yield('contents')
 </div>
 
@@ -185,6 +196,16 @@
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+    $('.marquee-notification')
+        .bind('finished', function(){
+            $('.span-remove-after-first').remove();
+        })
+        .marquee({
+            duration: 10000,
+            delayBeforeStart: 1000,
+            pauseOnHover: true,
+            startVisible: true
+        });
 </script>
 
 <script id="script_save_error">

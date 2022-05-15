@@ -111,9 +111,12 @@ p.small {
 }
 
 #main-contents {
-    background-image: url("/image/banner-top1.jpg");
-    background-repeat: no-repeat;
-    background-position: top;
+
+    &:not(.no-bg-image) {
+        background-image: url("/image/banner-top1.jpg");
+        background-repeat: no-repeat;
+        background-position: top;
+    }
 
     .header-content img {
         height: 50px;
@@ -589,4 +592,9 @@ span.space {
 
 .color-primary {
     color: #007bff !important;
+}
+
+.alert-notification{
+    background: #0c2c63;
+    color: #fff;
 }

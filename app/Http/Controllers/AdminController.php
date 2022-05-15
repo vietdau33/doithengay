@@ -302,7 +302,8 @@ class AdminController extends Controller
         ]);
     }
 
-    public function notificationChangeOrder(Request $request) {
+    public function notificationChangeOrder(Request $request): JsonResponse
+    {
         $resultOrder = $request->results;
         if(empty($resultOrder)) {
             return response()->json([

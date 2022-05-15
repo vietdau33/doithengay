@@ -34,8 +34,7 @@ class PageController extends Controller
         if(logined() && user()->verified === 0){
             return redirect()->to('/verify');
         }
-        $notification = Notification::buildNotificationShow();
-        return view('welcome', compact('notification'));
+        return view('welcome');
     }
 
     public function profile(): Factory|View|Application
