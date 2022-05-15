@@ -91,6 +91,9 @@ Route::middleware('authenticated')->group(function () {
 
     Route::prefix('security')->name('security.')->group(function () {
         Route::get('setting', [UserController::class, 'securitySetting'])->name('setting');
+        Route::post('setting/otp-change-status', [UserController::class, 'securityOTPChangeStatus'])->name('otp_change_status');
+        Route::post('setting/change-status', [UserController::class, 'securityChangeStatus'])->name('change_status');
+        Route::get('setting/callback-security/{hash}', [UserController::class, 'callbackChangeStatusSecurity'])->name('callback_security');
         Route::post('setting/security_level_2', [UserController::class, 'securitySettingPost']);
 
         Route::post('send-otp', [UserController::class, 'sendOtp'])->name('send-otp');
