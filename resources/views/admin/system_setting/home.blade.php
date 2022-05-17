@@ -21,7 +21,7 @@
                         />
                     </div>
                     <div class="form-group">
-                        <label class="toggle" for="system_active">
+                        <label class="toggle justify-content-start" for="system_active">
                             <label class="d-inline-block m-0 mr-3">TRẠNG THÁI KÍCH HOẠT WEBSITE</label>
                             <input type="hidden" name="system_active" value="{{ $settings['system_active'] ?? 0 }}">
                             <input

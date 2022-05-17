@@ -136,7 +136,7 @@
     </div>
 </div>
 
-<div id="main-contents" class="{{ request()->is('/') ? 'no-bg-image' : '' }}">
+<div id="main-contents" class="{{ request()->is('/', 'recharge') ? 'no-bg-image' : '' }}">
     @php($notification = notification())
     @if(!empty($notification))
         <div id="notification" class="container-fluid">

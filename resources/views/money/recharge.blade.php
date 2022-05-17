@@ -1,46 +1,37 @@
 @extends('layout')
 @section('contents')
-    <div class="container-fluid" id="auth-content">
+    <div class="container-fluid">
         <div class="header-content d-flex justify-content-center flex-column">
-            <img src="{{ asset('image/icon/page.svg') }}" alt="Phone" class="mb-2">
-            <p class="m-0 font-weight-bold">Nạp tiền</p>
+            <h3 class="mt-5 font-weight-bold text-center">Nạp tiền</h3>
         </div>
         <div class="body-content">
-            <div class="box-content box-recharge p-3 mt-4">
-                <div class="row align-items-center mt-3">
-                    <div class="col-12">
+            <div class="row align-items-center mt-3">
+                <div class="col-12">
+                    @if($banks->count() > 0)
                         <p class="text-center font-weight-bold">Vui lòng chuyển khoản sang 1 trong số các tài khoản sau:</p>
-                    </div>
-                </div>
-                <div class="row align-items-center mt-3">
-                    <div class="col-3"><img src="{{ asset('image/bank/momo.png') }}" alt="MOMO" class="w-100"></div>
-                    <div class="col-9 pl-4">
-                        <ul class="text-left">
-                            <li>Số tài khoản: <b></b></li>
-                            <li>Chủ tài khoản: <b></b></li>
-                            <li>Số tiền nạp tối thiểu: <b>20.000 VND</b></li>
-                            <li>Nội dung: <b>naptien {{ user()->username }}</b></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="row align-items-center mt-3">
-                    <div class="col-3"><img src="{{ asset('image/bank/ocb.png') }}" alt="MB Bank" class="w-100"></div>
-                    <div class="col-9 pl-4">
-                        <ul class="text-left">
-                            <li>Số tài khoản: <b>0847474751</b></li>
-                            <li>Chủ tài khoản: <b>Tran Van Lao</b></li>
-                            <li>Số tiền nạp tối thiểu: <b>20.000 VND</b></li>
-                            <li>Nội dung: <b>naptien {{ user()->username }}</b></li>
-                        </ul>
-                    </div>
+                        <table class="table table-striped table-bordered">
+                            <thead class="thead-light">
+                            <tr>
+                                <th scope="col">Ngân hàng</th>
+                                <th scope="col">Thông tin tài khoản</th>
+                                <th scope="col">Nội dung</th>
+                                <th scope="col">Nạp tối thiểu</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($banks as $bank)
+                                <tr>
+                                    <td class="font-weight-bold">{{ $bank->bank_type }}</td>
+                                    <td>{!! nl2br(htmlspecialchars($bank->bank_info)) !!}</td>
+                                    <td>{{ $bank->bank_content }}</td>
+                                    <td>{{ $bank->bank_min }}</td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    @endif
                 </div>
             </div>
         </div>
     </div>
-@endsection
-
-@section('script')
-    <script>
-        //
-    </script>
 @endsection

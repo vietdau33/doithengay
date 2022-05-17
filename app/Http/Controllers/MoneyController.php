@@ -6,6 +6,7 @@ use App\Http\Requests\WithdrawRequest;
 use App\Http\Services\MoneyService;
 use App\Models\BankModel;
 use App\Models\OtpData;
+use App\Models\SystemBank;
 use App\Models\TraceSystem;
 use App\Models\User;
 use App\Models\WithdrawModel;
@@ -20,8 +21,9 @@ class MoneyController extends Controller
 {
     public function recharge(): Factory|View|Application
     {
+        $banks = SystemBank::all();
         session()->flash('menu-active', 'menu-recharge');
-        return view('money.recharge');
+        return view('money.recharge', compact('banks'));
     }
 
     public function withdraw(): Factory|View|Application

@@ -12,6 +12,10 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    const NOMAL = 'nomal';
+    const DAILY = 'daily';
+    const TONGDAILY = 'tongdaily';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -41,4 +45,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function getUserType(): string
+    {
+        return match ($this->type_user) {
+            self::NOMAL => 'Thành viên',
+            self::DAILY => 'Đại lý',
+            self::TONGDAILY => 'Tổng đại lý',
+            default => 'Không xác định'
+        };
+    }
 }

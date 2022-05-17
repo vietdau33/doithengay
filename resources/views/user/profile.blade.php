@@ -24,6 +24,10 @@
                     <input type="text" class="form-control" id="email" value="{{ user()->email }}" disabled>
                 </div>
                 <div class="row m-0 text-left mt-3">
+                    <label class="w-100" for="money">Nhóm</label>
+                    <input type="text" class="form-control" id="user_type" value="{{ user()->getUserType() }}" disabled>
+                </div>
+                <div class="row m-0 text-left mt-3">
                     <label class="w-100" for="money">Số dư</label>
                     <input type="text" class="form-control" id="money" value="{{ number_format(user()->money) }} VNĐ" disabled>
                 </div>

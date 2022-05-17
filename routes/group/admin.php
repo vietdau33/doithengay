@@ -72,3 +72,9 @@ Route::prefix('notification')->name('notification.')->group(function () {
     Route::post('get-list-notif', [AdminController::class, 'notificationGetList'])->name('get_list');
     Route::post('change-order', [AdminController::class, 'notificationChangeOrder'])->name('change_order');
 });
+
+Route::prefix('system-bank')->group(function () {
+    Route::get('', [AdminController::class, 'listSystemBank'])->name('system-bank');
+    Route::post('add', [AdminController::class, 'addSystemBank'])->name('system-bank.add');
+    Route::get('delete/{id}', [AdminController::class, 'deleteSystemBank'])->name('system-bank.delete');
+});

@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SystemBankRequest;
 use App\Http\Services\AdminService;
+use App\Http\Services\BankService;
+use App\Http\Services\ModelService;
 use App\Models\BillModel;
 use App\Models\CardListModel;
 use App\Models\CardStore;
@@ -10,6 +13,7 @@ use App\Models\Notification;
 use App\Models\RateCard;
 use App\Models\RateCardSell;
 use App\Models\Report;
+use App\Models\SystemBank;
 use App\Models\SystemSetting;
 use App\Models\TraceSystem;
 use App\Models\TradeCard;
@@ -305,12 +309,37 @@ class AdminController extends Controller
     public function notificationChangeOrder(Request $request): JsonResponse
     {
         $resultOrder = $request->results;
-        if(empty($resultOrder)) {
+        if (empty($resultOrder)) {
             return response()->json([
                 'success' => false,
                 'message' => 'Data order notification error!'
             ]);
         }
         return AdminService::changeOrderNotification($resultOrder);
+    }
+
+    public function listSystemBank(): Factory|View|Application
+    {
+        $banks = SystemBank::all();
+        return view('admin.system_bank.list', compact('banks'));
+    }
+
+    public function addSystemBank(SystemBankRequest $request): JsonResponse
+    {
+        $param = $request->validated();
+        $status = ModelService::insert(SystemBank::class, $param) !== false;
+        return response()->json([
+            'status' => $status,
+            'message' => $status ? 'Thành công' : 'Thêm thất bại'
+        ]);
+    }
+
+    public function deleteSystemBank($id): RedirectResponse
+    {
+        $bank = SystemBank::whereId($id)->first();
+        if($bank != null) {
+            $bank->delete();
+        }
+        return redirect()->route('admin.system-bank');
     }
 }

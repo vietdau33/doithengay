@@ -81,7 +81,7 @@
                     </li>
                     <li>
                         <a class="nav-submenu" data-toggle="nav-submenu" href="#">
-                            <i class="si si-puzzle"></i>
+                            <i class="si si-refresh"></i>
                             <span class="sidebar-mini-hide">Rút tiền</span>
                         </a>
                         <ul class="nav-main__childrent">
@@ -134,7 +134,7 @@
                     </li>
                     <li>
                         <a class="nav-submenu" data-toggle="nav-submenu" href="#">
-                            <i class="si si-power"></i>
+                            <i class="si si-bulb"></i>
                             <span class="sidebar-mini-hide">Quản trị tính năng</span>
                         </a>
                         <ul class="nav-main__childrent">
@@ -147,7 +147,13 @@
                     <li>
                         <a href="{{ route('admin.system-setting') }}" data-id="system-setting">
                             <i class="si si-power"></i>
-                            <span class="sidebar-mini-hide">Quản trị hệ thống</span>
+                            <span class="sidebar-mini-hide">Quản lý hệ thống</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.system-bank') }}" data-id="system-setting">
+                            <i class="si si-settings"></i>
+                            <span class="sidebar-mini-hide">Quản lý thẻ ngân hàng</span>
                         </a>
                     </li>
                     <li>
