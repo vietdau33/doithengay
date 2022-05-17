@@ -209,7 +209,8 @@ p.small {
             color: #2188C9 !important;
         }
 
-        input[type='radio'] {
+        input[type='radio'],
+        input[type='checkbox'] {
             display: none;
         }
 
@@ -248,7 +249,8 @@ p.small {
     transform: scale(0);
 }
 
-input[type="radio"]:checked ~ .checkbox-custom {
+input[type="radio"]:checked ~ .checkbox-custom,
+input[type="checkbox"]:checked ~ .checkbox-custom {
     -webkit-transform: scale(1);
     -ms-transform: scale(1);
     transform: scale(1);
@@ -721,5 +723,40 @@ span.space {
                 display: none;
             }
         }
+    }
+}
+
+.box-shadow {
+    box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.2);
+    border-radius: 7px;
+}
+
+.cart-quantity {
+    .btn {
+        position: absolute;
+        right: 4px;
+        width: 19px !important;
+        height: 19px;
+        min-width: 19px !important;
+        border-radius: 0;
+        font-weight: lighter;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .button-minus {
+        bottom: 0;
+        border-bottom-right-radius: 0.25rem;
+    }
+
+    .button-plus {
+        top: 0;
+        border-top-right-radius: 0.25rem;
+        border-bottom: none;
+    }
+
+    .quantity-field {
+        padding-left: 20% !important;
     }
 }

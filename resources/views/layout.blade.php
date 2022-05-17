@@ -32,6 +32,7 @@
     <link rel="stylesheet" href="{{ asset('vendor/fontawesome/all.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/alertify/css/alertify.min.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/alertify/css/themes/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/jquery-ui/jquery-ui.css') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css?i='.strtotime(now())) }}">
     <link rel="stylesheet" href="{{ asset('css/custom.css?i='.strtotime(now())) }}">
     @yield('style')
@@ -138,7 +139,7 @@
     </div>
 </div>
 
-<div id="main-contents" class="{{ request()->is('/', 'recharge', 'transfer') ? 'no-bg-image' : '' }}">
+<div id="main-contents" class="{{ isIgnoreBg() ? 'no-bg-image' : '' }}">
     @php($notification = notification())
     @if(!empty($notification))
         <div id="notification" class="container-fluid">
@@ -232,6 +233,7 @@
 @endif
 
 <script src="{{ asset('vendor/alertify/alertify.js') }}"></script>
+<script src="{{ asset('vendor/jquery-ui/jquery-ui.js') }}"></script>
 <script src="{{ asset('js/autosize.js') }}"></script>
 <script src="{{ asset('js/app.js') }}"></script>
 

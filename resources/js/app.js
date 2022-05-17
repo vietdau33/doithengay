@@ -14,7 +14,7 @@ window.App = {
         $('#main-contents').css({
             'padding-top': (hh + 10) + 'px'
         });
-        if(window.innerWidth <= 575){
+        if (window.innerWidth <= 575) {
             $('#main-contents').css({
                 'background-position': 'center ' + hh + 'px'
             });
@@ -102,9 +102,9 @@ window.App = {
             setTimeout(triggerChecked, 50);
         });
     },
-    setTriggerClickForElement : function(){
+    setTriggerClickForElement: function () {
         $('[data-for]').off('click.data_for');
-        $('[data-for]').on('click.data_for', function() {
+        $('[data-for]').on('click.data_for', function () {
             let forData = $(this).attr('data-for');
             $('input[id="' + forData + '"]').trigger('click');
         });
@@ -161,6 +161,10 @@ window.App = {
             ret[obj[key]] = key;
             return ret;
         }, {});
+    },
+    ucFirst: function (string) {
+        string = string.toLowerCase();
+        return string.charAt(0).toUpperCase() + string.slice(1);
     }
 }
 

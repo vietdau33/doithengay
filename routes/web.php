@@ -47,6 +47,7 @@ Route::middleware('authenticated')->group(function () {
 
     Route::get('/buy-card', [CardController::class, 'buyCard'])->name('buy-card');
     Route::post('/buy-card', [CardController::class, 'buyCardPost'])->name('buy-card.post');
+    Route::post('/buy-card/multi', [CardController::class, 'buyCardMulti'])->name('buy-card-multi.post');
     Route::get('/list-card-buy/{hash}', [CardController::class, 'listCardBuy'])->name('list-card');
     Route::get('/buy-card/history', [CardController::class, 'buyCardHistory'])->name('buy-card.history');
 

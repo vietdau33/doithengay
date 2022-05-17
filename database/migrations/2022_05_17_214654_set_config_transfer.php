@@ -33,6 +33,9 @@ return new class extends Migration
             'transfer_money_max' => 'transfer',
         ] as $name => $feature) {
             $setting = SystemSetting::whereName($name)->first();
+            if ($setting == null) {
+                continue;
+            }
             $setting->feature = $feature;
             $setting->save();
         }

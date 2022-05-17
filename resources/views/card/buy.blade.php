@@ -1,24 +1,16 @@
 @extends('layout')
 @section('contents')
-    <div class="container-fluid" id="auth-content">
-        <div class="header-content d-flex justify-content-center flex-column">
-            <img src="{{ asset('image/icon/page.svg') }}" alt="Phone" class="mb-2">
-            <p class="m-0 font-weight-bold">Mua thẻ cào</p>
-        </div>
-        <div class="body-content">
-            <div class="box-content box-pay-card p-3 mt-4">
-                <div class="form-group d-flex justify-content-between align-items-center">
-                    <h4 class="font-weight-bold mb-0">Mua thẻ cào</h4>
-                    <a href="{{ route('buy-card.history') }}" class="btn btn-secondary">Xem lịch sử</a>
-                </div>
-                <hr />
-                <form action="{{ route('buy-card.post') }}" method="POST">
+    <div class="container-fluid">
+        <h4 class="font-weight-bold mb-0 mt-4 text-center">Mua thẻ cào</h4>
+        <div class="row body-content">
+            <div class="col-md-5 col-12 box-pay-card mt-4">
+                <form action="{{ route('buy-card.post') }}" method="POST" class="box-shadow p-2">
                     @csrf
                     <div class="form-header">
                         <img src="{{ asset('image/pay.png') }}" alt="Pay">
                         <span>Chọn loại thẻ</span>
                     </div>
-                    <div class="form-group d-flex flex-wrap justify-content-center ">
+                    <div class="form-group form-group-card-buy d-flex flex-wrap justify-content-center">
                         @foreach($listCard as $card)
                             <label class="box-card" for="card-{{ $card['name'] }}">
                                 <img src="/image/card/{{ $card['name'] }}.png" alt="{{ $card['name'] }}">
@@ -35,97 +27,53 @@
 
                     @php($dataActiveMoney = json_encode(['money_buy' => old('money_buy', ''), 'card_buy' => old('card_buy', '')]))
                     <div class="form-group d-flex flex-wrap justify-content-center" id="area-money" data-active="{{ $dataActiveMoney }}"></div>
-
-                    @if(false)
-                        <hr />
-                        <div class="form-header">
-                            <img src="{{ asset('image/pay.png') }}" alt="Pay">
-                            <span>Phương thức thanh toán</span>
-                        </div>
-                        <div class="form-group d-flex flex-wrap justify-content-center mt-2">
-                            @foreach(config('payment.method') as $key => $method)
-                                <label class="box-card" for="method-{{ $key }}">
+                    <input type="hidden" name="method_buy" value="cash" />
+                </form>
+            </div>
+            <div class="col-md-7 col-12 mt-4">
+                <div class="box-card-store box-shadow p-2">
+                    <div class="heading d-flex align-items-center mt-2">
+                        <i class="fa fa-shopping-cart"></i>
+                        <h6 class="mb-0 ml-2 font-weight-bold">Giỏ hàng</h6>
+                    </div>
+                    <hr>
+                    <div class="body-cart">
+                        <span class="cart-empty font-italic">Giỏ hàng trống</span>
+                        <div class="row-cart row-cart-template d-none flex-wrap justify-content-between align-items-center mb-2">
+                            <div class="cart-info"></div>
+                            <div class="cart-quantity">
+                                <div class="input-group position-relative">
                                     <input
-                                        type="radio"
-                                        id="method-{{ $key }}"
-                                        name="method_buy"
-                                        value="{{ $key }}"
-                                        {{ $method['default'] && old('method_buy') == null ? 'checked' : '' }}
-                                        {{ old('method_buy') != $key  ?: 'checked'}}
+                                        type="number"
+                                        step="1"
+                                        value="{{ old('quantity', '1') }}"
+                                        name="quantity"
+                                        class="quantity-field form-control d-inline-block flex-grow-0 p-1 text-left"
                                     />
-                                    <span>{{ $method['name'] }}</span>
-                                    <span class="checkbox-custom"></span>
-                                </label>
-                            @endforeach
-                        </div>
-                    @else
-                        <input type="hidden" name="method_buy" value="cash" />
-                    @endif
-                    <hr />
-                    <div class="form-header row">
-                        <div class="col-12 col-sm-4">
-                            <img src="{{ asset('image/pay.png') }}" alt="Pay">
-                            <span>Số lượng</span>
-                        </div>
-                        <div class="col-12 col-sm-8">
-                            <div class="form-group d-flex flex-wrap justify-content-center m-0">
-                                <div class="input-group">
-                                    <input type="button" value="-" class="btn button-minus" data-field="quantity">
-                                    <input type="number" step="1" value="{{ old('quantity', '1') }}" name="quantity" class="quantity-field form-control d-inline-block flex-grow-0">
-                                    <input type="button" value="+" class="btn button-plus" data-field="quantity">
+                                    <button class="btn button-minus" data-field="quantity">-</button>
+                                    <button class="btn button-plus" data-field="quantity">+</button>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <hr />
-                    <div class="form-header">
-                        <img src="{{ asset('image/pay.png') }}" alt="Pay">
-                        <span>Phương thức xử lý</span>
-                    </div>
-                    <div class="form-group mt-2">
-                        <div class="group-type-slow type_buy_response w-100 d-flex m-2">
-                            <label class="box-card m-0" for="type-slow">
-                                <input
-                                    type="radio"
-                                    id="type-slow"
-                                    name="type_buy"
-                                    value="slow"
-                                    {{ old('type_buy') == 'slow' ? 'checked' : '' }}
-                                />
-                                <span>Mua chậm</span>
-                                <span class="checkbox-custom"></span>
-                            </label>
-                            <div class="mb-0 ml-2 alert alert-secondary d-flex align-items-center" data-for="type-slow" style="width: calc(100% - 150px)">
-                                Mua chậm:&nbsp;<span id="rate_slow_show">0</span>% -&nbsp;<span id="money_slow_show">0</span> VNĐ
+                            <div class="cart-remove">
+                                <button class="btn btn-danger"><i class="fa fa-trash"></i></button>
                             </div>
-                        </div>
-                        <div class="group-type-fast type_buy_response w-100 d-flex m-2">
-                            <label class="box-card m-0" for="type-fast">
-                                <input
-                                    type="radio"
-                                    id="type-fast"
-                                    name="type_buy"
-                                    value="fast"
-                                    {{  old('type_buy') != 'slow' ? 'checked' : '' }}
-                                />
-                                <span>Mua nhanh</span>
-                                <span class="checkbox-custom"></span>
-                            </label>
-                            <div class="mb-0 ml-2 alert alert-secondary d-flex align-items-center" data-for="type-fast" style="width: calc(100% - 150px)">
-                                Mua nhanh:&nbsp;<span id="rate_fast_show">0</span>% -&nbsp;<span id="money_fast_show">0</span> VNĐ
+                            <div class="cart-type-buy mt-2" style="width: 70%">
+                                <select name="" id="" class="form-control">
+                                    <option value="">Phương thức mua thẻ</option>
+                                    <option value="slow">Mua chậm - Chiết khấu: 0%</option>
+                                    <option value="fast">Mua nhanh - Chiết khấu: 0%</option>
+                                </select>
                             </div>
+                            <div class="cart-money text-right" style="width: 30%"></div>
                         </div>
                     </div>
-                    <hr />
-                    <div class="alert alert-warning">
-                        <ul style="list-style: decimal; padding-left: 20px">
-                            <li>Đối với <b>mua chậm</b>, thời gian xác minh thẻ tối đa là <b>5 phút</b>.</li>
-                            <li>Sau <b>5 phút</b>, nếu hệ thống không xử lý được thẻ thì thẻ sẽ bị đẩy sang <b>mua thường</b>.</li>
-                        </ul>
+                    <div class="total-money-cart text-right">
+                        <hr>
+                        <p class="m-0">Tổng: <span class="total-money-cart-text">0</span>đ</p>
                     </div>
-                    <hr />
                     @if(user()->security_level_2 === 1)
-                        <div class="row m-0 mt-3">
+                        <hr>
+                        <div class="row row-otp-buy-card m-0 mt-3 d-none">
                             <label class="w-100 text-left ignore" for="otp_code">OTP Code *</label>
                             <div class="d-flex w-100">
                                 <input type="hidden" class="form-control" name="otp_hash" id="otp_hash" value="{{ old('otp_hash') }}">
@@ -133,20 +81,49 @@
                                 <div class="btn btn-primary ml-2 send-otp" style="min-width: 110px;">Send OTP</div>
                             </div>
                         </div>
-                        <hr />
                     @endif
-                    <div class="footer-button d-flex justify-content-center">
-                        <button class="btn btn-primary">Tiếp tục</button>
+                    <div class="payment-cart text-center">
+                        <hr class="mb-2">
+                        <button class="btn btn-primary">Thanh toán</button>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
+        <div class="alert alert-warning mt-3">
+            <ul style="list-style: decimal; padding-left: 20px">
+                <li>Đối với <b>mua chậm</b>, thời gian xác minh thẻ tối đa là <b>5 phút</b>.</li>
+                <li>Sau <b>5 phút</b>, nếu hệ thống không xử lý được thẻ thì thẻ sẽ bị đẩy sang <b>mua thường</b>.</li>
+            </ul>
+        </div>
     </div>
-    <label class="box-card d-none" for="" data-template="label-money">
-        <input type="radio" id="" name="money_buy" value="">
-        <span class="money-show"></span>
-        <span class="checkbox-custom"></span>
-    </label>
+    <div class="container-fluid">
+        <h5>Lịch sử mua thẻ</h5>
+        <div class="row-filter d-flex">
+            <select name="filter_type_buy" id="filter_type_buy" class="form-control mr-2">
+                <option value="">Loại thẻ</option>
+                @foreach($listCard as $type => $card)
+                    <option value="{{ $type }}">{{ ucfirst($card['name']) }}</option>
+                @endforeach
+            </select>
+            <select name="filter_money_buy" id="filter_money_buy" class="form-control mr-2">
+                <option value="">Mệnh giá</option>
+            </select>
+            <input type="text" class="form-control mr-2" value="{{ date('d-m-Y') }}" data-date-picker>
+            <input type="text" class="form-control mr-2" value="{{ date('d-m-Y') }}" data-date-picker>
+            <button class="btn btn-success" style="min-width: 150px;">Lọc dữ liệu</button>
+        </div>
+        <div class="table-filter mt-2">
+            @include('card.buy_history_table', ['histories' => $histories])
+        </div>
+    </div>
+    <div data-template="label-money" class="div-box-card d-none">
+        <label class="box-card mb-1" for="">
+            <input type="checkbox" id="" name="money_buy" value="">
+            <span class="money-show"></span>
+            <span class="checkbox-custom"></span>
+        </label>
+        <p class="real-money-slow mb-2 text-center">Giá: <span style="color: #c0201e">0đ</span></p>
+    </div>
 @endsection
 @section('script')
     <script>
@@ -166,24 +143,7 @@
         }
 
         $('[name="card_buy"]').on('change', function(){
-            $('#rate_slow_show').text('0');
-            $('#money_slow_show').text('0');
-            $('#rate_fast_show').text('0');
-            $('#money_fast_show').text('0');
-
             let val = $(this).val();
-
-            try{
-                if(listNotAuto.indexOf(val) != -1) {
-                    $('.group-type-fast')[0].style.setProperty('display', 'none', 'important');
-                    $('.group-type-slow label').trigger('click');
-                }else{
-                    $('.group-type-fast')[0].style.removeProperty('display');
-                }
-            }catch (e) {
-                console.log(e)
-            }
-
             let rate = rates[val];
             areaMoney.empty();
             if(rate == undefined) {
@@ -193,15 +153,25 @@
                 let tempEl  = template.clone().removeClass('d-none').removeAttr('data-template');
                 let money = r.price;
                 let id = 'money-' + money;
-                tempEl.attr('for', id);
-                tempEl.find('.money-show').text(App.setPriceFormat(money));
-                tempEl.find('input')
+                let moneySlow = parseInt(money) - (parseInt(money) * parseFloat(r.rate_slow) / 100);
+                tempEl.find('label')
+                    .attr('for', id);
+                tempEl.find('label').find('.money-show')
+                    .text(App.setPriceFormat(money));
+                tempEl.find('label').find('input')
                     .attr('id', id)
                     .attr('value', money)
+                    .attr('data-card', val)
                     .attr('data-rate', r.rate)
                     .attr('data-rate-slow', r.rate_slow);
+                tempEl.find('.real-money-slow span').text(App.setPriceFormat(moneySlow) + 'đ');
                 areaMoney.append(tempEl);
             });
+
+            $('.body-cart .row-cart:not(.row-cart-template)[data-card="'+val+'"]').each(function(){
+                const money = $(this).attr('data-money');
+                areaMoney.find('[value="'+money+'"]').addClass('no-action').trigger('click');
+            })
 
             activeMoney();
         });
@@ -222,6 +192,8 @@
             } else {
                 parent.find('input[name=' + fieldName + ']').val(0);
             }
+
+            parent.find('input[name=' + fieldName + ']').trigger('change');
         }
 
         function decrementValue(e) {
@@ -235,26 +207,165 @@
             } else {
                 parent.find('input[name=' + fieldName + ']').val(1);
             }
+
+            parent.find('input[name=' + fieldName + ']').trigger('change');
         }
 
-        $('.input-group').on('click', '.button-plus', function(e) {
+        function calcTotalMoneyCart() {
+            let total = 0;
+            $('.body-cart .row-cart:not(.row-cart-template)').each(function() {
+                const money = $(this).find('.cart-money').attr('data-money');
+                if(money != undefined) {
+                    total += parseFloat(money);
+                }
+            });
+            $('.total-money-cart-text').text(App.setPriceFormat(total));
+        }
+
+        $('.body-cart').on('click', '.button-plus', function(e) {
             incrementValue(e);
         });
 
-        $('.input-group').on('click', '.button-minus', function(e) {
+        $('.body-cart').on('click', '.button-minus', function(e) {
             decrementValue(e);
         });
 
         $('#area-money').on('change', 'input[name="money_buy"]', function(){
+            if($(this).hasClass('no-action')) {
+                $(this).removeClass('no-action');
+                return;
+            }
+
+            const card = $(this).attr('data-card');
             const rate = parseFloat($(this).attr('data-rate'));
             const rateSlow = parseFloat($(this).attr('data-rate-slow'));
             const money = parseInt($(this).val());
-            const moneySlow = money - (money * rateSlow / 100);
-            const moneyFast = money - (money * rate / 100);
-            $('#rate_slow_show').text(rateSlow);
-            $('#money_slow_show').text(App.setPriceFormat(moneySlow));
-            $('#rate_fast_show').text(rate);
-            $('#money_fast_show').text(App.setPriceFormat(moneyFast));
+            const cartTemplate = $('.row-cart-template').clone();
+            const bodyCard = $('.body-cart');
+
+            if($(this).prop('checked') === false) {
+                $('.body-cart').find('.row-cart[data-money="'+money+'"][data-card="'+card+'"]').remove();
+                if($('.body-cart').find('.row-cart:not(.row-cart-template)').length <= 0) {
+                    $('.body-cart .cart-empty').removeClass('d-none')
+                    $('.row-otp-buy-card').addClass('d-none')
+                }
+                calcTotalMoneyCart();
+                return;
+            }
+
+            cartTemplate.removeClass('d-none row-cart-template').addClass('d-flex');
+            cartTemplate.attr('data-card', card);
+            cartTemplate.attr('data-money', money);
+            cartTemplate.attr('data-rate', rate);
+            cartTemplate.attr('data-rate-slow', rateSlow);
+            cartTemplate.find('.cart-info').text(App.ucFirst(card) + ' - ' + App.setPriceFormat(money) + 'đ');
+            cartTemplate.find('option[value="slow"]').text('Mua chậm - chiết khấu: ' + rateSlow + '%');
+            cartTemplate.find('option[value="fast"]').text('Mua nhanh - chiết khấu: ' + rate + '%');
+            cartTemplate.find('.cart-type-buy select').val('slow');
+            setTimeout(function(){
+                cartTemplate.find('.cart-type-buy select').trigger('change');
+            }, 10);
+            if(listNotAuto.indexOf(card) != -1) {
+                cartTemplate.find('option[value="fast"]').addClass('d-none');
+            }
+            bodyCard.find('.cart-empty').addClass('d-none');
+            bodyCard.append(cartTemplate);
+            $('.row-otp-buy-card').removeClass('d-none');
+        });
+
+        $(".body-cart").on('change', '.cart-type-buy select', function() {
+            const typeRate = this.value;
+            const rowCard = $(this).closest('.row-cart');
+            if(typeRate == '') {
+                rowCard.find('.cart-money')
+                    .removeAttr('data-money')
+                    .text("Thực trả: 0đ");
+                calcTotalMoneyCart();
+                return;
+            }
+            const money = parseInt(rowCard.attr('data-money'));
+            const rate = parseFloat(rowCard.attr(typeRate == 'slow' ? 'data-rate-slow' : 'data-rate'));
+            const quantity = parseInt(rowCard.find('.cart-quantity input').val());
+            const realMoney = money - (money * rate / 100);
+            rowCard.find('.cart-money')
+                .attr('data-money', realMoney * quantity)
+                .text("Thực trả: " + App.setPriceFormat(realMoney * quantity) + 'đ');
+            calcTotalMoneyCart();
+        });
+        $(".body-cart").on('change', '.cart-quantity input', function() {
+            const rowCard = $(this).closest('.row-cart');
+            const typeRate = rowCard.find('.cart-type-buy select').val();
+            if(typeRate == '') {
+                return;
+            }
+
+            const quantity = parseInt(this.value);
+            const money = parseInt(rowCard.attr('data-money'));
+            const rate = parseFloat(rowCard.attr(typeRate == 'slow' ? 'data-rate-slow' : 'data-rate'));
+            const realMoney = money - (money * rate / 100);
+
+            rowCard.find('.cart-money')
+                .attr('data-money', realMoney * quantity)
+                .text("Thực trả: " + App.setPriceFormat(realMoney * quantity) + 'đ');
+            calcTotalMoneyCart();
+        });
+        $(".body-cart").on('click', '.cart-remove', function() {
+            const rowCart = $(this).closest('.row-cart');
+            const money = rowCart.attr('data-money');
+            const card = rowCart.attr('data-card');
+            $('[name="money_buy"][data-card="'+card+'"][value="'+money+'"]').trigger('click');
+            rowCart.remove();
+            calcTotalMoneyCart();
+
+            if($('.body-cart').find('.row-cart:not(.row-cart-template)').length <= 0) {
+                $('.body-cart .cart-empty').removeClass('d-none')
+                $('.row-otp-buy-card').addClass('d-none')
+            }
+        });
+
+        $(document).ready(function(){
+            $("[data-date-picker]").datepicker({
+                dateFormat : 'dd-mm-yy'
+            });
+            if($('[name="card_buy"]:checked').length == 0) {
+                $('.form-group-card-buy .box-card:first-child [name="card_buy"]').trigger('click');
+            }
+            $('.payment-cart button').on('click', function(){
+                let error = false;
+                let datas = [];
+                $('.body-cart').find('.row-cart:not(.row-cart-template)').each(function(){
+                    if($(this).find('.cart-money').attr('data-money') == undefined) {
+                        alertify.alert('Error', 'Có đơn hàng chưa hoàn thành! Hãy kiểm tra và chọn phương thức mua thẻ!');
+                        $('.alertify .ajs-header').addClass('alert-danger');
+                        error = true;
+                        return false;
+                    }
+                    const card_buy = $(this).attr('data-card');
+                    const money_buy = $(this).attr('data-money');
+                    const method_buy = $('[name="method_buy"]').val();
+                    const quantity = $(this).find('.cart-quantity .quantity-field').val();
+                    const type_buy = $(this).find('.cart-type-buy select').val();
+                    datas.push({
+                        card_buy, money_buy, method_buy, quantity, type_buy
+                    });
+                });
+                if(error) {
+                    return false;
+                }
+                const otp_code = $('[name="otp_code"]').val();
+                const otp_hash = $('[name="otp_hash"]').val();
+                Request.ajax('{{ route('buy-card-multi.post') }}', { datas, otp_code, otp_hash }, function(result) {
+                    if(result.success == false) {
+                        alertify.alert('Error', result.errorText);
+                        $('.alertify .ajs-header').addClass('alert-danger');
+                        return;
+                    }
+                    alertify.alert('Success', "Tất cả các thẻ được mua thành công. Vui lòng kiểm tra lịch sử để lấy mã thẻ!", function () {
+                        window.location.reload();
+                    });
+                    $('.alertify .ajs-header').addClass('alert-success');
+                })
+            });
         })
     </script>
     <script>

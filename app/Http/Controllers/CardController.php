@@ -19,7 +19,9 @@ use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
 class CardController extends Controller
@@ -49,7 +51,16 @@ class CardController extends Controller
             return $result;
         }, []);
 
-        return view('card.buy', compact('listCard', 'rates', 'listNotAuto'));
+        $today = Carbon::today()->format('Y-m-d');
+        $todayStart = $today . ' 00:00:00';
+        $todayEnd = $today . ' 23:59:59';
+        $histories = CardStore::whereUserId(user()->id)
+            ->where('created_at', '>=', $todayStart)
+            ->where('created_at', '<=', $todayEnd)
+            ->orderBy('created_at', 'DESC')
+            ->get();
+
+        return view('card.buy', compact('listCard', 'rates', 'listNotAuto', 'histories'));
     }
 
     /**
@@ -67,7 +78,7 @@ class CardController extends Controller
                 return back()->withInput();
             }
         }
-        $status = CardService::buyCardPost($request, $hash);
+        $status = CardService::buyCardPost($request->validated(), $hash);
         if ($status === false) {
             return back()->withInput();
         }
@@ -84,6 +95,48 @@ class CardController extends Controller
 
         session()->flash('notif', 'Thẻ đã được đặt mua thành công! Sau 5 phút chưa được xử lý sẽ tự động chuyển sang mua nhanh!');
         return back();
+    }
+
+    /**
+     * @throws GuzzleException
+     */
+    public function buyCardMulti(Request $request): JsonResponse
+    {
+        if(user()->security_level_2 === 1){
+            if(empty($request->otp_hash) || empty($request->otp_code)){
+                return response()->json([
+                    'success' => false,
+                    'errors' => ['Bạn chưa nhập mã OTP!'],
+                    'errorText' => 'Bạn chưa nhập mã OTP!',
+                ]);
+            }
+            if(!OtpData::verify($request->otp_hash, $request->otp_code)){
+                return response()->json([
+                    'success' => false,
+                    'errors' => ['Mã OTP không khớp!'],
+                    'errorText' => 'Mã OTP không khớp!',
+                ]);
+            }
+        }
+
+        $errors = [];
+        foreach ($request->datas as $data) {
+            if (CardService::buyCardPost($data, $hash) === false) {
+                $errors[] = 'Thẻ ' . ucfirst($data['card_buy']) . ', mệnh giá ' . number_format($data['money_buy']) . ' đã bị lỗi khi mua: ' . session()->pull('mgs_error');
+            }
+        }
+
+        TraceSystem::setTrace([
+            'mgs' => 'mua thẻ',
+            'username' => user()->username,
+            ...$request->all()
+        ]);
+
+        return response()->json([
+            'success' => empty($errors),
+            'errors' => $errors,
+            'errorText' => implode('. ', $errors),
+        ]);
     }
 
     public function tradeCard(): Factory|View|Application

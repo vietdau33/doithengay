@@ -192,6 +192,10 @@ window.App = {
       ret[obj[key]] = key;
       return ret;
     }, {});
+  },
+  ucFirst: function ucFirst(string) {
+    string = string.toLowerCase();
+    return string.charAt(0).toUpperCase() + string.slice(1);
   }
 };
 window.addEventListener('DOMContentLoaded', function () {

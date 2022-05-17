@@ -63,9 +63,8 @@ class CardService extends Service
     /**
      * @throws GuzzleException
      */
-    public static function buyCardPost($request, &$hash = ''): bool
+    public static function buyCardPost($param, &$hash = ''): bool
     {
-        $param = $request->validated();
         $listNotAuto = CardListModel::whereAuto('0')->whereType('buy')->get()->toArray();
         $listNotAuto = array_column($listNotAuto, 'name');
         if(in_array($param['card_buy'], $listNotAuto) && $param['type_buy'] == 'fast') {

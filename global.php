@@ -164,3 +164,15 @@ function getNumberTurnTransfer($transferOnDay = 0): int
 {
     return (int)$transferOnDay - user()->count_number_trasnfer;
 }
+
+function isIgnoreBg(): bool
+{
+    $aryUriIgnoreBg = [
+        '/',
+        'recharge',
+        'transfer',
+        'buy-card',
+    ];
+
+    return request()->is(...$aryUriIgnoreBg);
+}
