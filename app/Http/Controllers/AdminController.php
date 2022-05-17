@@ -241,7 +241,12 @@ class AdminController extends Controller
         $params = $request->only([
             'api_key_365',
             'system_active',
-            'separator_notification'
+            'separator_notification',
+            'transfer_fee_fix',
+            'transfer_fee',
+            'transfer_turns_on_day',
+            'transfer_money_min',
+            'transfer_money_max',
         ]);
         AdminService::saveSystemSetting($params);
         session()->flash('notif', "Thay đổi cài đặt thành công!");

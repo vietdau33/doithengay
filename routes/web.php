@@ -11,7 +11,9 @@ use App\Http\Controllers\CardController;
 
 //Route::get('/logs', [PageController::class, 'showLogs'])->name('logger');
 Route::get('/', [PageController::class, 'home'])->name('home');
-Route::get('/maintenance', function(){ return view('maintenance'); });
+Route::get('/maintenance', function () {
+    return view('maintenance');
+});
 Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 Route::get('/comming-soon', [PageController::class, 'commingSoon'])->name('comming-soon');
 Route::get('/check-rate', [CardController::class, 'checkRate'])->name('check-rate');
@@ -26,7 +28,7 @@ Route::middleware('guest')->name('auth.')->group(function () {
     Route::get('/register', [AuthController::class, 'register'])->name('register.view');
     Route::post('/register', [AuthController::class, 'registerPost'])->name('register.post');
 
-    Route::prefix('forgot-password')->name('forgot.')->group(function() {
+    Route::prefix('forgot-password')->name('forgot.')->group(function () {
         Route::get('', [AuthController::class, 'forgot'])->name('view');
         Route::get('{hash}', [AuthController::class, 'forgotVerify']);
         Route::post('', [AuthController::class, 'forgotPost'])->name('post');
@@ -48,7 +50,7 @@ Route::middleware('authenticated')->group(function () {
     Route::get('/list-card-buy/{hash}', [CardController::class, 'listCardBuy'])->name('list-card');
     Route::get('/buy-card/history', [CardController::class, 'buyCardHistory'])->name('buy-card.history');
 
-    Route::prefix('trade-card')->group(function() {
+    Route::prefix('trade-card')->group(function () {
         Route::get('', [CardController::class, 'tradeCard'])->name('trade-card');
         Route::post('', [CardController::class, 'tradeCardPost'])->name('trade-card.post');
         Route::get('/history', [CardController::class, 'tradeCardHistory'])->name('trade-card.history');
@@ -58,13 +60,13 @@ Route::middleware('authenticated')->group(function () {
 
     Route::get('/recharge', [MoneyController::class, 'recharge'])->name('recharge');
 
-    Route::prefix('withdraw')->group(function(){
+    Route::prefix('withdraw')->group(function () {
         Route::get('/', [MoneyController::class, 'withdraw'])->name('withdraw');
         Route::post('/', [MoneyController::class, 'withdrawPost'])->name('withdraw.post');
         Route::get('/history', [MoneyController::class, 'withdrawHistory'])->name('withdraw.history');
     });
 
-    Route::prefix('pay-bill')->group(function() {
+    Route::prefix('pay-bill')->group(function () {
         Route::get('', [BillController::class, 'payBill'])->name('pay-bill');
         Route::get('/history', [BillController::class, 'payBillHistory'])->name('pay-bill.history');
         Route::get('/create/{type}', [BillController::class, 'payBillCreate'])->name('pay-bill.create');
@@ -92,8 +94,13 @@ Route::middleware('authenticated')->group(function () {
         Route::post('setting/change-status', [UserController::class, 'securityChangeStatus'])->name('change_status');
         Route::get('setting/callback-security/{hash}', [UserController::class, 'callbackChangeStatusSecurity'])->name('callback_security');
         Route::post('setting/security_level_2', [UserController::class, 'securitySettingPost']);
-
         Route::post('send-otp', [UserController::class, 'sendOtp'])->name('send-otp');
+    });
+
+    Route::prefix('transfer')->name('transfer.')->group(function () {
+        Route::get('', [MoneyController::class, 'transfer'])->name('home');
+        Route::post('get-name-user', [MoneyController::class, 'transferGetUserFulleName'])->name('get-user-name');
+        Route::post('', [MoneyController::class, 'transferPost'])->name('post');
     });
 });
 

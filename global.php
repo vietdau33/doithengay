@@ -159,3 +159,8 @@ function notification(): string
 {
     return Notification::buildNotificationShow();
 }
+
+function getNumberTurnTransfer($transferOnDay = 0): int
+{
+    return (int)$transferOnDay - user()->count_number_trasnfer;
+}

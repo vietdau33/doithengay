@@ -75,6 +75,7 @@
                                         <div class="dropdown-menu">
                                             <a class="dropdown-item" href="{{ route('recharge') }}" data-id="menu-recharge">Nạp tiền</a>
                                             <a class="dropdown-item" href="{{ route('withdraw') }}" data-id="menu-withdraw">Rút tiền</a>
+                                            <a class="dropdown-item" href="{{ route('transfer.home') }}" data-id="menu-transfer">Chuyển tiền</a>
                                             <a class="dropdown-item" href="{{ route('pay-bill') }}" data-id="menu-pay-bill">Thanh toán cước</a>
                                         </div>
                                     </div>
@@ -119,6 +120,7 @@
                                                 <li data-id="menu-buy-card"><a href="{{ route('buy-card') }}">Mua thẻ cào</a></li>
                                                 <li data-id="menu-recharge"><a href="{{ route('recharge') }}">Nạp tiền</a></li>
                                                 <li data-id="menu-withdraw"><a href="{{ route('withdraw') }}">Rút tiền</a></li>
+                                                <li data-id="menu-transfer"><a href="{{ route('transfer.home') }}">Chuyển tiền</a></li>
                                                 <li data-id="menu-discount"><a href="{{ route('chiet-khau') }}">Chiết khấu</a></li>
                                                 <li data-id="connect-api"><a href="{{ route('connect-api') }}">Kết nối API</a></li>
                                                 <hr />
@@ -136,7 +138,7 @@
     </div>
 </div>
 
-<div id="main-contents" class="{{ request()->is('/', 'recharge') ? 'no-bg-image' : '' }}">
+<div id="main-contents" class="{{ request()->is('/', 'recharge', 'transfer') ? 'no-bg-image' : '' }}">
     @php($notification = notification())
     @if(!empty($notification))
         <div id="notification" class="container-fluid">

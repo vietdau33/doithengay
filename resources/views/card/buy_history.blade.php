@@ -24,7 +24,7 @@
                         @foreach($histories as $history)
                             <tr>
                                 <th scope="row">
-                                    @if($history->type_buy == 'fast' || $history->status === 2)
+                                    @if($history->status === 2)
                                         <a href="{{ route('list-card', ['hash' => $history->store_hash]) }}" class="text-decoration-none">Xem</a>
                                     @endif
                                 </th>
