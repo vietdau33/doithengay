@@ -449,6 +449,7 @@ input[type="number"] {
     width: 20px;
     height: 20px;
 }
+
 .lds-dual-ring:after {
     content: " ";
     display: block;
@@ -460,6 +461,7 @@ input[type="number"] {
     border-color: #fff transparent #fff transparent;
     animation: lds-dual-ring 1.2s linear infinite;
 }
+
 @keyframes lds-dual-ring {
     0% {
         transform: rotate(0deg);
@@ -571,7 +573,7 @@ $focus-ring: 0px 0px 0px 2px $dark;
         flex-wrap: wrap;
         justify-content: center;
 
-        > a{
+        > a {
             width: calc(100% / 4);
         }
     }
@@ -579,7 +581,7 @@ $focus-ring: 0px 0px 0px 2px $dark;
 
 @media (max-width: 575px) {
     #bottom_menu {
-        > a{
+        > a {
             width: calc(100% / 3);
         }
     }
@@ -594,7 +596,7 @@ span.space {
     color: #007bff !important;
 }
 
-.alert-notification{
+.alert-notification {
     background: #0c2c63;
     color: #fff;
 }
@@ -603,7 +605,7 @@ span.space {
     list-style: none;
 }
 
-.row-box-card{
+.row-box-card {
     .box-card {
         width: calc(100% / 7);
         margin: 5px;
@@ -629,6 +631,32 @@ span.space {
     }
 }
 
+.form-trade-card-home {
+    flex-wrap: wrap;
+    justify-content: center;
+    width: calc(100% - 100px);
+
+    select {
+        width: calc(100% / 3 - 0.25rem);
+    }
+
+    input {
+        width: calc(100% / 2 - 0.25rem);
+    }
+
+    .btn-add-area-trade {
+        position: absolute;
+        top: 0;
+        right: 0;
+        transform: translateX(100%);
+
+        img {
+            width: 20px;
+            margin-right: 3px;
+        }
+    }
+}
+
 @media (max-width: 991px) {
     .row-box-card {
         flex-wrap: wrap;
@@ -637,20 +665,18 @@ span.space {
             width: calc(100% / 4);
         }
     }
-
-    .form-trade-card-home {
-        flex-wrap: wrap;
-        justify-content: center;
-
-        * {
-            width: calc(100% / 4);
-        }
-    }
 }
 
 @media (max-width: 767px) {
-    .form-trade-card-home * {
-        width: calc(100% / 2);
+    .form-trade-card-home {
+        .select_card_type,
+        .select_card_money {
+            width: calc(100% / 2 - 0.25rem);
+        }
+
+        .select_type_trade {
+            width: calc(100% - 0.25rem);
+        }
     }
 }
 
@@ -660,8 +686,19 @@ span.space {
             width: calc(100% / 3);
         }
     }
-    .form-trade-card-home * {
-        width: 100%;
+    .form-trade-card-home {
+        width: calc(100% - 75px);
+
+        select, input {
+            width: calc(100% - 0.25rem) !important;
+        }
+
+        .btn-add-area-trade {
+            img {
+                display: block;
+                margin: auto;
+            }
+        }
     }
 }
 
@@ -669,6 +706,20 @@ span.space {
     .row-box-card {
         .box-card {
             width: calc(100% / 2);
+        }
+    }
+
+    .form-trade-card-home {
+        width: calc(100% - 50px);
+
+        .btn-add-area-trade {
+            img {
+                margin: 0;
+            }
+
+            span {
+                display: none;
+            }
         }
     }
 }

@@ -672,6 +672,28 @@ span.space {
   max-height: 100%;
 }
 
+.form-trade-card-home {
+  flex-wrap: wrap;
+  justify-content: center;
+  width: calc(100% - 100px);
+}
+.form-trade-card-home select {
+  width: calc(33.3333333333% - 0.25rem);
+}
+.form-trade-card-home input {
+  width: calc(50% - 0.25rem);
+}
+.form-trade-card-home .btn-add-area-trade {
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translateX(100%);
+}
+.form-trade-card-home .btn-add-area-trade img {
+  width: 20px;
+  margin-right: 3px;
+}
+
 @media (max-width: 991px) {
   .row-box-card {
     flex-wrap: wrap;
@@ -679,18 +701,14 @@ span.space {
   .row-box-card .box-card {
     width: 25%;
   }
-
-  .form-trade-card-home {
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  .form-trade-card-home * {
-    width: 25%;
-  }
 }
 @media (max-width: 767px) {
-  .form-trade-card-home * {
-    width: 50%;
+  .form-trade-card-home .select_card_type,
+.form-trade-card-home .select_card_money {
+    width: calc(50% - 0.25rem);
+  }
+  .form-trade-card-home .select_type_trade {
+    width: calc(100% - 0.25rem);
   }
 }
 @media (max-width: 545px) {
@@ -698,12 +716,29 @@ span.space {
     width: 33.3333333333%;
   }
 
-  .form-trade-card-home * {
-    width: 100%;
+  .form-trade-card-home {
+    width: calc(100% - 75px);
+  }
+  .form-trade-card-home select, .form-trade-card-home input {
+    width: calc(100% - 0.25rem) !important;
+  }
+  .form-trade-card-home .btn-add-area-trade img {
+    display: block;
+    margin: auto;
   }
 }
 @media (max-width: 439px) {
   .row-box-card .box-card {
     width: 50%;
+  }
+
+  .form-trade-card-home {
+    width: calc(100% - 50px);
+  }
+  .form-trade-card-home .btn-add-area-trade img {
+    margin: 0;
+  }
+  .form-trade-card-home .btn-add-area-trade span {
+    display: none;
   }
 }

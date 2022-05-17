@@ -243,7 +243,7 @@
             $('.span-remove-after-first').remove();
         })
         .marquee({
-            duration: 10000,
+            duration: window.innerWidth * 10,
             delayBeforeStart: 1000,
             pauseOnHover: true,
             startVisible: true

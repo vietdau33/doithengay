@@ -39,28 +39,51 @@
             </li>
         </ul>
     </div>
-    <div class="container-fluid mb-3">
-        <div class="form-group d-flex form-trade-card-home">
-            <select name="" id="" class="form-control mb-1 mr-1">
+    <div class="container mb-3 container-trade-card-home">
+        <div class="form-group form-trade-card-home position-relative d-none" data-id="template">
+            <select name="card_type" class="form-control mb-1 mr-1 select_card_type">
                 <option value="">Loại thẻ</option>
-                <option value="1">Viettel</option>
-                <option value="2">Vina</option>
-                <option value="3">Mobi</option>
+                @foreach($cardList as $key => $card)
+                    <option value="{{ $card['name'] }}">{{ ucfirst($card['name']) }}</option>
+                @endforeach
             </select>
-            <select name="" id="" class="form-control mb-1 mr-1">
+            <select name="card_money" class="form-control mb-1 mr-1 select_card_money">
                 <option value="">Mệnh giá</option>
-                <option value="1">10.000</option>
-                <option value="2">20.000</option>
-                <option value="3">30.000</option>
             </select>
-            <select name="" id="" class="form-control mb-1 mr-1">
+            <select name="type_trade" class="form-control mb-1 mr-1 select_type_trade">
                 <option value="">Phương thức gạch thẻ</option>
-                <option value="1">Gạch chậm: 0% - 0 VNĐ</option>
-                <option value="2">Gạch nhanh: 0% - 0 VNĐ</option>
+                <option value="1" data-type="slow">Gạch nhanh: 0% - 0VNĐ</option>
+                <option value="2" data-type="fast">Gạch chậm: 0% - 0VNĐ</option>
             </select>
             <input type="text" class="form-control mb-1 mr-1" placeholder="Số serial">
             <input type="text" class="form-control mb-1 mr-1" placeholder="Mã thẻ">
+            <button class="btn btn-danger btn-add-area-trade" onclick="RemoveRowTrade(this)">
+                <img class="m-0" src="{{ asset('image/icon/trash.svg') }}" alt="plus">
+            </button>
         </div>
+        <div class="form-group d-flex form-trade-card-home position-relative">
+            <select name="card_type" class="form-control mb-1 mr-1 select_card_type">
+                <option value="">Loại thẻ</option>
+                @foreach($cardList as $key => $card)
+                    <option value="{{ $card['name'] }}">{{ ucfirst($card['name']) }}</option>
+                @endforeach
+            </select>
+            <select name="card_money" class="form-control mb-1 mr-1 select_card_money">
+                <option value="">Mệnh giá</option>
+            </select>
+            <select name="type_trade" class="form-control mb-1 mr-1 select_type_trade">
+                <option value="">Phương thức gạch thẻ</option>
+                <option value="1" data-type="slow">Gạch nhanh: 0% - 0VNĐ</option>
+                <option value="2" data-type="fast">Gạch chậm: 0% - 0VNĐ</option>
+            </select>
+            <input type="text" class="form-control mb-1 mr-1" placeholder="Số serial">
+            <input type="text" class="form-control mb-1 mr-1" placeholder="Mã thẻ">
+            <button class="btn btn-success btn-add-area-trade" onclick="CopyRowTrade()">
+                <img src="{{ asset('image/icon/plus.svg') }}" alt="plus">
+                <span>Thêm</span>
+            </button>
+        </div>
+        <div id="row_save_position_add_trade"></div>
         <div class="btn-trade-card text-center">
             <button class="btn btn-warning">Gạch thẻ</button>
         </div>
@@ -74,14 +97,14 @@
                 <div class="service_fee_table mt-4">
                     <h4 class="font-weight-bold">Bảng phí đổi thẻ cào</h4>
                     <ul class="nav nav-tabs service_fee_table_tab" role="tablist">
-                        @foreach($rates as $card => $rate)
+                        @foreach($ratesTable as $card => $rate)
                             <li class="nav-item">
                                 <a class="nav-link" id="target_{{ $card }}_tab" data-toggle="tab" href="#target_{{ $card }}" role="tab" aria-controls="home">{{ ucfirst($card) }}</a>
                             </li>
                         @endforeach
                     </ul>
                     <div class="tab-content service_fee_table_content">
-                        @foreach($rates as $card => $rate)
+                        @foreach($ratesTable as $card => $rate)
                             <div class="tab-pane fade" id="target_{{ $card }}" role="tabpanel" aria-labelledby="target_{{ $card }}_tab">
                                 <table class="table table-bordered table-responsive-xl">
                                     <thead class="thead-light">
@@ -202,8 +225,87 @@
         @endif
     </script>
     <script>
+        let rates = {!! json_encode($rates) !!};
+        let template = $('[data-template="label-money"]');
+        let listNotAuto = {!! json_encode($listNotAuto) !!};
+
+        const resetTradeCard = function(parentBox = null) {
+            if(parentBox == null) {
+                parentBox = $('.container-trade-card-home');
+            }
+            parentBox.find('[name="type_trade"]').each(function(){
+                $(this).empty();
+                $(this).append('<option value="">Phương thức gạch thẻ</option>');
+                $(this).append('<option value="1" data-type="slow">Gạch nhanh: 0% - 0VNĐ</option>');
+                $(this).append('<option value="2" data-type="fast">Gạch chậm: 0% - 0VNĐ</option>');
+            });
+        }
+
+        $('.container-trade-card-home').on('change', '[name="card_type"]', function(){
+            let val  = $(this).val();
+            let rate = rates[val];
+            let parentBox = $(this).parent();
+            let areaMoney = parentBox.find('.select_card_money');
+
+            try{
+                resetTradeCard(parentBox);
+                if(listNotAuto.indexOf(val) != -1) {
+                    parentBox.find('[name="type_trade"] [data-type="fast"]').addClass('d-none');
+                    parentBox.find('[name="type_trade"] [data-type="slow"]').prop('selected', true);
+                }else{
+                    parentBox.find('[name="type_trade"] [data-type="fast"]').removeClass('d-none');
+                }
+            }catch (e) {
+                console.log(e)
+            }
+
+            areaMoney.empty();
+            areaMoney.append('<option value="">Mệnh giá</option>');
+
+            if(rate == undefined) {
+                console.log(type, rate)
+                return;
+            }
+
+            $.each(rate, function(index, r){
+                let money = r.price;
+                let tempEl = $("<option />");
+                let id = 'money-' + money;
+                tempEl.text(App.setPriceFormat(money));
+                tempEl.attr('data-id', id)
+                    .attr('data-value', money)
+                    .attr('data-rate', r.rate_use)
+                    .attr('data-rate-slow', r.rate_slow);
+                areaMoney.append(tempEl);
+            });
+        });
+
+        $('.container-trade-card-home').on('change', '[name="card_money"]', function(){
+            const parentBox = $(this).parent();
+            const optionEl = $(this).find('option:selected');
+            const rate = parseFloat(optionEl.attr('data-rate'));
+            const rateSlow = parseFloat(optionEl.attr('data-rate-slow'));
+            const money = parseInt(optionEl.attr('data-value'));
+            const moneySlow = App.setPriceFormat(money - (money * rateSlow / 100));
+            const moneyFast = App.setPriceFormat(money - (money * rate / 100));
+
+            resetTradeCard(parentBox);
+            parentBox.find('[data-type="slow"]').text('Gạch nhanh: '+rate+'% - '+moneyFast+'VNĐ');
+            parentBox.find('[data-type="fast"]').text('Gạch chậm: '+rateSlow+'% - '+moneySlow+'VNĐ');
+        });
+    </script>
+    <script>
         window.addEventListener('DOMContentLoaded', function(){
             $('.service_fee_table_tab').find('.nav-item:first-child .nav-link').trigger('click');
         });
+        window.CopyRowTrade = function() {
+            const template = $('[data-id="template"]').clone();
+            template.removeAttr('data-id');
+            template.addClass('d-flex').removeClass('d-none');
+            $("#row_save_position_add_trade").before(template);
+        }
+        window.RemoveRowTrade = function(el) {
+            $(el).closest('.form-trade-card-home').remove();
+        }
     </script>
 @endsection

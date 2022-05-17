@@ -7,6 +7,7 @@ use App\Http\Requests\PasswordRequest;
 use App\Http\Requests\ProfileRequest;
 use App\Http\Services\UserService;
 use App\Models\ApiData;
+use App\Models\CardListModel;
 use App\Models\Notification;
 use App\Models\RateCard;
 use App\Models\SystemSetting;
@@ -35,8 +36,19 @@ class PageController extends Controller
         if(logined() && user()->verified === 0){
             return redirect()->to('/verify');
         }
-        $rates = RateCard::getRate();
-        return view('welcome', compact('rates'));
+        $ratesTable = RateCard::getRate();
+        $listNotAuto = CardListModel::whereAuto('0')->whereType('trade')->get()->toArray();
+        $listNotAuto = array_column($listNotAuto, 'name');
+        $rates = RateCard::getListCardTrade();
+        $cardList = array_reduce($rates, function($result, $card){
+            $card = end($card);
+            $result[$card['name']] = [
+                'name' => $card['name'],
+                'rate_id' => $card['rate_id']
+            ];
+            return $result;
+        }, []);
+        return view('welcome', compact('ratesTable', 'rates', 'cardList', 'listNotAuto'));
     }
 
     public function profile(): Factory|View|Application
