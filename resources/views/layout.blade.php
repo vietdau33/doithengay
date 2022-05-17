@@ -184,7 +184,8 @@
     </div>
 @endif
 
-<div id="footer" class="container-fluid mt-4">
+<div id="footer" class="container-fluid mt-5">
+    <hr>
     <div class="row">
         <div class="col-md-4 col-12">
             <strong class="mb-2 d-inline-block">AutocardVN - Đổi Thẻ Cào Thành Tiền Mặt Chiết Khấu Tốt Nhất Việt Nam</strong>

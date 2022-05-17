@@ -12,7 +12,6 @@
                         <img class="w-100" src="{{ asset('image/slide_home/bannerslide2.png') }}" alt="2">
                     </div>
                 </div>
-                <!-- If we need pagination -->
                 <div class="swiper-pagination"></div>
             </div>
         </div>
@@ -22,8 +21,7 @@
         <ul class="list-notif mb-4">
             <li>
                 <img src="{{ asset('image/arrow-1.gif') }}" alt="Arrow">
-                <span
-                    class="font-weight-bold">Viettel cần điền đúng cả seri, điền sai seri khi lỗi sẽ bị xử lý chậm.</span>
+                <span class="font-weight-bold">Viettel cần điền đúng cả seri, điền sai seri khi lỗi sẽ bị xử lý chậm.</span>
             </li>
             <li>
                 <img src="{{ asset('image/arrow-1.gif') }}" alt="Arrow">
@@ -31,8 +29,7 @@
             </li>
             <li>
                 <img src="{{ asset('image/arrow-1.gif') }}" alt="Arrow">
-                <span class="font-weight-bold">Hướng dẫn tích hợp API gạch thẻ tự động cho Shop <a
-                        href="{{ route('connect-api') }}">tại đây</a>.</span>
+                <span class="font-weight-bold">Hướng dẫn tích hợp API gạch thẻ tự động cho Shop <a href="{{ route('connect-api') }}">tại đây</a>.</span>
             </li>
             <li>
                 <img src="{{ asset('image/arrow-1.gif') }}" alt="Arrow">
@@ -84,7 +81,17 @@
                 <span>Thêm</span>
             </button>
         </div>
-        <div id="row_save_position_add_trade"></div>
+        <div id="row_save_position_add_trade">
+            @if(logined())
+                <div class="alert alert-warning">
+                    <ul style="list-style: decimal; padding-left: 20px">
+                        <li>Đối với gạch chậm, thời gian xác minh thẻ tối đa là 5 phút.</li>
+                        <li>Đối với gạch chậm, chiết khấu sẽ thấp hơn, bạn sẽ nhận được nhiều tiền hơn.</li>
+                        <li>Sau 5 phút kể từ khi gửi thẻ, nếu hệ thống không xác minh được thẻ thì thẻ sẽ bị đẩy sang gạch thường.</li>
+                    </ul>
+                </div>
+            @endif
+        </div>
         <div class="btn-trade-card text-center">
             <button class="btn btn-warning">Gạch thẻ</button>
         </div>
@@ -93,26 +100,21 @@
         <div class="row">
             <div class="col-12">
                 @if(!logined())
-                    <div class="alert alert-danger">Vui lòng <a href="{{ route('auth.view') }}"
-                                                                class="text-decoration-none">đăng nhập</a> để sử dụng
-                        dịch vụ!
-                    </div>
+                    <div class="alert alert-danger">Vui lòng <a href="{{ route('auth.view') }}" class="text-decoration-none">đăng nhập</a> để sử dụng dịch vụ!</div>
                 @endif
                 <div class="service_fee_table mt-4">
                     <h4 class="font-weight-bold">Bảng phí đổi thẻ cào</h4>
                     <ul class="nav nav-tabs service_fee_table_tab" role="tablist">
                         @foreach($ratesTable as $card => $rate)
                             <li class="nav-item">
-                                <a class="nav-link" id="target_{{ $card }}_tab" data-toggle="tab"
-                                   href="#target_{{ $card }}" role="tab" aria-controls="home">{{ ucfirst($card) }}</a>
+                                <a class="nav-link" id="target_{{ $card }}_tab" data-toggle="tab" href="#target_{{ $card }}" role="tab" aria-controls="home">{{ ucfirst($card) }}</a>
                             </li>
                         @endforeach
                     </ul>
                     <div class="tab-content service_fee_table_content">
                         @foreach($ratesTable as $card => $rate)
-                            <div class="tab-pane fade" id="target_{{ $card }}" role="tabpanel"
-                                 aria-labelledby="target_{{ $card }}_tab">
-                                <table class="table table-bordered table-responsive-xl">
+                            <div class="tab-pane fade" id="target_{{ $card }}" role="tabpanel" aria-labelledby="target_{{ $card }}_tab">
+                                <table class="table table-bordered table-responsive-xl text-center">
                                     <thead class="thead-light">
                                     <tr>
                                         <th scope="col" colspan="2">Nhóm thành viên</th>
@@ -122,31 +124,37 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <th scope="col" colspan="2">Tổng Đại Lý</th>
-                                        @foreach($rate as $money => $_r)
-                                            <td>{{ $_r['rate_tongdaily'] }}%</td>
-                                        @endforeach
-                                    </tr>
-                                    <tr>
-                                        <th scope="col" colspan="2">Đại Lý</th>
-                                        @foreach($rate as $money => $_r)
-                                            <td>{{ $_r['rate_daily'] }}%</td>
-                                        @endforeach
-                                    </tr>
-                                    <tr>
-                                        <th scope="col" rowspan="2">Thành viên</th>
-                                        <th scope="col">Gạch nhanh</th>
-                                        @foreach($rate as $money => $_r)
-                                            <td>{{ $_r['rate_use'] }}%</td>
-                                        @endforeach
-                                    </tr>
-                                    <tr>
-                                        <th scope="col">Gạch chậm</th>
-                                        @foreach($rate as $money => $_r)
-                                            <td>{{ $_r['rate_slow'] }}%</td>
-                                        @endforeach
-                                    </tr>
+                                    @if(!logined() || user()->type_user == 'tongdaily')
+                                        <tr>
+                                            <th scope="col" colspan="2">Tổng Đại Lý</th>
+                                            @foreach($rate as $money => $_r)
+                                                <td>{{ $_r['rate_tongdaily'] }}%</td>
+                                            @endforeach
+                                        </tr>
+                                    @endif
+                                    @if(!logined() || user()->type_user == 'daily')
+                                        <tr>
+                                            <th scope="col" colspan="2">Đại Lý</th>
+                                            @foreach($rate as $money => $_r)
+                                                <td>{{ $_r['rate_daily'] }}%</td>
+                                            @endforeach
+                                        </tr>
+                                    @endif
+                                    @if(!logined() || user()->type_user == 'nomal')
+                                        <tr>
+                                            <th scope="col" rowspan="2">Thành viên</th>
+                                            <th scope="col">Gạch nhanh</th>
+                                            @foreach($rate as $money => $_r)
+                                                <td>{{ $_r['rate_use'] }}%</td>
+                                            @endforeach
+                                        </tr>
+                                        <tr>
+                                            <th scope="col">Gạch chậm</th>
+                                            @foreach($rate as $money => $_r)
+                                                <td>{{ $_r['rate_slow'] }}%</td>
+                                            @endforeach
+                                        </tr>
+                                    @endif
                                     </tbody>
                                 </table>
                             </div>
@@ -158,8 +166,7 @@
         <div class="row mt-4 mb-4">
             <div class="col-12">
                 <h3 class="text-center font-weight-bold">Mua mã thẻ</h3>
-                <p class="mb-2 text-center">Mua thẻ bị <b>Chờ xử lý</b> là giao dịch thất bại, hệ thống sẽ tự động hoàn
-                    tiền về tài khoản sau vài giờ</p>
+                <p class="mb-2 text-center">Mua thẻ bị <b>Chờ xử lý</b> là giao dịch thất bại, hệ thống sẽ tự động hoàn tiền về tài khoản sau vài giờ</p>
                 <div class="row-box-card d-flex align-items-center justify-content-center">
                     @foreach(['viettel', 'vinaphone', 'mobifone', 'vietnamobile', 'zing', 'garena'] as $card)
                         <a class="box-card text-decoration-none" href="{{ route('buy-card') }}">

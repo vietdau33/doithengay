@@ -10,11 +10,8 @@ window.App = {
         this.preventEnterSubmit();
     },
     setPositionCopyright: function () {
-        let cprh = $('#copyright').height();
-        let btmh = $("#bottom_menu").height() || 0;
         let hh = $('#header').height();
         $('#main-contents').css({
-            'min-height': 'calc(100vh - ' + (cprh + btmh) + 'px)',
             'padding-top': (hh + 10) + 'px'
         });
         if(window.innerWidth <= 575){
