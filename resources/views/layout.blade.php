@@ -32,8 +32,8 @@
     <link rel="stylesheet" href="{{ asset('vendor/fontawesome/all.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/alertify/css/alertify.min.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/alertify/css/themes/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/app.css?i='.strtotime(now())) }}">
+    <link rel="stylesheet" href="{{ asset('css/custom.css?i='.strtotime(now())) }}">
     @yield('style')
 
     <script src="{{ asset('vendor/jquery/jquery-3.6.0.min.js') }}"></script>
