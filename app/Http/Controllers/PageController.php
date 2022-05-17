@@ -8,6 +8,7 @@ use App\Http\Requests\ProfileRequest;
 use App\Http\Services\UserService;
 use App\Models\ApiData;
 use App\Models\Notification;
+use App\Models\RateCard;
 use App\Models\SystemSetting;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -34,7 +35,8 @@ class PageController extends Controller
         if(logined() && user()->verified === 0){
             return redirect()->to('/verify');
         }
-        return view('welcome');
+        $rates = RateCard::getRate();
+        return view('welcome', compact('rates'));
     }
 
     public function profile(): Factory|View|Application

@@ -598,3 +598,77 @@ span.space {
     background: #0c2c63;
     color: #fff;
 }
+
+.list-style-none {
+    list-style: none;
+}
+
+.row-box-card{
+    .box-card {
+        width: calc(100% / 7);
+        margin: 5px;
+        padding: 10px 5px 5px;
+        border-radius: 5px;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        transition: all .2s;
+
+        &:hover {
+            box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.2);
+        }
+
+        .box-car-img {
+            height: 65px;
+
+            img {
+                width: auto;
+                height: auto;
+                max-width: 100%;
+                max-height: 100%;
+            }
+        }
+    }
+}
+
+@media (max-width: 991px) {
+    .row-box-card {
+        flex-wrap: wrap;
+
+        .box-card {
+            width: calc(100% / 4);
+        }
+    }
+
+    .form-trade-card-home {
+        flex-wrap: wrap;
+        justify-content: center;
+
+        * {
+            width: calc(100% / 4);
+        }
+    }
+}
+
+@media (max-width: 767px) {
+    .form-trade-card-home * {
+        width: calc(100% / 2);
+    }
+}
+
+@media (max-width: 545px) {
+    .row-box-card {
+        .box-card {
+            width: calc(100% / 3);
+        }
+    }
+    .form-trade-card-home * {
+        width: 100%;
+    }
+}
+
+@media (max-width: 439px) {
+    .row-box-card {
+        .box-card {
+            width: calc(100% / 2);
+        }
+    }
+}

@@ -49,12 +49,12 @@
     <div class="container-fluid">
         <div class="row align-items-center">
             @php($showLogin = !logined() || user()->verified === 0)
-            <div class="col-9 col-sm-6 col-lg-2 text-center">
+            <div class="col-6 col-sm-6 col-lg-2 text-center">
                 <a href="{{ url('') }}" class="d-block">
                     <img src="{{ asset('image/logo.png') }}" alt="Logo" class="header-logo">
                 </a>
             </div>
-            <div class="col-3 col-sm-6 col-lg-10">
+            <div class="col-6 col-sm-6 col-lg-10">
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="d-lg-none"></div>
                     <div class="d-none d-lg-block">
@@ -97,8 +97,8 @@
                         @endif
                         <div class="header-auth">
                             @if($showLogin)
-                                <a class="btn btn-success" href="{{ route('auth.view') }}">Đăng nhập</a>
-                                <a class="btn btn-info" href="{{ route('auth.register.view') }}">Đăng ký</a>
+                                <a class="btn btn-success btn-header-login" href="{{ route('auth.view') }}">Đăng nhập</a>
+                                <a class="btn btn-info btn-header-register" href="{{ route('auth.register.view') }}">Đăng ký</a>
                             @else
                                 <div class="fas fa-bars bar-user-menu bar-user-icon">
                                     <div class="menu-user cursor-nomal" style="display: none">
@@ -183,10 +183,41 @@
         </a>
     </div>
 @endif
+
+<div id="footer" class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-md-4 col-12">
+            <strong class="mb-2 d-inline-block">AutocardVN - Đổi Thẻ Cào Thành Tiền Mặt Chiết Khấu Tốt Nhất Việt Nam</strong>
+            <p>Đổi thẻ cào thành tiền mặt, đổi thẻ cào ra tiền mặt, đổi thẻ cào sang thẻ garena, đổi thẻ gate sang tiền mặt, đổi thẻ Viettel thành tiền mặt, cách nạp thẻ cào vào momo</p>
+            <p>Email: <a href="mailto:support@autocardvn.com" class="text-decoration-none">support@autocardvn.com</a></p>
+            <p class="mb-0">Hotline:</p>
+            <ul class="pl-4">
+                <li><a href="tel:0585766666" class="text-decoration-none">058.576.6666</a></li>
+                <li><a href="tel:0865151815" class="text-decoration-none">086.515.1815</a></li>
+                <li><a href="tel:0867151815" class="text-decoration-none">086.715.1815</a></li>
+            </ul>
+        </div>
+        <div class="col-12 d-md-none">
+            <hr />
+        </div>
+        <div class="col-md-4 col-sm-6 col-12 text-center">
+            <h4 class="font-weight-bold">THÔNG TIN</h4>
+            <ul class="pl-4 list-style-none">
+                <li class="p-1">Làm việc: 8h30 - 22h</li>
+                <li class="p-1"><a href="{{ route('trade-card') }}" class="text-decoration-none">Đổi thẻ cào</a></li>
+                <li class="p-1"><a href="{{ route('buy-card') }}" class="text-decoration-none">Mua thẻ</a></li>
+                <li class="p-1"><a href="{{ route('connect-api') }}" class="text-decoration-none">Kết nối API</a></li>
+            </ul>
+        </div>
+        <div class="col-md-4 col-sm-6 col-12">
+            <h4 class="font-weight-bold">Chính sách</h4>
+            <p>Website Không Bao Giờ Giao Dịch Mua Bán Trên Facebook , Mọi Giao Dịch Đều Được Thực Hiện Trên Web , Tất Cả Giao Dịch Ngoài Web Đều Là Lừa Đảo</p>
+            <p>Lợi dụng web nhận tiền, rửa tiền, đổi tiền, ... => Khoá vĩnh viễn</p>
+        </div>
+    </div>
+</div>
+
 <div id="copyright" class="p-3">
-    <hr class="m-0 mb-2">
-    <p class="m-0 text-center">Email: support@autocardvn.com</p>
-	<p class="m-0 text-center">Hotline: 058.576.6666 - 086.515.1815 - 086.715.1815</p>
     <p class="m-0 text-center">Bản quyền &copy; 2015 - 2022  - Thu mua mã thẻ, đổi thẻ sang tiền mặt</p>
 </div>
 

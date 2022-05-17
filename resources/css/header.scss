@@ -123,4 +123,14 @@
             }
         }
     }
+
+    @media (max-width: 486px) {
+        .btn-header-login{
+            margin-bottom: 5px;
+            margin-top: 5px;
+        }
+        .btn-header-register {
+            margin-bottom: 5px;
+        }
+    }
 }
