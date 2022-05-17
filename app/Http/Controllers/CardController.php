@@ -15,6 +15,7 @@ use App\Models\RateCard;
 use App\Models\RateCardSell;
 use App\Models\TraceSystem;
 use App\Models\TradeCard;
+use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -43,7 +44,7 @@ class CardController extends Controller
         $listNotAuto = array_column($listNotAuto, 'name');
 
         $rates = RateCardSell::getListCardBuy();
-        $listCard = array_reduce($rates, function($result, $card){
+        $listCard = array_reduce($rates, function ($result, $card) {
             $card = end($card);
             $result[$card['name']] = [
                 'name' => $card['name']
@@ -68,12 +69,12 @@ class CardController extends Controller
      */
     public function buyCardPost(BuyCardRequest $request): RedirectResponse
     {
-        if(user()->security_level_2 === 1){
-            if(empty($request->otp_hash) || empty($request->otp_code)){
+        if (user()->security_level_2 === 1) {
+            if (empty($request->otp_hash) || empty($request->otp_code)) {
                 session()->flash('mgs_error', 'Bạn chưa nhập mã OTP!');
                 return back()->withInput();
             }
-            if(!OtpData::verify($request->otp_hash, $request->otp_code)){
+            if (!OtpData::verify($request->otp_hash, $request->otp_code)) {
                 session()->flash('mgs_error', 'Mã OTP không khớp!');
                 return back()->withInput();
             }
@@ -83,7 +84,7 @@ class CardController extends Controller
             return back()->withInput();
         }
 
-        if($request->type_buy == 'fast') {
+        if ($request->type_buy == 'fast') {
             return redirect()->route('list-card', ['hash' => $hash]);
         }
 
@@ -102,15 +103,15 @@ class CardController extends Controller
      */
     public function buyCardMulti(Request $request): JsonResponse
     {
-        if(user()->security_level_2 === 1){
-            if(empty($request->otp_hash) || empty($request->otp_code)){
+        if (user()->security_level_2 === 1) {
+            if (empty($request->otp_hash) || empty($request->otp_code)) {
                 return response()->json([
                     'success' => false,
                     'errors' => ['Bạn chưa nhập mã OTP!'],
                     'errorText' => 'Bạn chưa nhập mã OTP!',
                 ]);
             }
-            if(!OtpData::verify($request->otp_hash, $request->otp_code)){
+            if (!OtpData::verify($request->otp_hash, $request->otp_code)) {
                 return response()->json([
                     'success' => false,
                     'errors' => ['Mã OTP không khớp!'],
@@ -145,7 +146,7 @@ class CardController extends Controller
         $listNotAuto = CardListModel::whereAuto('0')->whereType('trade')->get()->toArray();
         $listNotAuto = array_column($listNotAuto, 'name');
         $rates = RateCard::getListCardTrade();
-        $cardList = array_reduce($rates, function($result, $card){
+        $cardList = array_reduce($rates, function ($result, $card) {
             $card = end($card);
             $result[$card['name']] = [
                 'name' => $card['name'],
@@ -161,17 +162,17 @@ class CardController extends Controller
      */
     public function tradeCardPost(TradeCardRequest $request): RedirectResponse
     {
-        if(empty($request->type_trade) || !in_array($request->type_trade, ['slow', 'fast'])) {
+        if (empty($request->type_trade) || !in_array($request->type_trade, ['slow', 'fast'])) {
             session()->flash('mgs_error', "Loại gạch thẻ không chính xác!");
             return back()->withInput();
         }
         $listNotAuto = CardListModel::whereAuto('0')->whereType('trade')->get()->toArray();
         $listNotAuto = array_column($listNotAuto, 'name');
-        if(in_array($request->card_type, $listNotAuto) && $request->type_buy == 'fast') {
+        if (in_array($request->card_type, $listNotAuto) && $request->type_buy == 'fast') {
             session()->flash('mgs_error', 'Đổi thẻ nhanh hiện không khả dụng!');
             return back()->withInput();
         }
-        if(TradeCard::whereCardSerial($request->card_serial)->orWhere('card_number', $request->card_number)->first() != null) {
+        if (TradeCard::whereCardSerial($request->card_serial)->orWhere('card_number', $request->card_number)->first() != null) {
             session()->flash('mgs_error', "Số serial hoặc mã thẻ đã tồn tại trên hệ thống!");
             return back()->withInput();
         }
@@ -211,6 +212,52 @@ class CardController extends Controller
         return view('card.buy_history', compact('histories'));
     }
 
+    public function buyCardHistoryFilter(Request $request): JsonResponse
+    {
+        try{
+            $card_buy = $request->filter_card_buy;
+            $money_buy = $request->filter_money_buy;
+            $from_date = $request->filter_from_date;
+            $to_date = $request->filter_to_date;
+
+            $histories = CardStore::whereUserId(user()->id);
+            if (!empty($card_buy)) {
+                $histories->whereCardBuy($card_buy);
+            }
+            if (!empty($money_buy)) {
+                $histories->whereMoneyBuy($money_buy);
+            }
+            if (empty($from_date) && empty($to_date)) {
+                $from_date = date('d-m-Y');
+                $to_date = date('d-m-Y');
+            }
+            if (empty($from_date) && !empty($to_date)) {
+                $from_date = $to_date;
+            }
+            if (!empty($from_date) && empty($to_date)) {
+                $to_date = $from_date;
+            }
+            if (strtotime($from_date) > strtotime($to_date)) {
+                $a = $from_date;
+                $from_date = $to_date;
+                $to_date = $a;
+            }
+            $histories->where('created_at', '>=', $from_date . ' 00:00:00');
+            $histories->where('created_at', '<=', $to_date . ' 23:59:59');
+            $histories->orderBy('created_at', 'DESC');
+            $histories = $histories->get();
+            $html = view('card.buy_history_table', compact('histories'))->render();
+            return response()->json([
+                'success' => true,
+                'html' => $html
+            ]);
+        }catch (Exception $exception) {
+            return response()->json([
+                'success' => false
+            ]);
+        }
+    }
+
     public function listCardBuy($hash): RedirectResponse|Factory|View|Application
     {
         $cardStore = CardStore::whereStoreHash($hash)->first();
@@ -218,7 +265,7 @@ class CardController extends Controller
             session()->flash('mgs_error', 'Đơn hàng không tồn tại hoặc đã bị xóa! Hãy quay về trang chủ để thao tác lại. Nếu có nhầm lẫn xảy ra, hãy liên hệ admin để được xử lý!');
             return back();
         }
-        if($cardStore->user_id != user()->id){
+        if ($cardStore->user_id != user()->id) {
             session()->flash('mgs_error', 'Bạn không phải người mua!');
             return back();
         }

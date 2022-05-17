@@ -680,6 +680,15 @@ span.space {
             width: calc(100% - 0.25rem);
         }
     }
+    .row-filter {
+        flex-wrap: wrap;
+        justify-content: center;
+
+        * {
+            width: calc(100% / 2 - 0.5rem);
+            margin-top: 5px;
+        }
+    }
 }
 
 @media (max-width: 545px) {

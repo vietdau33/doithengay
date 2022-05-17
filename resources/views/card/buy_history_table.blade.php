@@ -1,4 +1,4 @@
-<table class="table table-striped table-bordered">
+<table class="table table-striped table-bordered table-responsive-md">
     <thead class="table-dark">
     <tr>
         <th scope="row">#</th>
@@ -18,7 +18,7 @@
                     <a href="{{ route('list-card', ['hash' => $history->store_hash]) }}" class="text-decoration-none">Xem thẻ</a>
                 @endif
             </td>
-            <td>{{ date('d-m-Y', strtotime($history->created_at)) }}</td>
+            <td style="min-width: 120px;">{{ date('d-m-Y', strtotime($history->created_at)) }}</td>
             <td>{{ ucfirst($history->card_buy) }}</td>
             <td>{{ number_format($history->money_buy) }}</td>
             <td>{!! $history->getStatus() !!}</td>

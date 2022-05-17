@@ -99,18 +99,18 @@
     <div class="container-fluid">
         <h5>Lịch sử mua thẻ</h5>
         <div class="row-filter d-flex">
-            <select name="filter_type_buy" id="filter_type_buy" class="form-control mr-2">
+            <select name="filter_card_buy" class="form-control mr-2">
                 <option value="">Loại thẻ</option>
                 @foreach($listCard as $type => $card)
                     <option value="{{ $type }}">{{ ucfirst($card['name']) }}</option>
                 @endforeach
             </select>
-            <select name="filter_money_buy" id="filter_money_buy" class="form-control mr-2">
+            <select name="filter_money_buy" class="form-control mr-2">
                 <option value="">Mệnh giá</option>
             </select>
-            <input type="text" class="form-control mr-2" value="{{ date('d-m-Y') }}" data-date-picker>
-            <input type="text" class="form-control mr-2" value="{{ date('d-m-Y') }}" data-date-picker>
-            <button class="btn btn-success" style="min-width: 150px;">Lọc dữ liệu</button>
+            <input type="text" name="filter_from_date" class="form-control mr-2" value="{{ date('Y-m-d') }}" data-date-picker>
+            <input type="text" name="filter_to_date" class="form-control mr-2" value="{{ date('Y-m-d') }}" data-date-picker>
+            <button class="btn btn-success btn-filter" style="min-width: 150px;">Lọc dữ liệu</button>
         </div>
         <div class="table-filter mt-2">
             @include('card.buy_history_table', ['histories' => $histories])
@@ -195,7 +195,6 @@
 
             parent.find('input[name=' + fieldName + ']').trigger('change');
         }
-
         function decrementValue(e) {
             e.preventDefault();
             let fieldName = $(e.target).data('field');
@@ -210,7 +209,6 @@
 
             parent.find('input[name=' + fieldName + ']').trigger('change');
         }
-
         function calcTotalMoneyCart() {
             let total = 0;
             $('.body-cart .row-cart:not(.row-cart-template)').each(function() {
@@ -325,7 +323,7 @@
 
         $(document).ready(function(){
             $("[data-date-picker]").datepicker({
-                dateFormat : 'dd-mm-yy'
+                dateFormat : 'yy-mm-dd'
             });
             if($('[name="card_buy"]:checked').length == 0) {
                 $('.form-group-card-buy .box-card:first-child [name="card_buy"]').trigger('click');
@@ -364,6 +362,27 @@
                         window.location.reload();
                     });
                     $('.alertify .ajs-header').addClass('alert-success');
+                })
+            });
+            $('[name="filter_card_buy"]').on('change', function() {
+                const val = $(this).val();
+                const filterMoney = $('[name="filter_money_buy"]')
+                filterMoney.empty().append('<option value="">Mệnh giá</option>');
+                $.each(rates[val], function (index, rate) {
+                    const money = rate.price;
+                    filterMoney.append('<option value="' + money + '">' + App.setPriceFormat(money) + '</option>')
+                });
+            });
+            $('.btn-filter').on('click', function(){
+                const url = '{{ route('buy-card.history.filter') }}';
+                const filter_card_buy = $('[name="filter_card_buy"]').val();
+                const filter_money_buy = $('[name="filter_money_buy"]').val();
+                const filter_from_date = $('[name="filter_from_date"]').val();
+                const filter_to_date = $('[name="filter_to_date"]').val();
+                Request.ajax(url, { filter_card_buy, filter_money_buy, filter_from_date, filter_to_date }, function(result) {
+                    if(result.success) {
+                        $('.table-filter').empty().append(result.html)
+                    }
                 })
             });
         })

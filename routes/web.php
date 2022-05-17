@@ -50,6 +50,7 @@ Route::middleware('authenticated')->group(function () {
     Route::post('/buy-card/multi', [CardController::class, 'buyCardMulti'])->name('buy-card-multi.post');
     Route::get('/list-card-buy/{hash}', [CardController::class, 'listCardBuy'])->name('list-card');
     Route::get('/buy-card/history', [CardController::class, 'buyCardHistory'])->name('buy-card.history');
+    Route::post('/buy-card/history/filter', [CardController::class, 'buyCardHistoryFilter'])->name('buy-card.history.filter');
 
     Route::prefix('trade-card')->group(function () {
         Route::get('', [CardController::class, 'tradeCard'])->name('trade-card');
