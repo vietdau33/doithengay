@@ -31,7 +31,8 @@
             </li>
             <li>
                 <img src="{{ asset('image/arrow-1.gif') }}" alt="Arrow">
-                <span class="font-weight-bold">Hướng dẫn tích hợp API gạch thẻ tự động cho Shop <a href="{{ route('connect-api') }}">tại đây</a>.</span>
+                <span class="font-weight-bold">Hướng dẫn tích hợp API gạch thẻ tự động cho Shop <a
+                        href="{{ route('connect-api') }}">tại đây</a>.</span>
             </li>
             <li>
                 <img src="{{ asset('image/arrow-1.gif') }}" alt="Arrow">
@@ -92,20 +93,25 @@
         <div class="row">
             <div class="col-12">
                 @if(!logined())
-                <div class="alert alert-danger">Vui lòng <a href="{{ route('auth.view') }}" class="text-decoration-none">đăng nhập</a> để sử dụng dịch vụ!</div>
+                    <div class="alert alert-danger">Vui lòng <a href="{{ route('auth.view') }}"
+                                                                class="text-decoration-none">đăng nhập</a> để sử dụng
+                        dịch vụ!
+                    </div>
                 @endif
                 <div class="service_fee_table mt-4">
                     <h4 class="font-weight-bold">Bảng phí đổi thẻ cào</h4>
                     <ul class="nav nav-tabs service_fee_table_tab" role="tablist">
                         @foreach($ratesTable as $card => $rate)
                             <li class="nav-item">
-                                <a class="nav-link" id="target_{{ $card }}_tab" data-toggle="tab" href="#target_{{ $card }}" role="tab" aria-controls="home">{{ ucfirst($card) }}</a>
+                                <a class="nav-link" id="target_{{ $card }}_tab" data-toggle="tab"
+                                   href="#target_{{ $card }}" role="tab" aria-controls="home">{{ ucfirst($card) }}</a>
                             </li>
                         @endforeach
                     </ul>
                     <div class="tab-content service_fee_table_content">
                         @foreach($ratesTable as $card => $rate)
-                            <div class="tab-pane fade" id="target_{{ $card }}" role="tabpanel" aria-labelledby="target_{{ $card }}_tab">
+                            <div class="tab-pane fade" id="target_{{ $card }}" role="tabpanel"
+                                 aria-labelledby="target_{{ $card }}_tab">
                                 <table class="table table-bordered table-responsive-xl">
                                     <thead class="thead-light">
                                     <tr>
@@ -152,7 +158,8 @@
         <div class="row mt-4 mb-4">
             <div class="col-12">
                 <h3 class="text-center font-weight-bold">Mua mã thẻ</h3>
-                <p class="mb-2 text-center">Mua thẻ bị <b>Chờ xử lý</b> là giao dịch thất bại, hệ thống sẽ tự động hoàn tiền về tài khoản sau vài giờ</p>
+                <p class="mb-2 text-center">Mua thẻ bị <b>Chờ xử lý</b> là giao dịch thất bại, hệ thống sẽ tự động hoàn
+                    tiền về tài khoản sau vài giờ</p>
                 <div class="row-box-card d-flex align-items-center justify-content-center">
                     @foreach(['viettel', 'vinaphone', 'mobifone', 'vietnamobile', 'zing', 'garena'] as $card)
                         <a class="box-card text-decoration-none" href="{{ route('buy-card') }}">
@@ -186,11 +193,11 @@
         }
 
         let listImgSlide;
-        if(window.innerWidth > 991) {
+        if (window.innerWidth > 991) {
             listImgSlide = slideImage.pc;
-        }else if(window.innerWidth > 545) {
+        } else if (window.innerWidth > 545) {
             listImgSlide = slideImage.mb;
-        }else {
+        } else {
             listImgSlide = slideImage.sp;
         }
 
@@ -229,11 +236,11 @@
         let template = $('[data-template="label-money"]');
         let listNotAuto = {!! json_encode($listNotAuto) !!};
 
-        const resetTradeCard = function(parentBox = null) {
-            if(parentBox == null) {
+        const resetTradeCard = function (parentBox = null) {
+            if (parentBox == null) {
                 parentBox = $('.container-trade-card-home');
             }
-            parentBox.find('[name="type_trade"]').each(function(){
+            parentBox.find('[name="type_trade"]').each(function () {
                 $(this).empty();
                 $(this).append('<option value="">Phương thức gạch thẻ</option>');
                 $(this).append('<option value="1" data-type="slow">Gạch nhanh: 0% - 0VNĐ</option>');
@@ -241,33 +248,33 @@
             });
         }
 
-        $('.container-trade-card-home').on('change', '[name="card_type"]', function(){
-            let val  = $(this).val();
+        $('.container-trade-card-home').on('change', '[name="card_type"]', function () {
+            let val = $(this).val();
             let rate = rates[val];
             let parentBox = $(this).parent();
             let areaMoney = parentBox.find('.select_card_money');
 
-            try{
+            try {
                 resetTradeCard(parentBox);
-                if(listNotAuto.indexOf(val) != -1) {
+                if (listNotAuto.indexOf(val) != -1) {
                     parentBox.find('[name="type_trade"] [data-type="fast"]').addClass('d-none');
                     parentBox.find('[name="type_trade"] [data-type="slow"]').prop('selected', true);
-                }else{
+                } else {
                     parentBox.find('[name="type_trade"] [data-type="fast"]').removeClass('d-none');
                 }
-            }catch (e) {
+            } catch (e) {
                 console.log(e)
             }
 
             areaMoney.empty();
             areaMoney.append('<option value="">Mệnh giá</option>');
 
-            if(rate == undefined) {
+            if (rate == undefined) {
                 console.log(type, rate)
                 return;
             }
 
-            $.each(rate, function(index, r){
+            $.each(rate, function (index, r) {
                 let money = r.price;
                 let tempEl = $("<option />");
                 let id = 'money-' + money;
@@ -280,7 +287,7 @@
             });
         });
 
-        $('.container-trade-card-home').on('change', '[name="card_money"]', function(){
+        $('.container-trade-card-home').on('change', '[name="card_money"]', function () {
             const parentBox = $(this).parent();
             const optionEl = $(this).find('option:selected');
             const rate = parseFloat(optionEl.attr('data-rate'));
@@ -290,21 +297,21 @@
             const moneyFast = App.setPriceFormat(money - (money * rate / 100));
 
             resetTradeCard(parentBox);
-            parentBox.find('[data-type="slow"]').text('Gạch nhanh: '+rate+'% - '+moneyFast+'VNĐ');
-            parentBox.find('[data-type="fast"]').text('Gạch chậm: '+rateSlow+'% - '+moneySlow+'VNĐ');
+            parentBox.find('[data-type="slow"]').text('Gạch nhanh: ' + rate + '% - ' + moneyFast + 'VNĐ');
+            parentBox.find('[data-type="fast"]').text('Gạch chậm: ' + rateSlow + '% - ' + moneySlow + 'VNĐ');
         });
     </script>
     <script>
-        window.addEventListener('DOMContentLoaded', function(){
+        window.addEventListener('DOMContentLoaded', function () {
             $('.service_fee_table_tab').find('.nav-item:first-child .nav-link').trigger('click');
         });
-        window.CopyRowTrade = function() {
+        window.CopyRowTrade = function () {
             const template = $('[data-id="template"]').clone();
             template.removeAttr('data-id');
             template.addClass('d-flex').removeClass('d-none');
             $("#row_save_position_add_trade").before(template);
         }
-        window.RemoveRowTrade = function(el) {
+        window.RemoveRowTrade = function (el) {
             $(el).closest('.form-trade-card-home').remove();
         }
     </script>
