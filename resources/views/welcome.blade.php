@@ -6,18 +6,18 @@
             <div class="swiper">
                 <div class="swiper-wrapper">
                     <div class="swiper-slide">
-                        <img class="w-100" src="{{ asset('image/slide_home/1.jpg') }}" alt="1">
+                        <img class="w-100" src="{{ asset('image/slide_home/bannerslide1.jpg') }}" alt="1">
                     </div>
                     <div class="swiper-slide">
-                        <img class="w-100" src="{{ asset('image/slide_home/2.jpg') }}" alt="2">
+                        <img class="w-100" src="{{ asset('image/slide_home/bannerslide2.png') }}" alt="2">
                     </div>
                 </div>
                 <!-- If we need pagination -->
                 <div class="swiper-pagination"></div>
 
                 <!-- If we need navigation buttons -->
-                <div class="swiper-button-prev"></div>
-                <div class="swiper-button-next"></div>
+               <!-- <div class="swiper-button-prev"></div>
+                 <div class="swiper-button-next"></div> -->
             </div>
         </div>
     @endif
