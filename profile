@@ -16,7 +16,7 @@ migrate(){
 add(){
     git add $1
 }
-commit(){
+cm(){
     git commit -m "$1"
 }
 push(){
