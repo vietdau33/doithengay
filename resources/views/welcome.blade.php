@@ -96,7 +96,7 @@
             @endif
         </div>
         <div class="btn-trade-card text-center">
-            <button class="btn btn-warning">Đổi thẻ</button>
+            <a class="btn btn-warning" href="{{ route('trade-card') }}">Gạch thẻ</a>
         </div>
     </div>
     <div class="container-fluid">

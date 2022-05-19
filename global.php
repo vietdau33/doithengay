@@ -172,6 +172,7 @@ function isIgnoreBg(): bool
         'recharge',
         'transfer',
         'buy-card',
+        'trade-card',
     ];
 
     return request()->is(...$aryUriIgnoreBg);
