@@ -45,7 +45,7 @@
 
                     <!-- Logo -->
                     <div class="content-header-item">
-                        <a class="link-effect font-w700" href="{{ route('admin.home') }}">
+                        <a class="link-effect font-w700 d-flex" href="{{ route('admin.home') }}">
                             <span class="font-size-xl text-dual-primary-dark">Auto</span>
                             <span class="font-size-xl text-primary">card</span>
                             <span class="font-size-xl text-success">VN</span>
