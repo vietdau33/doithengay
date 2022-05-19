@@ -147,6 +147,7 @@ class UpdateStatusTradeCard extends Command
 
         $result['real'] = $result['ValueReceive'] - $result['ValueReceive'] * $devian / 100;
         $tradeRecord->money_real = $result['real'];
+        $tradeRecord->rate_use = (float)$rate['rate_use'];
 
         $tradeRecord->status = TradeCard::S_SUCCESS;
         $tradeRecord->status_card = $result['CardValue'] == $result['CardSend'] ? TradeCard::S_CARD_SUCCESS : TradeCard::S_CARD_HALF;

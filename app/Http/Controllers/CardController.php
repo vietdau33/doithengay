@@ -146,19 +146,7 @@ class CardController extends Controller
     public function tradeCard(): Factory|View|Application
     {
         session()->flash('menu-active', 'menu-trade-card');
-        $listNotAuto = CardListModel::whereAuto('0')->whereType('trade')->get()->toArray();
-        $listNotAuto = array_column($listNotAuto, 'name');
-        $rates = RateCard::getListCardTrade();
-        $cardList = array_reduce($rates, function ($result, $card) {
-            $card = end($card);
-            $result[$card['name']] = [
-                'name' => $card['name'],
-                'rate_id' => $card['rate_id']
-            ];
-            return $result;
-        }, []);
-        $ratesTable = RateCard::getRate();
-        return view('card.trade', compact('rates', 'cardList', 'listNotAuto', 'ratesTable'));
+        return view('card.trade');
     }
 
     /**
@@ -195,6 +183,55 @@ class CardController extends Controller
         return back();
     }
 
+    /**
+     * @throws GuzzleException
+     */
+    public function tradeCardPostAjax(TradeCardRequest $request): JsonResponse
+    {
+        if (empty($request->type_trade) || !in_array($request->type_trade, ['slow', 'fast'])) {
+            return response()->json([
+                'success' => false,
+                'message' => "Loại gạch thẻ không chính xác!"
+            ]);
+        }
+        $listNotAuto = CardListModel::whereAuto('0')->whereType('trade')->get()->toArray();
+        $listNotAuto = array_column($listNotAuto, 'name');
+        if (in_array($request->card_type, $listNotAuto) && $request->type_buy == 'fast') {
+            return response()->json([
+                'success' => false,
+                'message' => "Đổi thẻ nhanh hiện không khả dụng!"
+            ]);
+        }
+        if (TradeCard::whereCardSerial($request->card_serial)->orWhere('card_number', $request->card_number)->first() != null) {
+            return response()->json([
+                'success' => false,
+                'message' => "Số serial hoặc mã thẻ đã tồn tại trên hệ thống!"
+            ]);
+        }
+        if ($request->type_trade == 'fast' && !CardService::saveTradeCardFast($request)) {
+            return response()->json([
+                'success' => false,
+                'message' => session()->pull('mgs_error')
+            ]);
+        }
+        if ($request->type_trade == 'slow' && !CardService::saveTradeCardSlow($request)) {
+            return response()->json([
+                'success' => false,
+                'message' => session()->pull('mgs_error')
+            ]);
+        }
+        TraceSystem::setTrace([
+            'mgs' => 'đổi thẻ',
+            'username' => user()->username,
+            ...$request->validated()
+        ]);
+        session()->flash('notif', 'Đã gửi yêu cầu! Hãy kiểm tra lịch sử để xem trạng thái gạch thẻ.');
+        return response()->json([
+            'success' => true,
+            'message' => 'Thành công!'
+        ]);
+    }
+
     public function showDiscount(): Factory|View|Application
     {
         session()->flash('menu-active', 'menu-discount');
@@ -208,6 +245,56 @@ class CardController extends Controller
         $rates = RateCard::getRate();
         $rateID = array_flip(RateCard::getRateId());
         return view('card.trade_history', compact('histories', 'rates', 'rateID'));
+    }
+
+    public function tradeCardHistoryFilter(Request $request): JsonResponse
+    {
+        try{
+            $card_type = $request->filter_card_type;
+            $money = $request->filter_money;
+            $status = $request->filter_status;
+            $from_date = $request->filter_from_date;
+            $to_date = $request->filter_to_date;
+
+            $histories = TradeCard::whereUserId(user()->id);
+            if (!empty($card_type)) {
+                $histories->whereCardType($card_type);
+            }
+            if (!empty($money)) {
+                $histories->whereCardMoney($money);
+            }
+            if (!is_null($status) && $status != '') {
+                $histories->whereStatusCard($status);
+            }
+            if (empty($from_date) && empty($to_date)) {
+                $from_date = date('d-m-Y');
+                $to_date = date('d-m-Y');
+            }
+            if (empty($from_date) && !empty($to_date)) {
+                $from_date = $to_date;
+            }
+            if (!empty($from_date) && empty($to_date)) {
+                $to_date = $from_date;
+            }
+            if (strtotime($from_date) > strtotime($to_date)) {
+                $a = $from_date;
+                $from_date = $to_date;
+                $to_date = $a;
+            }
+            $histories->where('created_at', '>=', $from_date . ' 00:00:00');
+            $histories->where('created_at', '<=', $to_date . ' 23:59:59');
+            $histories->orderBy('created_at', 'DESC');
+            $histories = $histories->get();
+            $html = view('card.trade_history_table', compact('histories'))->render();
+            return response()->json([
+                'success' => true,
+                'html' => $html
+            ]);
+        }catch (Exception $exception) {
+            return response()->json([
+                'success' => false
+            ]);
+        }
     }
 
     public function buyCardHistory(): Factory|View|Application

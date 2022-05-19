@@ -101,6 +101,11 @@ $colors: (
     background-color: #f8d7da !important;
 }
 
+.alert-success {
+    color: #155724 !important;
+    background-color: #d4edda !important;
+}
+
 .font-size-15 {
     font-size: 15px;
 }
@@ -656,6 +661,10 @@ span.space {
     flex-wrap: wrap;
     justify-content: center;
     width: calc(100% - 100px);
+
+    &.full {
+        width: 100%;
+    }
 
     select {
         width: calc(100% / 3 - 0.25rem);

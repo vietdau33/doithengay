@@ -36,19 +36,7 @@ class PageController extends Controller
         if(logined() && user()->verified === 0){
             return redirect()->to('/verify');
         }
-        $ratesTable = RateCard::getRate();
-        $listNotAuto = CardListModel::whereAuto('0')->whereType('trade')->get()->toArray();
-        $listNotAuto = array_column($listNotAuto, 'name');
-        $rates = RateCard::getListCardTrade();
-        $cardList = array_reduce($rates, function($result, $card){
-            $card = end($card);
-            $result[$card['name']] = [
-                'name' => $card['name'],
-                'rate_id' => $card['rate_id']
-            ];
-            return $result;
-        }, []);
-        return view('welcome', compact('ratesTable', 'rates', 'cardList', 'listNotAuto'));
+        return view('welcome');
     }
 
     public function profile(): Factory|View|Application

@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\Notification;
+use App\Models\RateCard;
+use App\Models\RateCardSell;
 use Illuminate\Contracts\Auth\Authenticatable;
 
 if (!function_exists('logined')) {
@@ -176,4 +178,19 @@ function isIgnoreBg(): bool
     ];
 
     return request()->is(...$aryUriIgnoreBg);
+}
+
+function getRates (){
+    return RateCard::getRate();
+}
+
+function getListCard($rates = null){
+    $rates = $rates == null ? RateCardSell::getListCardBuy() : $rates;
+    return array_reduce($rates, function ($result, $card) {
+        $card = end($card);
+        $result[$card['name']] = [
+            'name' => $card['name']
+        ];
+        return $result;
+    }, []);
 }

@@ -96,6 +96,11 @@ body.full-height #copyright {
   background-color: #f8d7da !important;
 }
 
+.alert-success {
+  color: #155724 !important;
+  background-color: #d4edda !important;
+}
+
 .font-size-15 {
   font-size: 15px;
 }
@@ -120,7 +125,7 @@ p.small {
 #header .header-logo {
   max-width: 100%;
   width: auto;
-  max-height: 65px;
+  max-height: 55px;
 }
 #header .header-menu {
   padding: 2px 0;
@@ -705,6 +710,9 @@ span.space {
   flex-wrap: wrap;
   justify-content: center;
   width: calc(100% - 100px);
+}
+.form-trade-card-home.full {
+  width: 100%;
 }
 .form-trade-card-home select {
   width: calc(33.3333333333% - 0.25rem);

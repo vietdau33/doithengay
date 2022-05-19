@@ -148,7 +148,7 @@ class CardService extends Service
 
         $cardType = RateCard::whereName($params['card_type'])->first();
         if($cardType == null) {
-            session()->flash('Nhà mạng không tồn tại!');
+            session()->flash('mgs_error', 'Nhà mạng không tồn tại!');
             return false;
         }
 

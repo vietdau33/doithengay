@@ -55,7 +55,9 @@ Route::middleware('authenticated')->group(function () {
     Route::prefix('trade-card')->group(function () {
         Route::get('', [CardController::class, 'tradeCard'])->name('trade-card');
         Route::post('', [CardController::class, 'tradeCardPost'])->name('trade-card.post');
+        Route::post('ajax', [CardController::class, 'tradeCardPostAjax'])->name('trade-card.post.ajax');
         Route::get('/history', [CardController::class, 'tradeCardHistory'])->name('trade-card.history');
+        Route::post('/history/filter', [CardController::class, 'tradeCardHistoryFilter'])->name('trade-card.history.filter');
     });
 
     Route::get('/chiet-khau', [CardController::class, 'showDiscount'])->name('chiet-khau');

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
 class TradeCard extends Model
 {
@@ -61,5 +62,16 @@ class TradeCard extends Model
         $name = ucfirst($rate->name ?? '');
         $telcoList[$this->card_type] = $name;
         return $name;
+    }
+
+    public static function getTodayHistory(){
+        $today = Carbon::today()->format('Y-m-d');
+        $todayStart = $today . ' 00:00:00';
+        $todayEnd = $today . ' 23:59:59';
+        return TradeCard::whereUserId(user()->id)
+            ->where('created_at', '>=', $todayStart)
+            ->where('created_at', '<=', $todayEnd)
+            ->orderBy('created_at', 'DESC')
+            ->get();
     }
 }
