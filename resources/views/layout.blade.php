@@ -169,11 +169,11 @@
             <p class="w-100">Nạp tiền</p>
         </a>
         <a class="text-decoration-none" href="{{ route('withdraw') }}">
-            <div style="--img-icon-url: url('{{ asset('image/icon/icon3.svg') }}')" class="img-icon"></div>
+            <div style="--img-icon-url: url('{{ asset('image/icon/icon4.svg') }}')" class="img-icon"></div>
             <p class="w-100">Rút tiền</p>
         </a>
         <a class="text-decoration-none" href="{{ route('chiet-khau') }}">
-            <div style="--img-icon-url: url('{{ asset('image/icon/icon4.svg') }}')" class="img-icon"></div>
+            <div style="--img-icon-url: url('{{ asset('image/icon/icon3.svg') }}')" class="img-icon"></div>
             <p class="w-100">Chiết khấu</p>
         </a>
         <a class="text-decoration-none" href="{{ route('pay-bill') }}">
@@ -191,8 +191,8 @@
     <hr>
     <div class="row">
         <div class="col-md-4 col-12">
-            <strong class="mb-2 d-inline-block">AutocardVN - Đổi Thẻ Cào Thành Tiền Mặt Chiết Khấu Tốt Nhất Việt Nam</strong>
-            <p>Đổi thẻ cào thành tiền mặt, đổi thẻ cào ra tiền mặt, đổi thẻ cào sang thẻ garena, đổi thẻ gate sang tiền mặt, đổi thẻ Viettel thành tiền mặt, cách nạp thẻ cào vào momo</p>
+            <strong class="mb-2 d-inline-block">CTY TNHH AutocardVN</strong>
+            <p>Đổi Thẻ Cào Thành Tiền Mặt Chiết Khấu Tốt Nhất Việt Nam.</p>
             <p>Email: <a href="mailto:support@autocardvn.com" class="text-decoration-none">support@autocardvn.com</a></p>
             <p class="mb-0">Hotline:</p>
             <ul class="pl-4">
@@ -204,25 +204,23 @@
         <div class="col-12 d-md-none">
             <hr />
         </div>
-        <div class="col-md-4 col-sm-6 col-12 text-center">
-            <h4 class="font-weight-bold">THÔNG TIN</h4>
-            <ul class="pl-4 list-style-none">
-                <li class="p-1">Làm việc: 8h30 - 22h</li>
-                <li class="p-1"><a href="{{ route('trade-card') }}" class="text-decoration-none">Đổi thẻ cào</a></li>
-                <li class="p-1"><a href="{{ route('buy-card') }}" class="text-decoration-none">Mua thẻ</a></li>
-                <li class="p-1"><a href="{{ route('connect-api') }}" class="text-decoration-none">Kết nối API</a></li>
-            </ul>
+        <div class="col-md-4 col-sm-6 col-12">
+			<strong class="mb-2 d-inline-block">Thông Tin</strong>
+            <li class="p-1">Làm việc: 8h30 - 22h</li>
+            <li class="p-1"><a href="{{ route('trade-card') }}" class="text-decoration-none">Đổi thẻ cào</a></li>
+            <li class="p-1"><a href="{{ route('buy-card') }}" class="text-decoration-none">Mua thẻ</a></li>
+            <li class="p-1"><a href="{{ route('connect-api') }}" class="text-decoration-none">Kết nối API</a></li>
         </div>
         <div class="col-md-4 col-sm-6 col-12">
-            <h4 class="font-weight-bold">Chính sách</h4>
-            <p>Website Không Bao Giờ Giao Dịch Mua Bán Trên Facebook , Mọi Giao Dịch Đều Được Thực Hiện Trên Web , Tất Cả Giao Dịch Ngoài Web Đều Là Lừa Đảo</p>
-            <p>Lợi dụng web nhận tiền, rửa tiền, đổi tiền, ... => Khoá vĩnh viễn</p>
+			<strong class="mb-2 d-inline-block">Chính Sách</strong>
+            <p>Mọi Giao Dịch Đều Được Thực Hiện Trên Web , Tất Cả Giao Dịch Ngoài Web Đều Là Lừa Đảo</p>
+            <p>Lợi dụng web nhận tiền, rửa tiền, đổi tiền, sẽ khoá tài khoản vĩnh viễn</p>
         </div>
     </div>
 </div>
 
 <div id="copyright" class="p-3">
-    <p class="m-0 text-center">Bản quyền &copy; 2015 - 2022  - Thu mua mã thẻ, đổi thẻ sang tiền mặt</p>
+    <p class="m-0 text-center">Bản quyền &copy; autocardvn.com 2015 - 2022 - Thu mua mã thẻ, đổi thẻ sang tiền mặt.</p>
 </div>
 
 @if(env('APP_ENV', 'local') == 'production')
@@ -248,7 +246,7 @@
             $('.span-remove-after-first').remove();
         })
         .marquee({
-            duration: window.innerWidth * 10,
+            duration: window.innerWidth * 15,
             delayBeforeStart: 1000,
             pauseOnHover: true,
             startVisible: true

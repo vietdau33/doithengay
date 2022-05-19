@@ -17,23 +17,27 @@
         </div>
     @endif
     <div class="container mt-4 mb-4">
-        <h3 class="text-center font-weight-bold">Đổi thẻ cào!</h3>
+        <h3 class="text-center font-weight-bold">ĐỔI THẺ</h3>
         <ul class="list-notif mb-4">
             <li>
                 <img src="{{ asset('image/arrow-1.gif') }}" alt="Arrow">
-                <span class="font-weight-bold">Viettel cần điền đúng cả seri, điền sai seri khi lỗi sẽ bị xử lý chậm.</span>
+                <span class="font-weight-bold">Chọn chính xác loại thẻ và mệnh giá thẻ cào.</span>
+            </li>
+			<li>
+                <img src="{{ asset('image/arrow-1.gif') }}" alt="Arrow">
+                <span class="font-weight-bold">Nếu chọn sai loại thẻ, thẻ cào sẽ bị vô hiệu hóa.</span>
             </li>
             <li>
                 <img src="{{ asset('image/arrow-1.gif') }}" alt="Arrow">
-                <span class="font-weight-bold">Sai mệnh giá 50%.</span>
+                <span class="font-weight-bold">Nếu chọn sai mệnh giá, hệ thống sẽ trừ 50% số tiền nhận được..</span>
             </li>
-            <li>
-                <img src="{{ asset('image/arrow-1.gif') }}" alt="Arrow">
-                <span class="font-weight-bold">Hướng dẫn tích hợp API gạch thẻ tự động cho Shop <a href="{{ route('connect-api') }}">tại đây</a>.</span>
-            </li>
-            <li>
+			<li>
                 <img src="{{ asset('image/arrow-1.gif') }}" alt="Arrow">
                 <span class="font-weight-bold">Không nhận API game bài, cổng game bài cố tình đấu api sẽ bị khóa.</span>
+            </li>
+            <li>
+                <img src="{{ asset('image/arrow-1.gif') }}" alt="Arrow">
+                <span class="font-weight-bold">Hướng dẫn tích hợp API gạch thẻ tự động <a href="{{ route('connect-api') }}">tại đây</a>.</span>
             </li>
         </ul>
     </div>
@@ -86,14 +90,13 @@
                 <div class="alert alert-warning">
                     <ul style="list-style: decimal; padding-left: 20px">
                         <li>Đối với gạch chậm, thời gian xác minh thẻ tối đa là 5 phút.</li>
-                        <li>Đối với gạch chậm, chiết khấu sẽ thấp hơn, bạn sẽ nhận được nhiều tiền hơn.</li>
-                        <li>Sau 5 phút kể từ khi gửi thẻ, nếu hệ thống không xác minh được thẻ thì thẻ sẽ bị đẩy sang gạch thường.</li>
+                        <li>Sau 5 phút kể từ khi gửi thẻ, nếu hệ thống không xác minh được thẻ thì thẻ sẽ bị đẩy sang gạch nhanh.</li>
                     </ul>
                 </div>
             @endif
         </div>
         <div class="btn-trade-card text-center">
-            <button class="btn btn-warning">Gạch thẻ</button>
+            <button class="btn btn-warning">Đổi thẻ</button>
         </div>
     </div>
     <div class="container-fluid">
@@ -165,8 +168,8 @@
         </div>
         <div class="row mt-4 mb-4">
             <div class="col-12">
-                <h3 class="text-center font-weight-bold">Mua mã thẻ</h3>
-                <p class="mb-2 text-center">Mua thẻ bị <b>Chờ xử lý</b> là giao dịch thất bại, hệ thống sẽ tự động hoàn tiền về tài khoản sau vài giờ</p>
+                <h3 class="text-center font-weight-bold">MUA THẺ</h3>
+                <p class="mb-2 text-center">Mua thẻ bị <b>từ chối</b> là giao dịch thất bại, hệ thống sẽ tự động hoàn tiền về tài khoản sau vài phút.</p>
                 <div class="row-box-card d-flex align-items-center justify-content-center">
                     @foreach(['viettel', 'vinaphone', 'mobifone', 'vietnamobile', 'zing', 'garena'] as $card)
                         <a class="box-card text-decoration-none" href="{{ route('buy-card') }}">
