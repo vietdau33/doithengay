@@ -47,9 +47,9 @@
                     <div class="content-header-item">
                         <a class="link-effect font-w700" href="{{ route('admin.home') }}">
                             <img src="{{ asset('image/logo-trans.png') }}" alt="Logo" style="width: 32px; position:relative; top: -3px">
-                            <span class="font-size-xl text-dual-primary-dark">doi</span>
-                            <span class="font-size-xl text-primary">the</span>
-                            <span class="font-size-xl text-success">ngay</span>
+                            <span class="font-size-xl text-dual-primary-dark">Auto</span>
+                            <span class="font-size-xl text-primary">card</span>
+                            <span class="font-size-xl text-success">VN</span>
                         </a>
                     </div>
                     <!-- END Logo -->
