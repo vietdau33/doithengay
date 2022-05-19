@@ -157,7 +157,8 @@ class CardController extends Controller
             ];
             return $result;
         }, []);
-        return view('card.trade', compact('rates', 'cardList', 'listNotAuto'));
+        $ratesTable = RateCard::getRate();
+        return view('card.trade', compact('rates', 'cardList', 'listNotAuto', 'ratesTable'));
     }
 
     /**
