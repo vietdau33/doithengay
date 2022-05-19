@@ -67,9 +67,12 @@
                             <div class="cart-money text-right" style="width: 30%"></div>
                         </div>
                     </div>
-                    <div class="total-money-cart text-right">
+                    <div class="total-money-cart">
                         <hr>
-                        <p class="m-0">Tổng: <span class="total-money-cart-text">0</span>đ</p>
+                        <div class="alert alert-warning alert-result-buy-card d-none">
+                            <ul class="pl-3 mb-0"></ul>
+                        </div>
+                        <p class="m-0 text-right">Tổng: <span class="total-money-cart-text">0</span>đ</p>
                     </div>
                     @if(user()->security_level_2 === 1)
                         <hr>
@@ -354,14 +357,21 @@
                 const otp_hash = $('[name="otp_hash"]').val();
                 Request.ajax('{{ route('buy-card-multi.post') }}', { datas, otp_code, otp_hash }, function(result) {
                     if(result.success == false) {
-                        alertify.alert('Error', result.errorText);
-                        $('.alertify .ajs-header').addClass('alert-danger');
+                        if(result.error_buy_card === false) {
+                            alertify.alert('Error', result.errorText);
+                            return $('.alertify .ajs-header').removeClass('alert-success').addClass('alert-danger');
+                        }
+                        result.errors = result.errors.map(err => '<li>'+err+'</li>');
+                        alertify.alert('Error', "Có thẻ mua không thành công. Kiểm tra note trên màn hình.");
+                        $('.alertify .ajs-header').removeClass('alert-success').addClass('alert-danger');
+                        $('.alert-result-buy-card').removeClass('d-none');
+                        $('.alert-result-buy-card ul').empty().append(result.errors);
                         return;
                     }
                     alertify.alert('Success', "Tất cả các thẻ được mua thành công. Vui lòng kiểm tra lịch sử để lấy mã thẻ!", function () {
                         window.location.reload();
                     });
-                    $('.alertify .ajs-header').addClass('alert-success');
+                    $('.alertify .ajs-header').removeClass('alert-danger').addClass('alert-success');
                 })
             });
             $('[name="filter_card_buy"]').on('change', function() {
@@ -399,13 +409,13 @@
             Request.ajax('{{ route('security.send-otp') }}', function(result) {
                 if(!result.success){
                     alertify.alert('Error', result.message);
-                    $('.alertify .ajs-header').addClass('alert-danger');
+                    $('.alertify .ajs-header').removeClass('alert-success').addClass('alert-danger');
                     return;
                 }
                 $('#otp_hash').val(result.data.hash);
                 $(self).removeClass('clicked').text('Send OTP');
                 alertify.alert('Notification', result.message);
-                $('.alertify .ajs-header').addClass('alert-success');
+                $('.alertify .ajs-header').removeClass('alert-danger').addClass('alert-success');
             });
         })
     </script>

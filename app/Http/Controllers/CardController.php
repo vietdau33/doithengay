@@ -107,6 +107,7 @@ class CardController extends Controller
             if (empty($request->otp_hash) || empty($request->otp_code)) {
                 return response()->json([
                     'success' => false,
+                    'error_buy_card' => false,
                     'errors' => ['Bạn chưa nhập mã OTP!'],
                     'errorText' => 'Bạn chưa nhập mã OTP!',
                 ]);
@@ -114,6 +115,7 @@ class CardController extends Controller
             if (!OtpData::verify($request->otp_hash, $request->otp_code)) {
                 return response()->json([
                     'success' => false,
+                    'error_buy_card' => false,
                     'errors' => ['Mã OTP không khớp!'],
                     'errorText' => 'Mã OTP không khớp!',
                 ]);
@@ -123,7 +125,7 @@ class CardController extends Controller
         $errors = [];
         foreach ($request->datas as $data) {
             if (CardService::buyCardPost($data, $hash) === false) {
-                $errors[] = 'Thẻ ' . ucfirst($data['card_buy']) . ', mệnh giá ' . number_format($data['money_buy']) . ' đã bị lỗi khi mua: ' . session()->pull('mgs_error');
+                $errors[] = 'Thẻ ' . ucfirst($data['card_buy']) . ', mệnh giá ' . number_format($data['money_buy']) . ': ' . session()->pull('mgs_error');
             }
         }
 
@@ -136,6 +138,7 @@ class CardController extends Controller
         return response()->json([
             'success' => empty($errors),
             'errors' => $errors,
+            'error_buy_card' => true,
             'errorText' => implode('. ', $errors),
         ]);
     }

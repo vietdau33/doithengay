@@ -13,3 +13,12 @@ make(){
 migrate(){
     art "migrate"
 }
+add(){
+    git add $1
+}
+commit(){
+    git commit -m "$1"
+}
+push(){
+    git push origin master
+}
