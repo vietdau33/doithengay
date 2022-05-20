@@ -65,6 +65,9 @@ class TradeCard extends Model
     }
 
     public static function getTodayHistory(){
+        if(!logined()) {
+            return self::whereId(-1)->get();
+        }
         $today = Carbon::today()->format('Y-m-d');
         $todayStart = $today . ' 00:00:00';
         $todayEnd = $today . ' 23:59:59';
