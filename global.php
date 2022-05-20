@@ -194,3 +194,18 @@ function getListCard($rates = null){
         return $result;
     }, []);
 }
+
+function buildBankContent($content){
+    if(!logined()) {
+        return $content;
+    }
+    $pattern = "/\{.*\}/i";
+    $matched = preg_match($pattern, $content, $match);
+    if($matched === 0){
+        return $content;
+    }
+    $userData = preg_replace('/^\{/i', '', $match[0]);
+    $userData = preg_replace('/\}$/i', '', $userData);
+    $userData = user()->{$userData} ?? 'no_data';
+    return str_replace($match[0], $userData, $content);
+}

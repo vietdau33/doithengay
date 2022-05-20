@@ -24,8 +24,6 @@ return [
         'vpbank' => 'VPBank',
     ],
     'wallet' => [
-        'momo' => 'Momo',
-        'viettelpay' => 'ViettelPay',
-        'zalopay' => 'ZaloPay'
+        'momo' => 'Momo'
     ]
 ];
