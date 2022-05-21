@@ -48,7 +48,7 @@
                                         step="1"
                                         value="{{ old('quantity', '1') }}"
                                         name="quantity"
-                                        readonly
+                                        onchange="if(parseInt(this.value) < 1) this.value=1"
                                         style="background: #fff !important;"
                                         class="quantity-field form-control d-inline-block flex-grow-0 p-1 text-left"
                                     />
