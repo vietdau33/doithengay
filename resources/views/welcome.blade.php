@@ -21,7 +21,7 @@
         <div class="row">
             <div class="col-12">
                 @if(!logined())
-                    <div class="alert alert-danger">Vui lòng <a href="{{ route('auth.view') }}" class="text-decoration-none">đăng nhập</a> để sử dụng dịch vụ!</div>
+                    <div class="text-center alert alert-danger">Vui lòng <a href="{{ route('auth.view') }}" class="text-decoration-none">đăng nhập</a> để sử dụng dịch vụ!</div>
                 @endif
                 @include('template.table_fee')
             </div>

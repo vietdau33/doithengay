@@ -3,7 +3,7 @@
     <div class="container-fluid">
         <h4 class="font-weight-bold mb-0 mt-4 text-center">Mua thẻ cào</h4>
         <div class="row body-content">
-            <div class="col-md-5 col-12 box-pay-card mt-4">
+            <div class="col-md-7 col-12 box-pay-card mt-4">
                 <form action="{{ route('buy-card.post') }}" method="POST" class="box-shadow p-2">
                     @csrf
                     <div class="form-header">
@@ -30,7 +30,7 @@
                     <input type="hidden" name="method_buy" value="cash" />
                 </form>
             </div>
-            <div class="col-md-7 col-12 mt-4">
+            <div class="col-md-5 col-12 mt-4">
                 <div class="box-card-store box-shadow p-2">
                     <div class="heading d-flex align-items-center mt-2">
                         <i class="fa fa-shopping-cart"></i>
@@ -57,7 +57,7 @@
                             <div class="cart-remove">
                                 <button class="btn btn-danger"><i class="fa fa-trash"></i></button>
                             </div>
-                            <div class="cart-type-buy mt-2" style="width: 70%">
+                            <div class="cart-type-buy mt-2" style="width: 40%">
                                 <select name="" id="" class="form-control">
                                     <option value="">Phương thức mua thẻ</option>
                                     <option value="slow">Mua chậm - Chiết khấu: 0%</option>
