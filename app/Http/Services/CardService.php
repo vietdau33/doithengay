@@ -65,6 +65,13 @@ class CardService extends Service
      */
     public static function buyCardPost($param, &$hash = ''): bool
     {
+        $listCardAllow = array_keys(RateCardSell::getListCardBuy());
+        if(!in_array($param['card_buy'], $listCardAllow)) {
+            $cardBuy = ucfirst($param['card_buy']);
+            session()->flash('mgs_error', "Chúng tôi hiện tại không bán thẻ $cardBuy!");
+            return false;
+        }
+
         $listNotAuto = CardListModel::whereAuto('0')->whereType('buy')->get()->toArray();
         $listNotAuto = array_column($listNotAuto, 'name');
         if(in_array($param['card_buy'], $listNotAuto) && $param['type_buy'] == 'fast') {
@@ -143,7 +150,15 @@ class CardService extends Service
     public static function saveTradeCardFast(TradeCardRequest $request): bool
     {
         $params = $request->validated();
+        $cardTypeAllow = array_keys(RateCard::getListCardTrade());
+        if(!in_array($params['card_type'], $cardTypeAllow)) {
+            $cardType = ucfirst($params['card_type']);
+            session()->flash('mgs_error', "Chúng tôi hiện tại không chấp nhận gạch thẻ nhà mạng $cardType!");
+            return false;
+        }
+
         $params['user_id'] = user()->id;
+        $params['card_money'] = (int)implode('', explode(',', $params['card_money']));
         $params['hash'] = self::generate_hash_trade();
 
         $cardType = RateCard::whereName($params['card_type'])->first();
@@ -177,7 +192,15 @@ class CardService extends Service
     public static function saveTradeCardSlow(TradeCardRequest $request): bool
     {
         $params = $request->validated();
+        $cardTypeAllow = array_keys(RateCard::getListCardTrade());
+        if(!in_array($params['card_type'], $cardTypeAllow)) {
+            $cardType = ucfirst($params['card_type']);
+            session()->flash('mgs_error', "Chúng tôi hiện tại không chấp nhận gạch thẻ nhà mạng $cardType!");
+            return false;
+        }
+
         $params['user_id'] = user()->id;
+        $params['card_money'] = (int)implode('', explode(',', $params['card_money']));
         $params['hash'] = self::generate_hash_trade();
 
         $cardType = RateCard::whereName($params['card_type'])->first();

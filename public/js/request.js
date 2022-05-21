@@ -1,1 +1,37 @@
-window.Request={ajax:function(n,o,t,e){void 0===o&&(o={}),void 0===t&&"function"==typeof o&&(t=o,o={});let a={url:n,type:"POST",dataType:"json",data:o,success:function(n){"function"==typeof t&&t(n)},error:function(n){console.log(n.responseText)}};o instanceof FormData&&(a=Object.assign(a,{cache:!1,processData:!1,contentType:!1}));const c=$.ajax(a);return c.always((function(n){"function"==typeof e&&e(n)})),c}};
+const Request = {
+    ajax : function(url, param, succFunc, doneFunc){
+        if(typeof param == 'undefined'){
+            param = {};
+        }
+        if(typeof succFunc == 'undefined' && typeof param == 'function'){
+            succFunc = param;
+            param = {};
+        }
+        const self = this;
+        let config = {
+            url: url,
+            type: 'POST',
+            dataType: 'json',
+            data: param,
+            success: function (result) {
+                if (typeof succFunc == 'function') {
+                    succFunc(result);
+                }
+            }
+        };
+        if(param instanceof FormData){
+            config = Object.assign(config, {
+                cache       : false,
+                processData : false,
+                contentType : false,
+            });
+        }
+        const ajaxResult = $.ajax(config);
+        ajaxResult.always(function(xhr){
+            if(typeof doneFunc == 'function'){
+                doneFunc(xhr);
+            }
+        });
+        return ajaxResult;
+    }
+}
