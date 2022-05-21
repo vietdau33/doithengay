@@ -2,7 +2,7 @@
     $rates = \App\Models\RateCard::getListCardTrade();
     $listNotAuto = \App\Models\CardListModel::whereAuto('0')->whereType('trade')->get()->toArray();
     $listNotAuto = array_column($listNotAuto, 'name');
-    $listCard = getListCard($rates);
+    $listCard = getListCardTrade($rates);
     $histories = \App\Models\TradeCard::getTodayHistory();
 @endphp
 
@@ -216,7 +216,7 @@
 
             alertEl.removeClass('d-none');
             await new Promise(function(resolve) {
-                Request.ajax('{{ route('trade-card.post.ajax') }}', param, function(result){
+                const request = Request.ajax('{{ route('trade-card.post.ajax') }}', param, function(result){
                     alertEl.removeClass('alert-info')
                     if(result.success === false) {
                         alertEl.addClass('alert-danger');
@@ -227,6 +227,19 @@
                     alertEl.text(result.message);
                     return resolve(true);
                 });
+                request.fail(function(respon) {
+                    hasError = true;
+                    alertEl.removeClass('alert-info');
+                    alertEl.addClass('alert-danger');
+                    let errors = respon.responseJSON.errors;
+                    if(errors == undefined) {
+                        alertEl.text("Lỗi không xác định");
+                        return resolve(false);
+                    }
+                    errors = Object.values(errors).map(err => '<li>'+err+'</li>');
+                    alertEl.html($('<ul class="pl-4 mb-0" />').append(errors));
+                    return resolve(false);
+                })
             })
         }
 

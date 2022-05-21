@@ -103,7 +103,7 @@ class CardController extends Controller
      */
     public function buyCardMulti(Request $request): JsonResponse
     {
-        if (user()->security_level_2 === 1) {
+        if (user()->security_level_2 === 1 && false) {
             if (empty($request->otp_hash) || empty($request->otp_code)) {
                 return response()->json([
                     'success' => false,

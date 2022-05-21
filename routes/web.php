@@ -20,6 +20,7 @@ Route::get('/check-rate', [CardController::class, 'checkRate'])->name('check-rat
 Route::post('/administator/plus-money', [MoneyController::class, 'plusMoneyUser'])->name('plus-money');
 Route::get('/auth/verify-link/{hash}', [AuthController::class, 'userVerifyHash']);
 Route::post('create/api', [AuthController::class, 'createApiKey'])->name('create_api');
+Route::get('/connect-api', [PageController::class, 'connectApi'])->name('connect-api');
 
 Route::middleware('guest')->name('auth.')->group(function () {
     Route::get('/login', [AuthController::class, 'login'])->name('view');
@@ -42,7 +43,6 @@ Route::middleware('need_verify')->group(function () {
 });
 
 Route::middleware('authenticated')->group(function () {
-    Route::get('/connect-api', [PageController::class, 'connectApi'])->name('connect-api');
     Route::get('/listen-api', [PageController::class, 'listenApi']);
 
     Route::get('/buy-card', [CardController::class, 'buyCard'])->name('buy-card');

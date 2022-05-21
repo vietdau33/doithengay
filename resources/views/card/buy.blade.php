@@ -48,6 +48,8 @@
                                         step="1"
                                         value="{{ old('quantity', '1') }}"
                                         name="quantity"
+                                        readonly
+                                        style="background: #fff !important;"
                                         class="quantity-field form-control d-inline-block flex-grow-0 p-1 text-left"
                                     />
                                     <button class="btn button-minus" data-field="quantity">-</button>

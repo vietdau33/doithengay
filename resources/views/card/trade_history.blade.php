@@ -6,7 +6,7 @@
             <p class="m-0 font-weight-bold">Lịch sử đổi thẻ</p>
         </div>
         <div class="body-content">
-            <div class="box-content box-pay-card p-3 mt-4">
+            <div class="box-pay-card p-3 mt-4">
                 <div class="alert alert-warning">
                     Trạng thái thẻ cào sẽ được cập nhật sau mỗi <b>1 phút!</b>
                 </div>

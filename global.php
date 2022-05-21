@@ -184,8 +184,8 @@ function getRates (){
     return RateCard::getRate();
 }
 
-function getListCard($rates = null){
-    $rates = $rates == null ? RateCardSell::getListCardBuy() : $rates;
+function getListCardTrade($rates = null){
+    $rates = $rates == null ? RateCard::getListCardTrade() : $rates;
     return array_reduce($rates, function ($result, $card) {
         $card = end($card);
         $result[$card['name']] = [
