@@ -81,8 +81,8 @@
         @if(logined())
             <div class="alert alert-warning">
                 <ul class="mb-0" style="list-style: decimal; padding-left: 20px">
-                    <li>Đối với gạch chậm, thời gian xác minh thẻ tối đa là 5 phút.</li>
-                    <li>Sau 5 phút kể từ khi gửi thẻ, nếu hệ thống không xác minh được thẻ thì thẻ sẽ bị đẩy sang gạch nhanh.</li>
+                    <li>Đối với gạch chậm, thời gian xác minh thẻ tối đa là 2 phút.</li>
+                    <li>Sau 2 phút kể từ khi gửi thẻ, nếu hệ thống không xác minh được thẻ thì thẻ sẽ bị đẩy sang gạch nhanh.</li>
                 </ul>
             </div>
         @endif

@@ -45,7 +45,7 @@ class UpdateStatusBuyCard extends Command
         $allCardBuy = CardStore::whereTypeBuy('slow')->whereIn('status', [0, 99])->get();
         $now = strtotime(Carbon::now());
         foreach ($allCardBuy as $card) {
-            if ($card->status === 0 && $now - strtotime($card->created_at) < 300) {
+            if ($card->status === 0 && $now - strtotime($card->created_at) < 120) {
                 continue;
             }
 
@@ -56,14 +56,15 @@ class UpdateStatusBuyCard extends Command
                 'card_id' => $card->id
             ]);
 
-            if ($result === false) {
+           if ($result['Code'] === 0) {
                 $this->refun($card);
                 $card->status = 3;
+				$card->message = $result['Message'];
                 $card->save();
                 continue;
             }
 
-            $card->results = json_encode($result);
+            $card->results = json_encode($result['Data']);
             $card->status = 2;
             $card->save();
         }
@@ -93,11 +94,6 @@ class UpdateStatusBuyCard extends Command
             'Amount' => (int)$param['money_buy'],
             'Quantity' => (int)$param['quantity']
         ]);
-
-        if ($result['Code'] === 0) {
-            return false;
-        }
-
-        return $result['Data'];
+        return $result;
     }
 }

@@ -5,7 +5,10 @@
         <th scope="row">Thời gian</th>
         <th scope="row">Loại thẻ</th>
         <th scope="row">Mệnh giá</th>
+		<th scope="col">Số lượng</th>
         <th scope="row">Trạng thái</th>
+		<th scope="row">Mua</th>
+		<th scope="row">Message</th>
         <th scope="row">Chiết khẩu (%)</th>
         <th scope="row">Tổng tiền</th>
     </tr>
@@ -21,7 +24,10 @@
             <td style="min-width: 120px;">{{ date('d-m-Y', strtotime($history->created_at)) }}</td>
             <td>{{ ucfirst($history->card_buy) }}</td>
             <td>{{ number_format($history->money_buy) }}</td>
+			<td>{{ $history->quantity }}</td>
             <td>{!! $history->getStatus() !!}</td>
+			<td>{{ $history->type_buy }}</td>
+			<td>{{ $history->message }}</td>
             <td>{{ $history->rate_buy }}%</td>
             <td>{{ number_format($history->money_after_rate) }}đ</td>
         </tr>

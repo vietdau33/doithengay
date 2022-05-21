@@ -94,7 +94,7 @@ class CardController extends Controller
             ...$request->validated()
         ]);
 
-        session()->flash('notif', 'Thẻ đã được đặt mua thành công! Sau 5 phút chưa được xử lý sẽ tự động chuyển sang mua nhanh!');
+        session()->flash('notif', 'Thẻ đã được đặt mua thành công! Sau 2 phút chưa được xử lý sẽ tự động chuyển sang mua nhanh!');
         return back();
     }
 
