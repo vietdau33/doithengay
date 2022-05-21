@@ -79,6 +79,16 @@ class UpdateStatusTradeCard extends Command
      */
     public function checkTrade($tradeRecord): bool
     {
+        $user = User::whereId($tradeRecord->user_id)->first();
+        if ($user == null) {
+            TraceSystem::setTrace([
+                'mgs' => 'Update đổi thẻ không thành công, user đổi thẻ không còn tồn tại!',
+                'trade_id' => $tradeRecord->id,
+                'user_id' => $tradeRecord->user_id
+            ]);
+            return false;
+        }
+
         $taskId = $tradeRecord->task_id;
         if ($taskId == null) {
             $taskId = $this->createTaskId($tradeRecord->toArray());
@@ -143,14 +153,30 @@ class UpdateStatusTradeCard extends Command
         $cardType = $tradeRecord->card_type;
         $typeRate = $this->rateID[$cardType];
         $rate = $this->rates[$typeRate][$tradeRecord->card_money];
-        $devian = (float)$rate['rate_use'] - (float)$rate['rate'];
 
-        $result['real'] = $result['ValueReceive'] - $result['ValueReceive'] * $devian / 100;
+        $rateUse = 0;
+        if($user->type_user == User::NOMAL) {
+            if($tradeRecord->type_trade == 'fast') {
+                $rateUse = (float)$rate['rate_use'];
+            }else {
+                $rateUse = (float)$rate['rate_slow'];
+            }
+        }elseif($user->type_user == User::DAILY) {
+            $rateUse = (float)$rate['rate_daily'];
+        }elseif($user->type_user == User::TONGDAILY) {
+            $rateUse = (float)$rate['rate_tongdaily'];
+        }
+
+        $result['real'] = $result['CardValue'] - ($result['CardValue'] * $rateUse / 100);
+        $statusCardHalf = $result['CardValue'] != $result['CardSend'];
+        if($statusCardHalf) {
+            $result['real'] = $result['real'] / 2;
+        }
         $tradeRecord->money_real = $result['real'];
-        $tradeRecord->rate_use = (float)$rate['rate_use'];
+        $tradeRecord->rate_use = $rateUse;
 
         $tradeRecord->status = TradeCard::S_SUCCESS;
-        $tradeRecord->status_card = $result['CardValue'] == $result['CardSend'] ? TradeCard::S_CARD_SUCCESS : TradeCard::S_CARD_HALF;
+        $tradeRecord->status_card = !$statusCardHalf ? TradeCard::S_CARD_SUCCESS : TradeCard::S_CARD_HALF;
         $tradeRecord->contents = json_encode($result);
 
         if($apiData != null) {
@@ -161,16 +187,11 @@ class UpdateStatusTradeCard extends Command
             $this->responseCallbackApi($apiData->callback, $paramResponseApi);
         }
 
-        $user = User::whereId($tradeRecord->user_id)->first();
-        if ($user == null) {
-            $tradeRecord->save();
-            return false;
-        }
-
+        $tradeRecord->money_user_before = $user->money;
         $user->money = (int)$user->money + $result['real'];
-        $user->save();
         $tradeRecord->money_user_after = $user->money;
         $tradeRecord->save();
+        $user->save();
 
         return true;
     }

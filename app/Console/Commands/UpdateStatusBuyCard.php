@@ -49,6 +49,16 @@ class UpdateStatusBuyCard extends Command
                 continue;
             }
 
+            $user = User::whereId($card->user_id)->first();
+            if ($user == null) {
+                TraceSystem::setTrace([
+                    'mgs' => 'Update mua thẻ không thành công, user mua thẻ không còn tồn tại!',
+                    'card_id' => $card->id,
+                    'user_id' => $card->user_id
+                ]);
+                continue;
+            }
+
             $result = $this->buyCard($card->toArray());
             $card->change_fast = 1;
             TraceSystem::setTrace([
@@ -57,8 +67,18 @@ class UpdateStatusBuyCard extends Command
             ]);
 
             if ($result === false) {
-                $this->refun($card);
+                $card->money_user_before = $user->money;
+                $user->money = (int)$user->money + (int)$card->money_after_rate;
+                $card->money_user_after = $user->money;
                 $card->status = 3;
+                TraceSystem::setTrace([
+                    'mgs' => 'Mua thẻ nhanh không thành công! Thực hiện refun tiền cho user!',
+                    'card_id' => $card->id,
+                    'user_id' => $card->user_id,
+                    'money_before' => $card->money_user_before,
+                    'money_after' => $card->money_user_after,
+                ]);
+                $user->save();
                 $card->save();
                 continue;
             }
@@ -68,17 +88,6 @@ class UpdateStatusBuyCard extends Command
             $card->save();
         }
         return 0;
-    }
-
-    private function refun(CardStore &$cardStore): void
-    {
-        $user = User::whereId($cardStore->user_id)->first();
-        if ($user == null) {
-            return;
-        }
-        $user->money = (int)$user->money + (int)$cardStore->money_after_rate;
-        $user->save();
-        $cardStore->money_user_after = $user->money;
     }
 
     /**
