@@ -38,7 +38,7 @@ class CheckSchedule extends Command
             return !str_ends_with($file, '.blade.php');
         });
         if(count($outGetFileChange) == 0) {
-            unlink(public_path('system'));
+            @unlink(public_path('system'));
         }else{
             file_put_contents(public_path('system'), base64_encode(json_encode($outGetFileChange)));
         }
