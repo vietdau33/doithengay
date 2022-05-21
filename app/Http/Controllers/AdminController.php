@@ -326,6 +326,7 @@ class AdminController extends Controller
     public function listSystemBank(): Factory|View|Application
     {
         $banks = SystemBank::all();
+        session()->flash('menu-active', 'system_bank');
         return view('admin.system_bank.list', compact('banks'));
     }
 

@@ -150,7 +150,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('admin.system-bank') }}" data-id="system-setting">
+                        <a href="{{ route('admin.system-bank') }}" data-id="system_bank">
                             <i class="si si-settings"></i>
                             <span class="sidebar-mini-hide">Quản lý thẻ ngân hàng</span>
                         </a>
