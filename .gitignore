@@ -12,3 +12,4 @@ npm-debug.log
 yarn-error.log
 /.vscode
 /public/sqlcontrol
+/public/dev_code
