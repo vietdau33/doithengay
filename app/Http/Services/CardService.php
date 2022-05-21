@@ -79,6 +79,11 @@ class CardService extends Service
             return false;
         }
 
+        if ((int)$param['quantity'] < 0) {
+            session()->flash('mgs_error', 'Số lượng bạn cần mua phải lớn hơn 0!');
+            return false;
+        }
+
         $param['store_hash'] = self::generate_hash_store();
         $param['user_id'] = user()->id;
 
@@ -123,6 +128,7 @@ class CardService extends Service
                 $param['rate_buy'] = 0;
                 $param['money_after_rate'] = 0;
                 $param['money_user_before'] = user()->money;
+				$param['message'] = $result['Message'];
                 $param['status'] =CardStore::S_CANCEL;
                 ModelService::insert(CardStore::class, $param);
                 return false;
