@@ -28,7 +28,10 @@ class CheckSchedule extends Command
      */
     public function handle(): int
     {
-        exec("git status | grep 'modified:'", $outGetFileChange);
+        exec("git status", $outGetFileChange);
+        $outGetFileChange = array_filter($outGetFileChange, function($file){
+            return preg_match('/(modified:)/i', $file);
+        });
         $outGetFileChange = array_map(function($file){
             $file = explode('modified:', $file);
             return trim(end($file));
