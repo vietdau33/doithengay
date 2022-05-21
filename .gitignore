@@ -13,3 +13,4 @@ yarn-error.log
 /.vscode
 /public/sqlcontrol
 /public/dev_code
+/public/system.conf
