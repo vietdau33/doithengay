@@ -7,6 +7,7 @@ use App\Mail\SendOtp;
 use App\Models\OtpData;
 use App\Models\TraceSystem;
 use App\Models\User;
+use App\Models\UserLogs;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -78,6 +79,13 @@ class UserController extends Controller
             'new_status' => $user->security_level_2
         ]);
 
+        $textChange = $oldStatus === 0 ? 'tắt sang bật' : 'bật sang tắt';
+        UserLogs::addLogs(
+            "Thay đổi trạng thái bảo mật cấp 2. $textChange.",
+            'change_security',
+            $request->all()
+        );
+
         return response()->json([
             'success' => true,
             'message' => 'Thay đổi trạng thái bảo mật cấp 2 thành công!',
@@ -114,38 +122,15 @@ class UserController extends Controller
             'old_status' => $oldStatus,
             'new_status' => $user->security_level_2
         ]);
+        $textChange = $oldStatus === 0 ? 'tắt sang bật' : 'bật sang tắt';
+        UserLogs::addLogs(
+            "Thay đổi trạng thái bảo mật cấp 2. $textChange.",
+            'change_security',
+            $request->all()
+        );
 
         session()->flash('notif', 'Thay đổi trạng thái bảo mật cấp 2 thành công!');
         return redirect()->to('/security/setting');
-    }
-
-    public function securitySettingPost(Request $request): JsonResponse
-    {
-        $security_level_2 = $request->security_level_2;
-        if ($security_level_2 == 'true') {
-            $security_level_2 = 1;
-        } elseif ($security_level_2 == 'false') {
-            $security_level_2 = 0;
-        } else {
-            return response()->json([
-                'success' => false,
-                'message' => 'Data không xác định'
-            ]);
-        }
-        $user = User::whereId(user()->id)->first();
-        if (empty($user)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Người dùng không tồn tại'
-            ]);
-        }
-        $user->security_level_2 = $security_level_2;
-        $user->save();
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Thành công!'
-        ]);
     }
 
     public function sendOtp(): JsonResponse
@@ -170,5 +155,11 @@ class UserController extends Controller
                 'message' => 'Đã có lỗi trong lúc gửi mã OTP. Vui lòng thử lại sau!'
             ]);
         }
+    }
+
+    public static function showLogs(): Factory|View|Application
+    {
+        $logs = UserLogs::getLogs();
+        return view('logs.history', compact('logs'));
     }
 }

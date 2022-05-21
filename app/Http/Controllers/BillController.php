@@ -6,6 +6,7 @@ use App\Http\Requests\BillRequest;
 use App\Http\Services\BillService;
 use App\Models\BillModel;
 use App\Models\CardListModel;
+use App\Models\UserLogs;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -37,7 +38,13 @@ class BillController extends Controller
         if (!BillService::saveBillRequest($request)) {
             return back()->withInput();
         }
+        $typeBill = config('bill')[$request->type];
         session()->flash('notif', 'Đã gửi yêu cầu thanh toán cước.');
+        UserLogs::addLogs(
+            "Tạo yêu cầu thanh toán cước! Loại '{$typeBill['text']}', nhà mạng '{$typeBill['vendor'][$request->vendor_id]['name']}'",
+            'add_bill',
+            $request->validated()
+        );
         return redirect()->route('pay-bill');
     }
 

@@ -11,6 +11,7 @@ use App\Models\CardListModel;
 use App\Models\Notification;
 use App\Models\RateCard;
 use App\Models\SystemSetting;
+use App\Models\UserLogs;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -51,10 +52,15 @@ class PageController extends Controller
 
     public function changeProfilePost(ProfileRequest $request): RedirectResponse
     {
-        if (!$this->userService->changeProfile($request)) {
+        if (!$this->userService->changeProfile($request, $diff)) {
             session()->flash('notif', 'Đã có một vài lỗi xảy ra khi thay đổi thông tin. Hãy liên hệ với admin để kiểm tra!');
             return redirect()->back()->withInput();
         }
+        UserLogs::addLogs(
+            "Thay đổi thông tin cá nhân! " .implode(', ', array_values($diff)),
+            'change_profile',
+            $request->validated()
+        );
         return redirect()->route('profile.home');
     }
 
@@ -70,6 +76,11 @@ class PageController extends Controller
             return redirect()->back();
         }
         session()->flash('notif', 'Thay đổi mật khẩu thành công. Hãy đăng nhập lại!');
+        UserLogs::addLogs(
+            "Thay đổi mật khẩu!",
+            'change_password',
+            $request->validated()
+        );
         auth()->logout();
         return redirect()->route('auth.view');
     }

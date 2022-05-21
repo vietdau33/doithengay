@@ -11,7 +11,6 @@
                     @csrf
                     <div class="header-box d-flex justify-content-between align-items-center">
                         <p class="mb-0">Số dư hiện tại: {{ number_format(user()->money) }} VNĐ</p>
-                        <a href="{{ route('withdraw.history') }}" class="btn btn-secondary">Xem lịch sử</a>
                     </div>
                     <hr>
                     <div class="alert alert-warning">Khi thực hiện yêu cầu rút tiền, số tiền ít nhất là 100.000đ</div>
@@ -58,9 +57,25 @@
             </div>
         </div>
     </div>
+    <div class="container-fluid mt-5">
+        <h3 class="mt-3 font-weight-bold">Lịch sử rút tiền</h3>
+        <div class="row-filter d-flex">
+            <input type="text" style="max-width: 200px" name="filter_from_date" class="form-control mr-2" value="{{ date('Y-m-d') }}" data-date-picker>
+            <input type="text" style="max-width: 200px" name="filter_to_date" class="form-control mr-2" value="{{ date('Y-m-d') }}" data-date-picker>
+            <button class="btn btn-success btn-filter" style="min-width: 150px;">Lọc dữ liệu</button>
+        </div>
+        <div class="table-filter mt-2">
+            @include('money.withdraw_history_table')
+        </div>
+    </div>
 @endsection
 @section('script')
     <script>
+        $(document).ready(function(){
+            $("[data-date-picker]").datepicker({
+                dateFormat : 'yy-mm-dd'
+            });
+        });
         $('.send-otp').on('click', function(e){
             e.preventDefault();
             if($(this).hasClass('clicked')){
@@ -80,6 +95,14 @@
                 alertify.alert('Notification', result.message);
                 $('.alertify .ajs-header').addClass('alert-success');
             });
-        })
+        });
+        $('.btn-filter').on('click', function(){
+            const filter_from_date = $('[name="filter_from_date"]').val().trim();
+            const filter_to_date = $('[name="filter_to_date"]').val().trim();
+            const url = '{{ route('withdraw.history.filter') }}';
+            Request.ajax(url, { filter_from_date, filter_to_date }, function(result) {
+                $(".table-filter").html(result.html);
+            });
+        });
     </script>
 @endsection

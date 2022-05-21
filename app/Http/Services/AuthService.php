@@ -4,6 +4,7 @@ namespace App\Http\Services;
 
 use App\Models\ApiData;
 use App\Models\User;
+use App\Models\UserLogs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -36,6 +37,7 @@ class AuthService extends Service
         if($user === false) {
             return false;
         }
+        UserLogs::addLogs('Đăng ký tài khoản!', UserLogs::REGISTER, ['user_id' => $user->id]);
         return ApiData::createAPI($user->id);
     }
 }

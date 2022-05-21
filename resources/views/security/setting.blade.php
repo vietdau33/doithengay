@@ -67,15 +67,6 @@
             e.preventDefault();
             $("#modal_otp_change_security_level_2").modal();
         });
-        $('#security_level_2').on('change', function (e) {
-            e.preventDefault();
-            const data = {
-                security_level_2: $(this).prop('checked')
-            }
-            Request.ajax('/security/setting/security_level_2', data, function (result) {
-                alert(result.message);
-            });
-        });
         $('.send-otp-security-level-2').on('click', function (e) {
             e.preventDefault();
             if ($(this).hasClass('clicked')) {

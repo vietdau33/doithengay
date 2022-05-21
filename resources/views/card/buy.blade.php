@@ -59,7 +59,7 @@
                             <div class="cart-remove">
                                 <button class="btn btn-danger"><i class="fa fa-trash"></i></button>
                             </div>
-                            <div class="cart-type-buy mt-2" style="width: 40%">
+                            <div class="cart-type-buy mt-2" style="width: 70%">
                                 <select name="" id="" class="form-control">
                                     <option value="">Phương thức mua thẻ</option>
                                     <option value="slow">Mua chậm - Chiết khấu: 0%</option>
@@ -214,7 +214,7 @@
 
             parent.find('input[name=' + fieldName + ']').trigger('change');
         }
-        function calcTotalMoneyCart() {
+        function calcTotalMoneyCart(onlyGet = false) {
             let total = 0;
             $('.body-cart .row-cart:not(.row-cart-template)').each(function() {
                 const money = $(this).find('.cart-money').attr('data-money');
@@ -222,7 +222,11 @@
                     total += parseFloat(money);
                 }
             });
-            $('.total-money-cart-text').text(App.setPriceFormat(total));
+            if(!onlyGet) {
+                $('.total-money-cart-text').text(App.setPriceFormat(total));
+            }else{
+                return total
+            }
         }
 
         $('.body-cart').on('click', '.button-plus', function(e) {
@@ -327,6 +331,7 @@
         });
 
         $(document).ready(function(){
+            window.UserMoney = {{user()->money}};
             $("[data-date-picker]").datepicker({
                 dateFormat : 'yy-mm-dd'
             });
@@ -334,6 +339,11 @@
                 $('.form-group-card-buy .box-card:first-child [name="card_buy"]').trigger('click');
             }
             $('.payment-cart button').on('click', function(){
+                if(calcTotalMoneyCart(true) > UserMoney) {
+                    alertify.alert('Error', 'Số tiền còn lại trong tài khoản không đủ để mua tất cả số thẻ ngày. Hãy kiểm tra lại!');
+                    $('.alertify .ajs-header').removeClass('alert-success').addClass('alert-danger');
+                    return false;
+                }
                 let error = false;
                 let datas = [];
                 $('.body-cart').find('.row-cart:not(.row-cart-template)').each(function(){

@@ -15,6 +15,7 @@ use App\Models\RateCard;
 use App\Models\RateCardSell;
 use App\Models\TraceSystem;
 use App\Models\TradeCard;
+use App\Models\UserLogs;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Contracts\Foundation\Application;
@@ -84,15 +85,21 @@ class CardController extends Controller
             return back()->withInput();
         }
 
-        if ($request->type_buy == 'fast') {
-            return redirect()->route('list-card', ['hash' => $hash]);
-        }
-
         TraceSystem::setTrace([
             'mgs' => 'mua thẻ',
             'username' => user()->username,
             ...$request->validated()
         ]);
+        $type = $request->type_buy == 'fast' ? 'Nhanh' : 'Chậm';
+        UserLogs::addLogs(
+            "Mua thẻ $type. Nhà mạng ".ucfirst($request->card_buy).", mệnh giá ".number_format($request->money_buy).", số lượng $request->quantity",
+            'buy_card',
+            $request->validated()
+        );
+
+        if ($request->type_buy == 'fast') {
+            return redirect()->route('list-card', ['hash' => $hash]);
+        }
 
         session()->flash('notif', 'Thẻ đã được đặt mua thành công! Sau 2 phút chưa được xử lý sẽ tự động chuyển sang mua nhanh!');
         return back();
@@ -126,6 +133,13 @@ class CardController extends Controller
         foreach ($request->datas as $data) {
             if (CardService::buyCardPost($data, $hash) === false) {
                 $errors[] = 'Thẻ ' . ucfirst($data['card_buy']) . ', mệnh giá ' . number_format($data['money_buy']) . ': ' . session()->pull('mgs_error');
+            }else{
+                $type = $data['type_buy'] == 'fast' ? 'Nhanh' : 'Chậm';
+                UserLogs::addLogs(
+                    "Mua thẻ $type. Nhà mạng ".ucfirst($data['card_buy']).", mệnh giá ".number_format($data['money_buy']).", số lượng {$data['quantity']}",
+                    'buy_card',
+                    $request->all()
+                );
             }
         }
 
@@ -174,6 +188,12 @@ class CardController extends Controller
         if ($request->type_trade == 'slow' && !CardService::saveTradeCardSlow($request)) {
             return back()->withInput();
         }
+        $type = $request->card_type == 'fast' ? 'Nhanh' : 'Chậm';
+        UserLogs::addLogs(
+            "Gạch thẻ $type. Nhà mạng ".ucfirst($request->card_type).", mệnh giá $request->card_money",
+            'trade_card',
+            $request->all()
+        );
         TraceSystem::setTrace([
             'mgs' => 'đổi thẻ',
             'username' => user()->username,
@@ -220,6 +240,12 @@ class CardController extends Controller
                 'message' => session()->pull('mgs_error')
             ]);
         }
+        $type = $request->card_type == 'fast' ? 'Nhanh' : 'Chậm';
+        UserLogs::addLogs(
+            "Gạch thẻ $type. Nhà mạng ".ucfirst($request->card_type).", mệnh giá $request->card_money",
+            'trade_card',
+            $request->all()
+        );
         TraceSystem::setTrace([
             'mgs' => 'đổi thẻ',
             'username' => user()->username,
@@ -267,8 +293,8 @@ class CardController extends Controller
                 $histories->whereStatusCard($status);
             }
             if (empty($from_date) && empty($to_date)) {
-                $from_date = date('d-m-Y');
-                $to_date = date('d-m-Y');
+                $from_date = date('Y-m-d');
+                $to_date = date('Y-m-d');
             }
             if (empty($from_date) && !empty($to_date)) {
                 $from_date = $to_date;
@@ -319,8 +345,8 @@ class CardController extends Controller
                 $histories->whereMoneyBuy($money_buy);
             }
             if (empty($from_date) && empty($to_date)) {
-                $from_date = date('d-m-Y');
-                $to_date = date('d-m-Y');
+                $from_date = date('Y-m-d');
+                $to_date = date('Y-m-d');
             }
             if (empty($from_date) && !empty($to_date)) {
                 $from_date = $to_date;

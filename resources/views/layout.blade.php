@@ -115,6 +115,7 @@
                                             <li><a href="{{ route('profile.home') }}">Thông tin cá nhân</a></li>
                                             <li><a href="{{ route('security.setting') }}">Cài đặt bảo mật</a></li>
                                             <li><a href="{{ route('bank.list') }}">Thẻ ngân hàng</a></li>
+                                            <li><a href="{{ route('user.logs') }}">Lịch sử truy cập</a></li>
                                             <hr />
                                             <div class="d-lg-none">
                                                 <li data-id="menu-trade-card"><a href="{{ route('trade-card') }}">Đổi thẻ cào</a></li>

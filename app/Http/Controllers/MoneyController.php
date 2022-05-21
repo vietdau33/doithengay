@@ -11,6 +11,7 @@ use App\Models\SystemBank;
 use App\Models\SystemSetting;
 use App\Models\TraceSystem;
 use App\Models\User;
+use App\Models\UserLogs;
 use App\Models\WithdrawModel;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
@@ -33,8 +34,10 @@ class MoneyController extends Controller
     public function withdraw(): Factory|View|Application
     {
         $banks = BankModel::whereUserId(user()->id)->get();
+        $today = date('Y-m-d');
+        $histories = WithdrawModel::getHistoryWithdrawWithTime($today, $today);
         session()->flash('menu-active', 'menu-withdraw');
-        return view('money.withdraw', compact('banks'));
+        return view('money.withdraw', compact('banks', 'histories'));
     }
 
     public function withdrawPost(WithdrawRequest $request): RedirectResponse
@@ -69,16 +72,33 @@ class MoneyController extends Controller
                 'mgs' => 'User tạo yêu cầu rút tiền',
                 ...$request->validated()
             ]);
+            UserLogs::addLogs(
+                "Tạo yêu cầu rút tiền! Số tiền: " . number_format($request->money),
+                'withdraw',
+                $request->all()
+            );
         }
 
         session()->flash('notif', $mgs);
-        return redirect()->to('/');
+        return back();
     }
 
     public function withdrawHistory(): Factory|View|Application
     {
-        $histories = WithdrawModel::with('bank_relation')->whereUserId(user()->id)->orderBy('created_at', 'DESC')->get();
+        $histories = WithdrawModel::getHistoryWithdraw();
         return view('money.withdraw_history', compact('histories'));
+    }
+
+    public function withdrawHistoryFilter(Request $request): JsonResponse
+    {
+        $from_date = $request->filter_from_date;
+        $to_date = $request->filter_to_date;
+        $histories = WithdrawModel::getHistoryWithdrawWithTime($from_date, $to_date);
+        $html = view('money.withdraw_history_table', compact('histories'))->render();
+        return response()->json([
+            'success' => true,
+            'html' => $html
+        ]);
     }
 
     public function plusMoneyUser(Request $request): JsonResponse
@@ -163,6 +183,11 @@ class MoneyController extends Controller
             DB::commit();
 
             session()->flash('notif', "Chuyển tiền cho $request->user_receive thành công!");
+            UserLogs::addLogs(
+                "Chuyển tiền cho $request->user_receive! Số tiền: " . number_format($request->money),
+                'transfer',
+                $request->all()
+            );
             return back();
         } catch (Exception $exception) {
             DB::rollBack();

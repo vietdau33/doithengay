@@ -44,6 +44,7 @@ Route::middleware('need_verify')->group(function () {
 
 Route::middleware('authenticated')->group(function () {
     Route::get('/listen-api', [PageController::class, 'listenApi']);
+    Route::get('/user-logs', [UserController::class, 'showLogs'])->name('user.logs');
 
     Route::get('/buy-card', [CardController::class, 'buyCard'])->name('buy-card');
     Route::post('/buy-card', [CardController::class, 'buyCardPost'])->name('buy-card.post');
@@ -68,6 +69,7 @@ Route::middleware('authenticated')->group(function () {
         Route::get('/', [MoneyController::class, 'withdraw'])->name('withdraw');
         Route::post('/', [MoneyController::class, 'withdrawPost'])->name('withdraw.post');
         Route::get('/history', [MoneyController::class, 'withdrawHistory'])->name('withdraw.history');
+        Route::post('/history/filter', [MoneyController::class, 'withdrawHistoryFilter'])->name('withdraw.history.filter');
     });
 
     Route::prefix('pay-bill')->group(function () {
@@ -97,7 +99,6 @@ Route::middleware('authenticated')->group(function () {
         Route::post('setting/otp-change-status', [UserController::class, 'securityOTPChangeStatus'])->name('otp_change_status');
         Route::post('setting/change-status', [UserController::class, 'securityChangeStatus'])->name('change_status');
         Route::get('setting/callback-security/{hash}', [UserController::class, 'callbackChangeStatusSecurity'])->name('callback_security');
-        Route::post('setting/security_level_2', [UserController::class, 'securitySettingPost']);
         Route::post('send-otp', [UserController::class, 'sendOtp'])->name('send-otp');
     });
 

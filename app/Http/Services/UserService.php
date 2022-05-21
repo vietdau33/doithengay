@@ -19,11 +19,19 @@ class UserService extends Service
         parent::__construct($request);
     }
 
-    public function changeProfile(ProfileRequest $profileRequest): bool
+    public function changeProfile(ProfileRequest $profileRequest, &$diff = []): bool
     {
-        $listKeyUser = array_keys($profileRequest->rules());
-        $params = $profileRequest->only($listKeyUser);
+        $params = $profileRequest->validated();
         $user = User::whereId(user()->id)->first();
+        $diff = array_diff($params, $user->toArray());
+        $textAxtract = [
+            'fullname' => 'Họ và tên',
+            'phone' => 'Số điện thoại',
+            'email' => 'Email'
+        ];
+        foreach ($diff as $k => $d) {
+            $diff[$k] = 'Thay ' . $textAxtract[$k] .' từ `' . $user->{$k} . '` sang `' . $d . '`';
+        }
         return ModelService::update($user, $params);
     }
 

@@ -3,6 +3,7 @@
 use App\Models\Notification;
 use App\Models\RateCard;
 use App\Models\RateCardSell;
+use App\Models\UserLogs;
 use Illuminate\Contracts\Auth\Authenticatable;
 
 if (!function_exists('logined')) {
@@ -175,6 +176,7 @@ function isIgnoreBg(): bool
         'transfer',
         'buy-card',
         'trade-card',
+        'user-logs'
     ];
 
     return request()->is(...$aryUriIgnoreBg);
@@ -208,4 +210,8 @@ function buildBankContent($content){
     $userData = preg_replace('/\}$/i', '', $userData);
     $userData = user()->{$userData} ?? 'no_data';
     return str_replace($match[0], $userData, $content);
+}
+
+function getUserLogs(){
+    return UserLogs::getLogs();
 }

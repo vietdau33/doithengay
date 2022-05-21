@@ -12,6 +12,7 @@ use App\Mail\VerifyUser;
 use App\Models\ApiData;
 use App\Models\TraceSystem;
 use App\Models\User;
+use App\Models\UserLogs;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -45,6 +46,7 @@ class AuthController extends Controller
                 'mgs' => 'Đăng nhập!',
                 'ip' => $request->ip()
             ]);
+            UserLogs::addLogs('Đăng nhập!', UserLogs::LOGIN);
 
             if (is_admin()) {
                 return redirect()->route('admin.home');
@@ -105,6 +107,7 @@ class AuthController extends Controller
         $user->save();
 
         session()->flash('notif', 'Xác minh thành công!');
+        UserLogs::addLogs('Xác minh thành công!', UserLogs::VERIFY);
         Auth::logout();
 
         return redirect()->route('auth.view');
@@ -292,6 +295,7 @@ class AuthController extends Controller
 
         session()->flash('notif', 'Mật khẩu đã được thay đổi thành công. Vui lòng đăng nhập lại!');
         TraceSystem::setTrace("User có username là \"{$user->username}\" thực hiện quên mật khẩu thành công!");
+        UserLogs::addLogs('Thực hiện quên mật khẩu thành công!', UserLogs::FORGOT_PASSWORD);
         return redirect()->to('/login');
     }
 

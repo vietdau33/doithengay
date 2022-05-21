@@ -37,4 +37,20 @@ class WithdrawModel extends Model
     {
         return $this->belongsTo(BankModel::class, 'bank', 'id');
     }
+
+    public static function getHistoryWithdraw(){
+        return self::with('bank_relation')
+            ->whereUserId(user()->id)
+            ->orderBy('created_at', 'DESC')
+            ->get();
+    }
+
+    public static function getHistoryWithdrawWithTime($from, $to){
+        return self::with('bank_relation')
+            ->whereUserId(user()->id)
+            ->where('created_at', '>=', $from . ' 00:00:00')
+            ->where('created_at', '<=', $to . ' 23:59:59')
+            ->orderBy('created_at', 'DESC')
+            ->get();
+    }
 }
