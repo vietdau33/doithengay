@@ -23,7 +23,7 @@
                                 <tr>
                                     <td class="font-weight-bold">{{ $bank->bank_type }}</td>
                                     <td>{!! nl2br(htmlspecialchars($bank->bank_info)) !!}</td>
-                                    <td>{{ $bank->bank_content }}</td>
+                                    <td>{{ buildBankContent($bank->bank_content) }}</td>
                                     <td>{{ $bank->bank_min }}</td>
                                 </tr>
                             @endforeach
