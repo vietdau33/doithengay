@@ -96,8 +96,8 @@
         </div>
         <div class="alert alert-warning mt-3">
             <ul style="list-style: decimal; padding-left: 20px">
-                <li>Đối với <b>mua chậm</b>, thời gian xác minh thẻ tối đa là <b>5 phút</b>.</li>
-                <li>Sau <b>5 phút</b>, nếu hệ thống không xử lý được thẻ thì thẻ sẽ bị đẩy sang <b>mua nhanh</b>.</li>
+                <li>Đối với <b>mua chậm</b>, thời gian xác minh thẻ tối đa là <b>2 phút</b>.</li>
+                <li>Sau <b>2 phút</b>, nếu hệ thống không xử lý được thẻ thì thẻ sẽ bị đẩy sang <b>mua nhanh</b>.</li>
             </ul>
         </div>
     </div>

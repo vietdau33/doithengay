@@ -68,7 +68,7 @@ class CardService extends Service
         $listCardAllow = array_keys(RateCardSell::getListCardBuy());
         if(!in_array($param['card_buy'], $listCardAllow)) {
             $cardBuy = ucfirst($param['card_buy']);
-            session()->flash('mgs_error', "Chúng tôi hiện tại không bán thẻ $cardBuy!");
+            session()->flash('mgs_error', "$cardBuy đang bảo trì!");
             return false;
         }
 
@@ -129,7 +129,7 @@ class CardService extends Service
                 $param['money_after_rate'] = 0;
                 $param['money_user_before'] = user()->money;
 				$param['message'] = $result['Message'];
-                $param['status'] =CardStore::S_CANCEL;
+                $param['status'] = CardStore::S_CANCEL;
                 ModelService::insert(CardStore::class, $param);
                 return false;
             }
@@ -159,7 +159,7 @@ class CardService extends Service
         $cardTypeAllow = array_keys(RateCard::getListCardTrade());
         if(!in_array($params['card_type'], $cardTypeAllow)) {
             $cardType = ucfirst($params['card_type']);
-            session()->flash('mgs_error', "Chúng tôi hiện tại không chấp nhận gạch thẻ nhà mạng $cardType!");
+            session()->flash('mgs_error', "$cardType đang bảo trì");
             return false;
         }
 
@@ -201,7 +201,7 @@ class CardService extends Service
         $cardTypeAllow = array_keys(RateCard::getListCardTrade());
         if(!in_array($params['card_type'], $cardTypeAllow)) {
             $cardType = ucfirst($params['card_type']);
-            session()->flash('mgs_error', "Chúng tôi hiện tại không chấp nhận gạch thẻ nhà mạng $cardType!");
+            session()->flash('mgs_error', "$cardType đang bảo trì");
             return false;
         }
 

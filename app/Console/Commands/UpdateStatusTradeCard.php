@@ -64,7 +64,7 @@ class UpdateStatusTradeCard extends Command
                 $this->checkTrade($trade);
                 continue;
             }
-            if ($trade->type_trade == 'slow' && ($now - strtotime($trade->created_at)) < 300) {
+            if ($trade->type_trade == 'slow' && ($now - strtotime($trade->created_at)) < 120) {
                 continue;
             }
             $this->info("Check: $trade->id");
@@ -139,6 +139,7 @@ class UpdateStatusTradeCard extends Command
         if ($result['Code'] === 3) {
             $tradeRecord->status = TradeCard::S_ERROR;
             $tradeRecord->status_card = TradeCard::S_CARD_ERROR;
+			$tradeRecord->message = $result['Message'];
             $tradeRecord->contents = json_encode($result);
             $tradeRecord->save();
 

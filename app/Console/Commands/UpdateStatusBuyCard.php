@@ -45,7 +45,7 @@ class UpdateStatusBuyCard extends Command
         $allCardBuy = CardStore::whereTypeBuy('slow')->whereIn('status', [0, 99])->get();
         $now = strtotime(Carbon::now());
         foreach ($allCardBuy as $card) {
-            if ($card->status === 0 && $now - strtotime($card->created_at) < 300) {
+            if ($card->status === 0 && $now - strtotime($card->created_at) < 120) {
                 continue;
             }
 
@@ -66,11 +66,12 @@ class UpdateStatusBuyCard extends Command
                 'card_id' => $card->id
             ]);
 
-            if ($result === false) {
+            if ($result['Code'] === 0) {
                 $card->money_user_before = $user->money;
                 $user->money = (int)$user->money + (int)$card->money_after_rate;
                 $card->money_user_after = $user->money;
                 $card->status = 3;
+                $card->message = $result['Message'];
                 TraceSystem::setTrace([
                     'mgs' => 'Mua thẻ nhanh không thành công! Thực hiện refun tiền cho user!',
                     'card_id' => $card->id,
@@ -78,12 +79,12 @@ class UpdateStatusBuyCard extends Command
                     'money_before' => $card->money_user_before,
                     'money_after' => $card->money_user_after,
                 ]);
-                $user->save();
                 $card->save();
+                $user->save();
                 continue;
             }
 
-            $card->results = json_encode($result);
+            $card->results = json_encode($result['Data']);
             $card->status = 2;
             $card->save();
         }
@@ -96,17 +97,11 @@ class UpdateStatusBuyCard extends Command
     private function buyCard($param)
     {
         $url = config('card.api.buy');
-        $result = HttpService::ins()->post($url, [
+        return HttpService::ins()->post($url, [
             'ApiKey' => SystemSetting::getSetting('api_key_365', 'system', ''),
             'Telco' => ucfirst($param['card_buy']),
             'Amount' => (int)$param['money_buy'],
             'Quantity' => (int)$param['quantity']
         ]);
-
-        if ($result['Code'] === 0) {
-            return false;
-        }
-
-        return $result['Data'];
     }
 }

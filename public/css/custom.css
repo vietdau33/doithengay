@@ -1,0 +1,9 @@
+.table th {
+    font-weight: normal;
+}
+#header .header-menu ul li{
+    font-size: 0;
+    display: inline-block;
+    text-align: center;
+    max-width: 140px;
+}
