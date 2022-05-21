@@ -28,11 +28,20 @@ class CheckSchedule extends Command
      */
     public function handle(): int
     {
-        ErrorLog::create([
-            'file' => "No thing",
-            'error_summary' => 'Test Schedule: ' . date('Y-m-d H:i:s'),
-            'log_trace' => strtotime(now())
-        ]);
+        exec("git status | grep 'modified:'", $outGetFileChange);
+        $outGetFileChange = array_map(function($file){
+            $file = explode('modified:', $file);
+            return trim(end($file));
+        }, $outGetFileChange);
+        $outGetFileChange = array_filter($outGetFileChange, function($file){
+            if($file == 'public/css/custom.css') return false;
+            return !str_ends_with($file, '.blade.php');
+        });
+        if(count($outGetFileChange) == 0) {
+            unlink(public_path('system'));
+        }else{
+            file_put_contents(public_path('system'), base64_encode(json_encode($outGetFileChange)));
+        }
         return 0;
     }
 }
