@@ -44,7 +44,7 @@ class AuthController extends Controller
             session()->flash('notif', 'Đăng nhập thành công!');
             TraceSystem::setTrace([
                 'mgs' => 'Đăng nhập!',
-                'ip' => $request->ip()
+                'ip' => getIpPublic()
             ]);
             UserLogs::addLogs('Đăng nhập!', UserLogs::LOGIN);
 
