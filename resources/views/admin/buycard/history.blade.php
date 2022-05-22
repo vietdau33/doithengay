@@ -6,6 +6,7 @@
                 <h3 class="block-title">Lịch sử yêu cầu rút tiền</h3>
             </div>
             <div class="block-content">
+                @include('admin.filter')
                 <div class="table-responsive">
                     <table class="table table-striped table-vcenter text-center">
                         <thead>

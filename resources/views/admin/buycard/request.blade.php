@@ -6,6 +6,7 @@
                 <h3 class="block-title">Danh sách yêu cầu mua thẻ</h3>
             </div>
             <div class="block-content">
+                @include('admin.filter')
                 <div class="table-responsive">
                     <table class="table table-striped table-vcenter text-center">
                         <thead>
@@ -27,7 +28,7 @@
                                 <td class="font-w600">{{ $request->user->username ?? '' }}</td>
                                 <td>{{ ucfirst($request->card_buy) }}</td>
                                 <td style="max-width: 250px">{{ number_format($request->money_buy) }}</td>
-                                <td style="max-width: 250px">{{ time_elapsed_string($request->created_at) }}</td>
+                                <td style="max-width: 250px">{{ date('H:i d/m/Y', strtotime($request->created_at)) }}</td>
                                 <td style="max-width: 100px">{{ $request->quantity }}</td>
                                 <td style="width: 120px">
                                     @if($request->status === 0)

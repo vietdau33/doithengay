@@ -14,8 +14,8 @@
                     <input type="text" style="max-width: 200px" name="filter_from_date" class="form-control mr-2" value="{{ date('Y-m-d') }}" data-date-picker>
                     <input type="text" style="max-width: 200px" name="filter_to_date" class="form-control mr-2" value="{{ date('Y-m-d') }}" data-date-picker>
                     <button class="btn btn-success btn-filter" data-type-filter="{{ $isActivePage ? 'active' : 'block' }}" style="min-width: 150px;">Lọc dữ liệu</button>
-                    <hr>
                 </div>
+                <hr>
                 <div class="table-responsive area-result-filter">
                     @include('admin.user.table_user')
                 </div>
@@ -79,13 +79,6 @@
     </div>
 @endsection
 @section('script')
-    <script>
-        $(document).ready(function(){
-            $("[data-date-picker]").datepicker({
-                dateFormat : 'yy-mm-dd'
-            });
-        });
-    </script>
     <script>
         let href = '{{ route('plus-money') }}';
         let model = $('#modal-change-money');

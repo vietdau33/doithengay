@@ -280,7 +280,13 @@
     //remove elm script
     document.querySelector('#script_save_error').remove();
 </script>
-
+<script>
+    $(document).ready(function(){
+        $("[data-date-picker]").datepicker({
+            dateFormat : 'yy-mm-dd'
+        });
+    });
+</script>
 @yield('script')
 
 </body>

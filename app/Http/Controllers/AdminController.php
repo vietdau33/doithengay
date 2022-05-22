@@ -44,14 +44,46 @@ class AdminController extends Controller
     public function withdrawRequest(): Factory|View|Application
     {
         session()->flash('menu-active', 'withdraw-request');
-        $lists = WithdrawModel::with('user')->whereIn('status', [0, 1])->orderBy('created_at', 'DESC')->get();
+        $dateNow = date('Y-m-d');
+        $lists = WithdrawModel::with('user')->whereIn('status', [0, 1]);
+        if(!empty(request()->username)) {
+            $user = User::whereUsername(request()->username)->first();
+            $lists->whereUserId($user->id ?? 0);
+        }
+        if(!empty(request()->filter_from_date)) {
+            $lists->where('created_at','>=', request()->filter_from_date . ' 00:00:00');
+        }else{
+            $lists->where('created_at','>=', $dateNow . ' 00:00:00');
+        }
+        if(!empty(request()->filter_to_date)) {
+            $lists->where('created_at','<=', request()->filter_to_date . ' 23:59:59');
+        }else{
+            $lists->where('created_at','<=', $dateNow . ' 23:59:59');
+        }
+        $lists = $lists->orderBy('created_at', 'DESC')->get();
         return view('admin.withdraw.request', compact('lists'));
     }
 
     public function withdrawHistory(): Factory|View|Application
     {
         session()->flash('menu-active', 'withdraw-history');
-        $lists = WithdrawModel::with('user')->whereIn('status', [2, 3])->orderBy('created_at', 'DESC')->get();
+        $dateNow = date('Y-m-d');
+        $lists = WithdrawModel::with('user')->whereIn('status', [2, 3]);
+        if(!empty(request()->username)) {
+            $user = User::whereUsername(request()->username)->first();
+            $lists->whereUserId($user->id ?? 0);
+        }
+        if(!empty(request()->filter_from_date)) {
+            $lists->where('created_at','>=', request()->filter_from_date . ' 00:00:00');
+        }else{
+            $lists->where('created_at','>=', $dateNow . ' 00:00:00');
+        }
+        if(!empty(request()->filter_to_date)) {
+            $lists->where('created_at','<=', request()->filter_to_date . ' 23:59:59');
+        }else{
+            $lists->where('created_at','<=', $dateNow . ' 23:59:59');
+        }
+        $lists = $lists->orderBy('created_at', 'DESC')->get();
         return view('admin.withdraw.history', compact('lists'));
     }
 
@@ -89,7 +121,23 @@ class AdminController extends Controller
     public function showListBill($type): Factory|View|Application
     {
         session()->flash('menu-active', "pay-bill-$type");
-        $bills = BillModel::with('user')->whereType($type)->get();
+        $dateNow = date('Y-m-d');
+        $bills = BillModel::with('user')->whereType($type);
+        if(!empty(request()->username)) {
+            $user = User::whereUsername(request()->username)->first();
+            $bills->whereUserId($user->id ?? 0);
+        }
+        if(!empty(request()->filter_from_date)) {
+            $bills->where('created_at','>=', request()->filter_from_date . ' 00:00:00');
+        }else{
+            $bills->where('created_at','>=', $dateNow . ' 00:00:00');
+        }
+        if(!empty(request()->filter_to_date)) {
+            $bills->where('created_at','<=', request()->filter_to_date . ' 23:59:59');
+        }else{
+            $bills->where('created_at','<=', $dateNow . ' 23:59:59');
+        }
+        $bills = $bills->orderBy('created_at', 'DESC')->get();
         return view('admin.bill.list', compact('bills', 'type'));
     }
 
@@ -187,14 +235,46 @@ class AdminController extends Controller
     public function buyCardRequest(): Factory|View|Application
     {
         session()->flash('menu-active', 'buycard-request');
-        $requests = CardStore::with('user')->whereTypeBuy('slow')->whereIn('status', [0, 1])->get();
+        $dateNow = date('Y-m-d');
+        $requests = CardStore::with('user')->whereTypeBuy('slow')->whereIn('status', [0, 1]);
+        if(!empty(request()->username)) {
+            $user = User::whereUsername(request()->username)->first();
+            $requests->whereUserId($user->id ?? 0);
+        }
+        if(!empty(request()->filter_from_date)) {
+            $requests->where('created_at','>=', request()->filter_from_date . ' 00:00:00');
+        }else{
+            $requests->where('created_at','>=', $dateNow . ' 00:00:00');
+        }
+        if(!empty(request()->filter_to_date)) {
+            $requests->where('created_at','<=', request()->filter_to_date . ' 23:59:59');
+        }else{
+            $requests->where('created_at','<=', $dateNow . ' 23:59:59');
+        }
+        $requests = $requests->orderBy('created_at', 'DESC')->get();
         return view('admin.buycard.request', compact('requests'));
     }
 
     public function buyCardRequestSuccess(): Factory|View|Application
     {
         session()->flash('menu-active', 'buycard-request.success');
-        $requests = CardStore::with('user')->whereTypeBuy('slow')->whereStatus(2)->get();
+        $dateNow = date('Y-m-d');
+        $requests = CardStore::with('user')->whereTypeBuy('slow')->whereStatus(2);
+        if(!empty(request()->username)) {
+            $user = User::whereUsername(request()->username)->first();
+            $requests->whereUserId($user->id ?? 0);
+        }
+        if(!empty(request()->filter_from_date)) {
+            $requests->where('created_at','>=', request()->filter_from_date . ' 00:00:00');
+        }else{
+            $requests->where('created_at','>=', $dateNow . ' 00:00:00');
+        }
+        if(!empty(request()->filter_to_date)) {
+            $requests->where('created_at','<=', request()->filter_to_date . ' 23:59:59');
+        }else{
+            $requests->where('created_at','<=', $dateNow . ' 23:59:59');
+        }
+        $requests = $requests->orderBy('created_at', 'DESC')->get();
         return view('admin.buycard.request', compact('requests'));
     }
 
@@ -206,21 +286,69 @@ class AdminController extends Controller
     public function tradeCardRequest(): Factory|View|Application
     {
         session()->flash('menu-active', 'tradecard-request');
-        $requests = TradeCard::with('user')->whereTypeTrade('slow')->whereIn('status', [1, 2])->get();
+        $dateNow = date('Y-m-d');
+        $requests = TradeCard::with('user')->whereTypeTrade('slow')->whereIn('status', [1, 2]);
+        if(!empty(request()->username)) {
+            $user = User::whereUsername(request()->username)->first();
+            $requests->whereUserId($user->id ?? 0);
+        }
+        if(!empty(request()->filter_from_date)) {
+            $requests->where('created_at','>=', request()->filter_from_date . ' 00:00:00');
+        }else{
+            $requests->where('created_at','>=', $dateNow . ' 00:00:00');
+        }
+        if(!empty(request()->filter_to_date)) {
+            $requests->where('created_at','<=', request()->filter_to_date . ' 23:59:59');
+        }else{
+            $requests->where('created_at','<=', $dateNow . ' 23:59:59');
+        }
+        $requests = $requests->orderBy('created_at', 'DESC')->get();
         return view('admin.tradecard.request', compact('requests'));
     }
 
     public function tradeCardRequestSuccess(): Factory|View|Application
     {
         session()->flash('menu-active', 'tradecard-request.success');
-        $requests = TradeCard::with('user')->whereTypeTrade('slow')->whereStatus(3)->get();
+        $dateNow = date('Y-m-d');
+        $requests = TradeCard::with('user')->whereTypeTrade('slow')->whereStatus(3);
+        if(!empty(request()->username)) {
+            $user = User::whereUsername(request()->username)->first();
+            $requests->whereUserId($user->id ?? 0);
+        }
+        if(!empty(request()->filter_from_date)) {
+            $requests->where('created_at','>=', request()->filter_from_date . ' 00:00:00');
+        }else{
+            $requests->where('created_at','>=', $dateNow . ' 00:00:00');
+        }
+        if(!empty(request()->filter_to_date)) {
+            $requests->where('created_at','<=', request()->filter_to_date . ' 23:59:59');
+        }else{
+            $requests->where('created_at','<=', $dateNow . ' 23:59:59');
+        }
+        $requests = $requests->orderBy('created_at', 'DESC')->get();
         return view('admin.tradecard.request', compact('requests'));
     }
 
     public function tradeCardRequestFail(): Factory|View|Application
     {
         session()->flash('menu-active', 'tradecard-request.fail');
-        $requests = TradeCard::with('user')->whereTypeTrade('slow')->whereStatus(4)->get();
+        $dateNow = date('Y-m-d');
+        $requests = TradeCard::with('user')->whereTypeTrade('slow')->whereStatus(4);
+        if(!empty(request()->username)) {
+            $user = User::whereUsername(request()->username)->first();
+            $requests->whereUserId($user->id ?? 0);
+        }
+        if(!empty(request()->filter_from_date)) {
+            $requests->where('created_at','>=', request()->filter_from_date . ' 00:00:00');
+        }else{
+            $requests->where('created_at','>=', $dateNow . ' 00:00:00');
+        }
+        if(!empty(request()->filter_to_date)) {
+            $requests->where('created_at','<=', request()->filter_to_date . ' 23:59:59');
+        }else{
+            $requests->where('created_at','<=', $dateNow . ' 23:59:59');
+        }
+        $requests = $requests->orderBy('created_at', 'DESC')->get();
         return view('admin.tradecard.request', compact('requests'));
     }
 

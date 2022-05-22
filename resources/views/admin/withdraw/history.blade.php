@@ -6,6 +6,7 @@
                 <h3 class="block-title">Lịch sử yêu cầu rút tiền</h3>
             </div>
             <div class="block-content">
+                @include('admin.filter')
                 <div class="table-responsive">
                     <table class="table table-striped table-vcenter text-center">
                         <thead>
@@ -15,6 +16,7 @@
                                 <th scope="col">Tài khoản</th>
                                 <th scope="col">Số tiền</th>
                                 <th scope="col">Ghi chú</th>
+                                <th scope="col">Ngày tạo</th>
                                 <th scope="col">Ngày thanh toán</th>
                             </tr>
                         </thead>
@@ -27,7 +29,8 @@
                                     <td class="font-w600">{{ $list->user->username ?? '' }}</td>
                                     <td>{{ number_format($list->money) }}</td>
                                     <td style="max-width: 250px">{{ $list->note }}</td>
-                                    <td style="max-width: 100px">{{ date('d/m/Y', strtotime($list->updated_at)) }}</td>
+                                    <td style="max-width: 100px">{{ date('H:i d/m/Y', strtotime($list->created_at)) }}</td>
+                                    <td style="max-width: 100px">{{ date('H:i d/m/Y', strtotime($list->updated_at)) }}</td>
                                 </tr>
                             @endforeach
                             @if($lists->count() <= 0)

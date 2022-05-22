@@ -8,6 +8,7 @@
                 </h3>
             </div>
             <div class="block-content">
+                @include('admin.filter')
                 <div class="table-responsive">
                     <table class="table table-striped table-vcenter text-center">
                         <thead>
@@ -32,15 +33,15 @@
                                     <td>{{ number_format($bill->money) }}</td>
                                     <td>{{ config("payment.method.{$bill->type_pay}.name") }}</td>
                                     <td>{!! $bill->getStatusHtml(true) !!}</td>
-                                    <td>{{ date('d/m/Y', strtotime($bill->created_at)) }}</td>
-                                    <td style="width: 150px">
+                                    <td>{{ date('H:i d/m/Y', strtotime($bill->created_at)) }}</td>
+                                    <td style="min-width: 200px">
                                         @if($bill->status === 0)
                                             <a onclick="return confirm('Chắn chắn xác nhận hóa đơn này?')"
                                                href="{{ route('admin.bill.change-status', ['id' => $bill->id, 'status' => 1]) }}"
                                                class="btn btn-primary">Xác nhận</a>
                                             <a onclick="return confirm('Chắn chắn muốn hủy hóa đơn này?')"
                                                href="{{ route('admin.bill.change-status', ['id' => $bill->id, 'status' => 3]) }}"
-                                               class="btn btn-danger mt-1">Từ chối</a>
+                                               class="btn btn-danger">Từ chối</a>
                                         @elseif($bill->status === 1)
                                             <a onclick="return confirm('Chắn chắn đã thanh toán?')"
                                                href="{{ route('admin.bill.change-status', ['id' => $bill->id, 'status' => 2]) }}"

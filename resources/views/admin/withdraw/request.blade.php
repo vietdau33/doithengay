@@ -6,6 +6,7 @@
                 <h3 class="block-title">Danh sách yêu cầu rút tiền</h3>
             </div>
             <div class="block-content">
+                @include('admin.filter')
                 <div class="table-responsive">
                     <table class="table table-striped table-vcenter text-center">
                         <thead>
@@ -13,6 +14,7 @@
                             <th>#</th>
                             <th>Tài khoản</th>
                             <th>Số tiền</th>
+                            <th>Thời gian</th>
                             <th>Ghi chú</th>
                             <th>Thanh toán</th>
                             <th>Hành động</th>
@@ -25,11 +27,12 @@
                                 <td>{{ $stt++ }}</td>
                                 <td class="font-w600">{{ $list->user->username ?? '' }}</td>
                                 <td>{{ number_format($list->money) }}</td>
+                                <td>{{ time_elapsed_string($list->created_at) }}</td>
                                 <td style="max-width: 250px">{{ $list->note }}</td>
                                 <td style="max-width: 100px">
                                     <a href="#" onclick="return WithdrawRequest.getBankInfo({{ $list->bank }})">Bấm để xem thông tin thanh toán</a>
                                 </td>
-                                <td style="max-width: 100px">
+                                <td style="min-width: 100px">
                                     @if($list->status === 0)
                                         <a onclick="return confirm('Chắn chắn muốn thay đổi status?')"
                                            href="{{ route('admin.withdraw-request.status', ['id' => $list->id, 'status' => 1]) }}"
@@ -47,7 +50,7 @@
                         @endforeach
                         @if($lists->count() <= 0)
                             <tr>
-                                <td colspan="6">Không có yêu cầu nào</td>
+                                <td colspan="7">Không có yêu cầu nào</td>
                             </tr>
                         @endif
                         </tbody>
