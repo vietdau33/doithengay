@@ -4,7 +4,7 @@
         <div class="block">
             <div class="block-header block-header-default">
                 <h3 class="block-title">
-                    {{ $action == 'active' ? 'Danh sách thành viên hoạt động!' : 'Danh sách thành viên đã bị chặn!' }}
+                    Danh sách thành viên {{ $action == 'active' ? 'đang hoạt động' : 'đã bị chặn' }}!
                 </h3>
             </div>
             <div class="block-content">
@@ -28,15 +28,16 @@
                                 <tr>
                                     <td>{{ $stt++ }}</td>
                                     <td class="font-w600">{{ $user->username }}</td>
-                                    <td>{{ $user->fullname }}</td>
-                                    <td>{{ $user->email }}</td>
-                                    <td>{{ $user->phone }}</td>
-                                    <td class="row-money">{{ number_format($user->money) }}</td>
-                                    <td>{{ date('d/m/Y', strtotime($user->created_at)) }}</td>
-                                    <td style="min-width: {{ $action == 'active' ? '200px' : '130px' }}">
+                                    <td style="min-width: 150px">{{ $user->fullname }}</td>
+                                    <td style="min-width: 170px">{{ $user->email }}</td>
+                                    <td style="min-width: 110px">{{ $user->phone }}</td>
+                                    <td class="row-money" style="min-width: 100px">{{ number_format($user->money) }}</td>
+                                    <td style="min-width: 100px">{{ date('d/m/Y', strtotime($user->created_at)) }}</td>
+                                    <td style="min-width: {{ $action == 'active' ? '230px' : '130px' }}">
                                         @if($action == 'active')
-                                            <a href="#" data-username="{{ $user->username }}" class="btn btn-primary btn-plus-money">Cộng tiền</a>
-                                            <a href="{{ route('admin.user.change-active', ['id' => $user->id, 'status' => (int)!$user->inactive]) }}" class="btn btn-danger" onclick="return confirm('Chắc chắn chặn người này?')">Chặn</a>
+                                            <a href="#" data-username="{{ $user->username }}" class="btn btn-primary btn-plus-money p-1">Cộng tiền</a>
+                                            <a href="{{ route('admin.user.change-active', ['id' => $user->id, 'status' => (int)!$user->inactive]) }}" class="btn btn-danger p-1" onclick="return confirm('Chắc chắn chặn người này?')">Chặn</a>
+                                            <button class="btn btn-success p-1 btn-view-logs" data-id="{{ $user->id }}" data-username="{{ $user->username }}">Xem logs</button>
                                         @else
                                             <a href="{{ route('admin.user.change-active', ['id' => $user->id, 'status' => (int)!$user->inactive]) }}" class="btn btn-primary" onclick="return confirm('Chắc chắn mở chặn người này?')">Mở</a>
                                         @endif
@@ -45,7 +46,7 @@
                             @endforeach
                             @if($users->count() <= 0)
                                 <tr>
-                                    <td colspan="7">Không có người dùng nào {{ $action == 'active' ? 'đang hoạt động!' : 'bị chặn!' }}</td>
+                                    <td colspan="8">Không có người dùng nào {{ $action == 'active' ? 'đang hoạt động!' : 'bị chặn!' }}</td>
                                 </tr>
                             @endif
                         </tbody>
@@ -86,6 +87,29 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="modal-view-logs" tabindex="-1" role="dialog" aria-labelledby="modal-popin" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-popin modal-xl" role="document">
+            <div class="modal-content">
+                <div class="block block-themed block-transparent mb-0">
+                    <div class="block-header bg-primary-dark">
+                        <h3 class="block-title">Xem thông tin logs của <b class="username"></b></h3>
+                        <div class="block-options">
+                            <button type="button" class="btn-block-option" data-dismiss="modal" aria-label="Close">
+                                <i class="si si-close"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="block-content">
+                        <p class="row-loading">Đang lấy data</p>
+                        <div class="area-data"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-alt-secondary" data-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('script')
     <script>
@@ -119,6 +143,29 @@
                 $('[data-username="' + username + '"]').closest('tr').find('.row-money').text(newMoney);
                 return false;
             });
+        });
+        $('#modal-view-logs').on('click', 'a.page-link', function(e){
+            e.preventDefault();
+            const modal = $('#modal-view-logs');
+            const page = $(this).attr('data-page');
+            Request.ajax('{{ route('admin.getlog.user') }}', {id: window.idUser, page}, function(result){
+                modal.find('.row-loading').hide(100);
+                modal.find('.area-data').html(result.html).show(100);
+            });
         })
+        $('.btn-view-logs').on('click', function(){
+            const idUser = $(this).attr('data-id');
+            const username = $(this).attr('data-username');
+            const modal = $('#modal-view-logs');
+            window.idUser = idUser;
+            modal.find('.username').text(username);
+            modal.find('.row-loading').show();
+            modal.find('.area-data').empty().hide();
+            modal.modal();
+            Request.ajax('{{ route('admin.getlog.user') }}', {id: idUser}, function(result){
+                modal.find('.row-loading').hide(100);
+                modal.find('.area-data').html(result.html).show(100);
+            });
+        });
     </script>
 @endsection

@@ -18,6 +18,7 @@ use App\Models\SystemSetting;
 use App\Models\TraceSystem;
 use App\Models\TradeCard;
 use App\Models\User;
+use App\Models\UserLogs;
 use App\Models\WithdrawModel;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
@@ -347,5 +348,15 @@ class AdminController extends Controller
             $bank->delete();
         }
         return redirect()->route('admin.system-bank');
+    }
+
+    public function getLogsUser(Request $request): JsonResponse
+    {
+        $logs = UserLogs::getLogs($request->id);
+        $html = view('admin.user.table_log', compact('logs'))->render();
+        return response()->json([
+            'success' => true,
+            'html' => $html
+        ]);
     }
 }

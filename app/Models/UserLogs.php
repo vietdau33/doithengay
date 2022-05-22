@@ -37,7 +37,10 @@ class UserLogs extends Model
         return $log->refresh();
     }
 
-    public static function getLogs() {
-        return self::whereUserId(user()->id)->orderBy('created_at', 'DESC')->paginate(10);
+    public static function getLogs($userId = null) {
+        if(is_null($userId)) {
+            $userId = user()->id;
+        }
+        return self::whereUserId($userId)->orderBy('created_at', 'DESC')->paginate(is_admin() ? 5 : 10);
     }
 }

@@ -10,6 +10,7 @@ Route::get('/withdraw-request/{id}/{status}', [AdminController::class, 'withdraw
 Route::get('/withdraw-history', [AdminController::class, 'withdrawHistory'])->name('withdraw-history');
 Route::post('/bank/info', [AdminController::class, 'bankInfo'])->name('bank.info');
 Route::get('/trace-log', [AdminController::class, 'viewLogs'])->name('logs');
+Route::post('/get-log-user', [AdminController::class, 'getLogsUser'])->name('getlog.user');
 
 Route::prefix('/buy-card')->group(function () {
     Route::get('/request', [AdminController::class, 'buyCardRequest'])->name('buycard-request');
