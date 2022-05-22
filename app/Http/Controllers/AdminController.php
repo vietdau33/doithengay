@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SystemBankRequest;
 use App\Http\Services\AdminService;
-use App\Http\Services\BankService;
 use App\Http\Services\ModelService;
 use App\Models\BillModel;
 use App\Models\CardListModel;
@@ -358,5 +357,34 @@ class AdminController extends Controller
             'success' => true,
             'html' => $html
         ]);
+    }
+
+    public function changeLevelUser(Request $request): JsonResponse
+    {
+        try{
+            $newType = $request->newValue;
+            $username = $request->username;
+            if(!in_array($newType, ['nomal', 'daily', 'tongdaily'])) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Level không chính xác!'
+                ]);
+            }
+            $user = User::whereUsername($username)->first();
+            if($user == null) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'User có username là ' . ($request->username ?? 'unknow') . ' không còn tồn tại trên hệ thống!'
+                ]);
+            }
+            $user->type_user = $newType;
+            $user->save();
+            return response()->json(['success' => true]);
+        }catch(Exception $exception) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Đã có lỗi xảy ra khi thay đổi level của user ' . ($request->username ?? 'unknow')
+            ]);
+        }
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminFilterController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 
@@ -11,6 +12,11 @@ Route::get('/withdraw-history', [AdminController::class, 'withdrawHistory'])->na
 Route::post('/bank/info', [AdminController::class, 'bankInfo'])->name('bank.info');
 Route::get('/trace-log', [AdminController::class, 'viewLogs'])->name('logs');
 Route::post('/get-log-user', [AdminController::class, 'getLogsUser'])->name('getlog.user');
+Route::post('/change-level-user', [AdminController::class, 'changeLevelUser'])->name('changelevel.user');
+
+Route::prefix('filter')->group(function(){
+    Route::post('user', [AdminFilterController::class, 'filterUser'])->name('filter-user');
+});
 
 Route::prefix('/buy-card')->group(function () {
     Route::get('/request', [AdminController::class, 'buyCardRequest'])->name('buycard-request');

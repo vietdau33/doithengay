@@ -1,56 +1,23 @@
 @extends('admin_layout')
+@php($isActivePage = $action == 'active')
 @section('contents')
     <div class="content">
         <div class="block">
             <div class="block-header block-header-default">
                 <h3 class="block-title">
-                    Danh sách thành viên {{ $action == 'active' ? 'đang hoạt động' : 'đã bị chặn' }}!
+                    Danh sách thành viên {{ $isActivePage ? 'đang hoạt động' : 'đã bị chặn' }}!
                 </h3>
             </div>
             <div class="block-content">
-                <div class="table-responsive">
-                    <table class="table table-striped table-vcenter text-center">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Tài khoản</th>
-                                <th>Họ tên</th>
-                                <th>Email</th>
-                                <th>Số điện thoại</th>
-                                <th>Số tiền</th>
-                                <th>Ngày tạo</th>
-                                <th>Hành động</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @php($stt = 1)
-                            @foreach($users as $user)
-                                <tr>
-                                    <td>{{ $stt++ }}</td>
-                                    <td class="font-w600">{{ $user->username }}</td>
-                                    <td style="min-width: 150px">{{ $user->fullname }}</td>
-                                    <td style="min-width: 170px">{{ $user->email }}</td>
-                                    <td style="min-width: 110px">{{ $user->phone }}</td>
-                                    <td class="row-money" style="min-width: 100px">{{ number_format($user->money) }}</td>
-                                    <td style="min-width: 100px">{{ date('d/m/Y', strtotime($user->created_at)) }}</td>
-                                    <td style="min-width: {{ $action == 'active' ? '230px' : '130px' }}">
-                                        @if($action == 'active')
-                                            <a href="#" data-username="{{ $user->username }}" class="btn btn-primary btn-plus-money p-1">Cộng tiền</a>
-                                            <a href="{{ route('admin.user.change-active', ['id' => $user->id, 'status' => (int)!$user->inactive]) }}" class="btn btn-danger p-1" onclick="return confirm('Chắc chắn chặn người này?')">Chặn</a>
-                                            <button class="btn btn-success p-1 btn-view-logs" data-id="{{ $user->id }}" data-username="{{ $user->username }}">Xem logs</button>
-                                        @else
-                                            <a href="{{ route('admin.user.change-active', ['id' => $user->id, 'status' => (int)!$user->inactive]) }}" class="btn btn-primary" onclick="return confirm('Chắc chắn mở chặn người này?')">Mở</a>
-                                        @endif
-                                    </td>
-                                </tr>
-                            @endforeach
-                            @if($users->count() <= 0)
-                                <tr>
-                                    <td colspan="8">Không có người dùng nào {{ $action == 'active' ? 'đang hoạt động!' : 'bị chặn!' }}</td>
-                                </tr>
-                            @endif
-                        </tbody>
-                    </table>
+                <div class="block-filter d-flex">
+                    <input type="text" class="form-control mr-2" name="account" placeholder="Tài khoản, email, số điện thoại">
+                    <input type="text" style="max-width: 200px" name="filter_from_date" class="form-control mr-2" value="{{ date('Y-m-d') }}" data-date-picker>
+                    <input type="text" style="max-width: 200px" name="filter_to_date" class="form-control mr-2" value="{{ date('Y-m-d') }}" data-date-picker>
+                    <button class="btn btn-success btn-filter" data-type-filter="{{ $isActivePage ? 'active' : 'block' }}" style="min-width: 150px;">Lọc dữ liệu</button>
+                    <hr>
+                </div>
+                <div class="table-responsive area-result-filter">
+                    @include('admin.user.table_user')
                 </div>
             </div>
         </div>
@@ -113,10 +80,17 @@
 @endsection
 @section('script')
     <script>
+        $(document).ready(function(){
+            $("[data-date-picker]").datepicker({
+                dateFormat : 'yy-mm-dd'
+            });
+        });
+    </script>
+    <script>
         let href = '{{ route('plus-money') }}';
         let model = $('#modal-change-money');
         let _form = $('#form-plus-money-user');
-        $('.btn-plus-money').on('click', function(e){
+        $('.area-result-filter').on('click', '.btn-plus-money', function(e){
             e.preventDefault();
             let username = $(this).attr('data-username');
             model.find('.username').text(username);
@@ -153,7 +127,7 @@
                 modal.find('.area-data').html(result.html).show(100);
             });
         })
-        $('.btn-view-logs').on('click', function(){
+        $('.area-result-filter').on('click', '.btn-view-logs', function(){
             const idUser = $(this).attr('data-id');
             const username = $(this).attr('data-username');
             const modal = $('#modal-view-logs');
@@ -165,6 +139,28 @@
             Request.ajax('{{ route('admin.getlog.user') }}', {id: idUser}, function(result){
                 modal.find('.row-loading').hide(100);
                 modal.find('.area-data').html(result.html).show(100);
+            });
+        });
+        @if($isActivePage)
+        $('.area-result-filter').on('change', '.select-change-user-type', function(){
+            const newValue = $(this).val();
+            const username = $(this).attr('data-username');
+            Request.ajax('{{ route('admin.changelevel.user') }}', {newValue, username}, function(result) {
+                if(result.success == false) {
+                    alert(result.message);
+                    window.location.reload();
+                }
+            })
+        });
+        @endif
+        $('.btn-filter').on('click', function(){
+            const type_filter = $(this).attr('data-type-filter');
+            const account = $('[name="account"]').val().trim();
+            const filter_from_date = $('[name="filter_from_date"]').val().trim();
+            const filter_to_date = $('[name="filter_to_date"]').val().trim();
+            const params = { type_filter, account, filter_to_date, filter_from_date };
+            Request.ajax('{{ route('admin.filter-user') }}', params, function(result){
+                $('.area-result-filter').empty().html(result.html);
             });
         });
     </script>
