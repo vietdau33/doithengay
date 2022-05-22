@@ -28,7 +28,7 @@ class UserLogs extends Model
     public static function addLogs(string $mgs, string $typeLog = 'unknow', array $contents = []): UserLogs
     {
         $log = new self;
-        $log->ip = request()->ip();
+        $log->ip = getIpPublic();
         $log->user_id = $contents['user_id'] ?? (user()->id ?? 0);
         $log->type_log = $typeLog;
         $log->message = $mgs;

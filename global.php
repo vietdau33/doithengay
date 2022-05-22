@@ -215,3 +215,7 @@ function buildBankContent($content){
 function getUserLogs(){
     return UserLogs::getLogs();
 }
+
+function getIpPublic(){
+    return $_SERVER['HTTP_CF_CONNECTING_IP'] ?? $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'];
+}
