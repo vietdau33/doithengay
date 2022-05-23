@@ -148,7 +148,11 @@ class ReportSystem extends Command
             $slow['all']++;
             switch ($card->status_card) {
                 case 0:
-                    $slow['pending']++;
+                    if($card->status == 4){
+                        $slow['error']++;
+                    }else{
+                        $slow['pending']++;
+                    }
                     break;
                 case 1:
                     $slow['success']++;
