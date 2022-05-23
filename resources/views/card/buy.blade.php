@@ -339,6 +339,12 @@
                 $('.form-group-card-buy .box-card:first-child [name="card_buy"]').trigger('click');
             }
             $('.payment-cart button').on('click', function(){
+                if($(this).hasClass('clicked')) {
+                    return false;
+                }
+                $(this).addClass('clicked');
+                $(this).prop('disabled', true);
+
                 if(calcTotalMoneyCart(true) > UserMoney) {
                     alertify.alert('Error', 'Số tiền còn lại trong tài khoản không đủ để mua tất cả số thẻ ngày. Hãy kiểm tra lại!');
                     $('.alertify .ajs-header').removeClass('alert-success').addClass('alert-danger');
