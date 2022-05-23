@@ -178,8 +178,8 @@ class CardController extends Controller
             session()->flash('mgs_error', 'Đổi thẻ nhanh hiện không khả dụng!');
             return back()->withInput();
         }
-        if (TradeCard::whereCardSerial($request->card_serial)->orWhere('card_number', $request->card_number)->first() != null) {
-            session()->flash('mgs_error', "Số serial hoặc mã thẻ đã tồn tại trên hệ thống!");
+        if (TradeCard::whereCardNumber($request->card_number)->first() != null) {
+            session()->flash('mgs_error', "Mã thẻ đã tồn tại trên hệ thống!");
             return back()->withInput();
         }
         if ($request->type_trade == 'fast' && !CardService::saveTradeCardFast($request)) {
@@ -222,10 +222,10 @@ class CardController extends Controller
                 'message' => "Đổi thẻ nhanh hiện không khả dụng!"
             ]);
         }
-        if (TradeCard::whereCardSerial($request->card_serial)->orWhere('card_number', $request->card_number)->first() != null) {
+        if (TradeCard::whereCardNumber($request->card_number)->first() != null) {
             return response()->json([
                 'success' => false,
-                'message' => "Số serial hoặc mã thẻ đã tồn tại trên hệ thống!"
+                'message' => "Mã thẻ đã tồn tại trên hệ thống!"
             ]);
         }
         if ($request->type_trade == 'fast' && !CardService::saveTradeCardFast($request)) {

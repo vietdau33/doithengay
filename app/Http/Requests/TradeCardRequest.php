@@ -32,6 +32,39 @@ class TradeCardRequest extends FormRequest
         ];
     }
 
+    public function withValidator($validators)
+    {
+        $validators->after(function ($validator) {
+            if(empty($this->card_number)) {
+                return false;
+            }
+            $lenCardNumber = strlen($this->card_number);
+            switch ($this->card_type) {
+                case 'viettel':
+                    if($lenCardNumber != 13 && $lenCardNumber != 15) {
+                        return $validator->errors()->add('card_number', 'Mã thẻ Viettel phải có 13 hoặc 15 chữ số!');
+                    }
+                    break;
+                case 'vinaphone':
+                    if($lenCardNumber != 12 && $lenCardNumber != 14) {
+                        return $validator->errors()->add('card_number', 'Mã thẻ Vinaphone phải có 12 hoặc 14 chữ số!');
+                    }
+                    break;
+                case 'mobifone':
+                    if($lenCardNumber != 12) {
+                        return $validator->errors()->add('card_number', 'Mã thẻ Mobifone phải có 12 chữ số!');
+                    }
+                    break;
+                case 'vietnamobile':
+                    if($lenCardNumber != 12) {
+                        return $validator->errors()->add('card_number', 'Mã thẻ Vietnamobile phải có 12 chữ số!');
+                    }
+                    break;
+            }
+            return true;
+        });
+    }
+
     public function messages(): array
     {
         return [

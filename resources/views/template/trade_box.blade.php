@@ -248,7 +248,8 @@
             $('.alertify .ajs-header').addClass('alert-danger').removeClass('alert-success');
         }else{
             alertify.alert('Success', "Tất cả thẻ đã gạch thành công! Vui lòng kiểm tra lịch sử để xem trạng thái gạch thẻ!", function(){
-                window.location.href = '{{ route('trade-card.history') }}';
+                //window.location.href = '{{ route('trade-card.history') }}';
+                window.location.reload();
             });
             $('.alertify .ajs-header').addClass('alert-success').removeClass('alert-danger');
         }

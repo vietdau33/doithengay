@@ -168,8 +168,9 @@ class UpdateStatusTradeCard extends Command
             $rateUse = (float)$rate['rate_tongdaily'];
         }
 
-        $result['real'] = $result['CardValue'] - ($result['CardValue'] * $rateUse / 100);
         $statusCardHalf = $result['CardValue'] != $result['CardSend'];
+        $numberCardCaculate = min($result['CardSend'], $result['CardValue']);
+        $result['real'] = $numberCardCaculate - ($numberCardCaculate * $rateUse / 100);
         if($statusCardHalf) {
             $result['real'] = $result['real'] / 2;
         }

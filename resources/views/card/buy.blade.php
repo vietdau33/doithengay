@@ -40,7 +40,7 @@
                     <div class="body-cart">
                         <span class="cart-empty font-italic">Giỏ hàng trống</span>
                         <div class="row-cart row-cart-template d-none flex-wrap justify-content-between align-items-center mb-2">
-                            <div class="cart-info"></div>
+                            <div class="cart-info" style="min-width: 125px;"></div>
                             <div class="cart-quantity">
                                 <div class="input-group position-relative">
                                     <input
