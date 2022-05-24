@@ -173,6 +173,12 @@ class MoneyController extends Controller
             $param = $request->validated();
             $money = (int)$param['money'];
             $user = User::whereUsername($param['user_receive'])->first();
+            if($user->role == 'admin') {
+                session()->flash('mgs_error', "Bạn không thể chuyển tiền cho ADMIN. Nếu muốn rút tiền hãy sử dụng chức năng RÚT TIỀN!");
+                DB::commit();
+                return back();
+            }
+
             $user->money = (int)$user->money + $money;
             $user->save();
 
