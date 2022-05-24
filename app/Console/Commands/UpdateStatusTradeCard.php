@@ -194,6 +194,7 @@ class UpdateStatusTradeCard extends Command
         $tradeRecord->money_user_before = $user->money;
         $user->money = (int)$user->money + $result['real'];
         $tradeRecord->money_user_after = $user->money;
+        $tradeRecord->message = $result['Message'];
         $tradeRecord->save();
         $user->save();
 
