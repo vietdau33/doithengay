@@ -17,6 +17,7 @@ use App\Models\SystemBank;
 use App\Models\SystemSetting;
 use App\Models\TraceSystem;
 use App\Models\TradeCard;
+use App\Models\TransferMoney;
 use App\Models\User;
 use App\Models\UserLogs;
 use App\Models\WithdrawModel;
@@ -487,12 +488,18 @@ class AdminController extends Controller
         $buyCard = CardStore::whereUserId($request->id)->orderBy('created_at', 'DESC')->paginate($this->paginateLog);
         $recharge = BankMessenger::whereUserId($request->id)->orderBy('created_at', 'DESC')->paginate($this->paginateLog);
         $withdraw = WithdrawModel::whereUserId($request->id)->orderBy('created_at', 'DESC')->paginate($this->paginateLog);
+        $transfer = TransferMoney::with(['user', 'receive'])
+            ->where('user_id', $request->id)
+            ->orWhere('user_receive', $request->id)
+            ->orderBy('created_at', 'DESC')
+            ->paginate($this->paginateLog);
         $histories = [
             'activity' => $activity,
             'trade_card' => $tradeCard,
             'buy_card' => $buyCard,
             'recharge' => $recharge,
-            'withdraw' => $withdraw
+            'withdraw' => $withdraw,
+            'transfer' => $transfer
         ];
         $html = view('admin.user.table_log', compact('histories'))->render();
         return response()->json([
@@ -533,6 +540,14 @@ class AdminController extends Controller
             case 'withdraw':
                 $logs = WithdrawModel::whereUserId($request->id)->orderBy('created_at', 'DESC')->paginate($this->paginateLog);
                 $html = view('admin.user.logs.withdraw', compact('logs'))->render();
+                break;
+            case 'transfer':
+                $logs = TransferMoney::with(['user', 'receive'])
+                    ->where('user_id', $request->id)
+                    ->orWhere('user_receive', $request->id)
+                    ->orderBy('created_at', 'DESC')
+                    ->paginate($this->paginateLog);
+                $html = view('admin.user.logs.transfer', compact('logs'))->render();
                 break;
         }
 

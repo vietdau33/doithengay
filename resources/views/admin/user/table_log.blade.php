@@ -15,6 +15,9 @@
     <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#withdraw">Rút tiền</a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#transfer">Chuyển tiền</a>
+    </li>
 </ul>
 
 <!-- Tab panes -->
@@ -33,5 +36,8 @@
     </div>
     <div class="tab-pane container-fluid fade" id="withdraw" data-tab="withdraw">
         @include('admin.user.logs.withdraw', ['logs' => $histories['withdraw']])
+    </div>
+    <div class="tab-pane container-fluid fade" id="transfer" data-tab="transfer">
+        @include('admin.user.logs.transfer', ['logs' => $histories['transfer']])
     </div>
 </div>
