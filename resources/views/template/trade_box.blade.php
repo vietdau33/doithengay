@@ -201,11 +201,11 @@
             $('.alertify .ajs-header').addClass('alert-danger').removeClass('alert-success');
             return false;
         }
-        $(this).remove();
-        cardArea.find('select').prop('disabled', true);
-        cardArea.find('input').prop('readonly', true);
+        // $(this).remove();
+        // cardArea.find('select').prop('disabled', true);
+        // cardArea.find('input').prop('readonly', true);
         cardArea.find('.form-trade-card-home').addClass('full').find('.btn-add-area-trade').remove();
-        for(const cardEl of cardArea.find('.form-trade-card-home')){
+        for(const cardEl of cardArea.find('.form-trade-card-home:not(.traded)')){
             const alertEl = $(cardEl).find('.alert-status');
             const card_type = $(cardEl).find('[name="card_type"]').val();
             const card_money = $(cardEl).find('[name="card_money"]').val();
@@ -223,6 +223,9 @@
                         hasError = true;
                     }else{
                         alertEl.addClass('alert-success');
+                        $(cardEl).find('select').prop('disabled', true);
+                        $(cardEl).find('input').prop('readonly', true);
+                        $(cardEl).addClass('traded');
                     }
                     alertEl.text(result.message);
                     return resolve(true);
