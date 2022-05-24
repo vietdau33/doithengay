@@ -11,10 +11,10 @@ use App\Models\SystemSetting;
 use App\Models\TraceSystem;
 use App\Models\TradeCard;
 use App\Models\User;
+use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
-use Psr\Http\Message\ResponseInterface;
 
 class UpdateStatusTradeCard extends Command
 {
@@ -110,11 +110,13 @@ class UpdateStatusTradeCard extends Command
             return false;
         }
 
-        $tradeRecord->change_fast = 1;
-        TraceSystem::setTrace([
-            'mgs' => 'Chuyển đổi bán chậm sang bán nhanh',
-            'card_id' => $tradeRecord->id
-        ]);
+        if($tradeRecord->type_trade == 'slow') {
+            $tradeRecord->change_fast = 1;
+            TraceSystem::setTrace([
+                'mgs' => 'Chuyển đổi bán chậm sang bán nhanh',
+                'card_id' => $tradeRecord->id
+            ]);
+        }
 
         if ($result['Code'] === 0 || $result['Code'] === 1) {
             $tradeRecord->status = TradeCard::S_WORKING;
@@ -225,6 +227,10 @@ class UpdateStatusTradeCard extends Command
      */
     private function responseCallbackApi($url, $params = []): void
     {
-        HttpService::client()->get($url, ['query' => $params]);
+        try{
+            HttpService::client()->get($url, ['query' => $params]);
+        }catch(Exception $exception){
+            return;
+        }
     }
 }
