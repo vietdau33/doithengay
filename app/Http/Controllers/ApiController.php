@@ -53,8 +53,28 @@ class ApiController extends Controller
             return $this->returnFail('Telco bạn gửi lên không được hỗ trợ. Đang hỗ trợ những telco sau: ' . implode(', ', $cardList));
         }
 
-        if (TradeCard::whereCardSerial($request->serial)->orWhere('card_number', $request->code)->first() != null) {
-            return $this->returnFail('Số serial hoặc mã thẻ đã tồn tại trên hệ thống!');
+        $lengthCardNumber = strlen($request->code);
+        switch (strtoupper($request->telco)) {
+            case 'VIETTEL':
+                if($lengthCardNumber != 13 && $lengthCardNumber != 15) {
+                    return $this->returnFail('Định dạng thẻ không đúng!');
+                }
+                break;
+            case 'VINAPHONE':
+                if($lengthCardNumber != 12 && $lengthCardNumber != 14) {
+                    return $this->returnFail('Định dạng thẻ không đúng!');
+                }
+                break;
+            case 'MOBIFONE':
+            case 'VIETNAMOBILE':
+                if($lengthCardNumber != 12) {
+                    return $this->returnFail('Định dạng thẻ không đúng!');
+                }
+                break;
+        }
+
+        if (TradeCard::whereCardNumber($request->code)->first() != null) {
+            return $this->returnFail('Mã thẻ đã tồn tại trên hệ thống!');
         }
 
         $hash = $this->generate_hash_trade();
