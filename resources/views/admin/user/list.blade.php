@@ -55,7 +55,7 @@
         </div>
     </div>
     <div class="modal fade" id="modal-view-logs" tabindex="-1" role="dialog" aria-labelledby="modal-popin" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-popin modal-xl" role="document">
+        <div class="modal-dialog modal-dialog-popin modal-xl" role="document" style="max-width: calc(100% - 20px)">
             <div class="modal-content">
                 <div class="block block-themed block-transparent mb-0">
                     <div class="block-header bg-primary-dark">
@@ -67,7 +67,10 @@
                         </div>
                     </div>
                     <div class="block-content">
-                        <p class="row-loading">Đang lấy data</p>
+                        <p class="row-loading justify-content-center align-items-center" style="display: flex">
+                            <img src="{{ asset('image/loading.svg') }}" alt="Loading" class="mr-2" style="width: 32px">
+                            Đang lấy data ...
+                        </p>
                         <div class="area-data"></div>
                     </div>
                 </div>
@@ -115,9 +118,12 @@
             e.preventDefault();
             const modal = $('#modal-view-logs');
             const page = $(this).attr('data-page');
-            Request.ajax('{{ route('admin.getlog.user') }}', {id: window.idUser, page}, function(result){
-                modal.find('.row-loading').hide(100);
-                modal.find('.area-data').html(result.html).show(100);
+            const type = $(this).closest('nav').attr('data-type');
+            Request.ajax('{{ route('admin.getlog.user.withtype') }}', {id: window.idUser, page, type}, function(result){
+                if(result.success == false) {
+                    return alert(result.message);
+                }
+                modal.find('[data-tab="' + type + '"]').html(result.html);
             });
         })
         $('.area-result-filter').on('click', '.btn-view-logs', function(){

@@ -12,6 +12,7 @@ Route::get('/withdraw-history', [AdminController::class, 'withdrawHistory'])->na
 Route::post('/bank/info', [AdminController::class, 'bankInfo'])->name('bank.info');
 Route::get('/trace-log', [AdminController::class, 'viewLogs'])->name('logs');
 Route::post('/get-log-user', [AdminController::class, 'getLogsUser'])->name('getlog.user');
+Route::post('/get-log-user-with-type', [AdminController::class, 'getLogsUserWithType'])->name('getlog.user.withtype');
 Route::post('/change-level-user', [AdminController::class, 'changeLevelUser'])->name('changelevel.user');
 
 Route::prefix('filter')->group(function(){

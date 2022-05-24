@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\SystemBankRequest;
 use App\Http\Services\AdminService;
 use App\Http\Services\ModelService;
+use App\Models\BankMessenger;
 use App\Models\BillModel;
 use App\Models\CardListModel;
 use App\Models\CardStore;
@@ -29,6 +30,8 @@ use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
+    protected int $paginateLog = 5;
+
     public function home(): Factory|View|Application
     {
         session()->flash('menu-active', 'dashboard');
@@ -46,19 +49,19 @@ class AdminController extends Controller
         session()->flash('menu-active', 'withdraw-request');
         $dateNow = date('Y-m-d');
         $lists = WithdrawModel::with('user')->whereIn('status', [0, 1]);
-        if(!empty(request()->username)) {
+        if (!empty(request()->username)) {
             $user = User::whereUsername(request()->username)->first();
             $lists->whereUserId($user->id ?? 0);
         }
-        if(!empty(request()->filter_from_date)) {
-            $lists->where('created_at','>=', request()->filter_from_date . ' 00:00:00');
-        }else{
-            $lists->where('created_at','>=', $dateNow . ' 00:00:00');
+        if (!empty(request()->filter_from_date)) {
+            $lists->where('created_at', '>=', request()->filter_from_date . ' 00:00:00');
+        } else {
+            $lists->where('created_at', '>=', $dateNow . ' 00:00:00');
         }
-        if(!empty(request()->filter_to_date)) {
-            $lists->where('created_at','<=', request()->filter_to_date . ' 23:59:59');
-        }else{
-            $lists->where('created_at','<=', $dateNow . ' 23:59:59');
+        if (!empty(request()->filter_to_date)) {
+            $lists->where('created_at', '<=', request()->filter_to_date . ' 23:59:59');
+        } else {
+            $lists->where('created_at', '<=', $dateNow . ' 23:59:59');
         }
         $lists = $lists->orderBy('created_at', 'DESC')->get();
         return view('admin.withdraw.request', compact('lists'));
@@ -69,19 +72,19 @@ class AdminController extends Controller
         session()->flash('menu-active', 'withdraw-history');
         $dateNow = date('Y-m-d');
         $lists = WithdrawModel::with('user')->whereIn('status', [2, 3]);
-        if(!empty(request()->username)) {
+        if (!empty(request()->username)) {
             $user = User::whereUsername(request()->username)->first();
             $lists->whereUserId($user->id ?? 0);
         }
-        if(!empty(request()->filter_from_date)) {
-            $lists->where('created_at','>=', request()->filter_from_date . ' 00:00:00');
-        }else{
-            $lists->where('created_at','>=', $dateNow . ' 00:00:00');
+        if (!empty(request()->filter_from_date)) {
+            $lists->where('created_at', '>=', request()->filter_from_date . ' 00:00:00');
+        } else {
+            $lists->where('created_at', '>=', $dateNow . ' 00:00:00');
         }
-        if(!empty(request()->filter_to_date)) {
-            $lists->where('created_at','<=', request()->filter_to_date . ' 23:59:59');
-        }else{
-            $lists->where('created_at','<=', $dateNow . ' 23:59:59');
+        if (!empty(request()->filter_to_date)) {
+            $lists->where('created_at', '<=', request()->filter_to_date . ' 23:59:59');
+        } else {
+            $lists->where('created_at', '<=', $dateNow . ' 23:59:59');
         }
         $lists = $lists->orderBy('created_at', 'DESC')->get();
         return view('admin.withdraw.history', compact('lists'));
@@ -123,19 +126,19 @@ class AdminController extends Controller
         session()->flash('menu-active', "pay-bill-$type");
         $dateNow = date('Y-m-d');
         $bills = BillModel::with('user')->whereType($type);
-        if(!empty(request()->username)) {
+        if (!empty(request()->username)) {
             $user = User::whereUsername(request()->username)->first();
             $bills->whereUserId($user->id ?? 0);
         }
-        if(!empty(request()->filter_from_date)) {
-            $bills->where('created_at','>=', request()->filter_from_date . ' 00:00:00');
-        }else{
-            $bills->where('created_at','>=', $dateNow . ' 00:00:00');
+        if (!empty(request()->filter_from_date)) {
+            $bills->where('created_at', '>=', request()->filter_from_date . ' 00:00:00');
+        } else {
+            $bills->where('created_at', '>=', $dateNow . ' 00:00:00');
         }
-        if(!empty(request()->filter_to_date)) {
-            $bills->where('created_at','<=', request()->filter_to_date . ' 23:59:59');
-        }else{
-            $bills->where('created_at','<=', $dateNow . ' 23:59:59');
+        if (!empty(request()->filter_to_date)) {
+            $bills->where('created_at', '<=', request()->filter_to_date . ' 23:59:59');
+        } else {
+            $bills->where('created_at', '<=', $dateNow . ' 23:59:59');
         }
         $bills = $bills->orderBy('created_at', 'DESC')->get();
         return view('admin.bill.list', compact('bills', 'type'));
@@ -237,19 +240,19 @@ class AdminController extends Controller
         session()->flash('menu-active', 'buycard-request');
         $dateNow = date('Y-m-d');
         $requests = CardStore::with('user')->whereTypeBuy('slow')->whereIn('status', [0, 1]);
-        if(!empty(request()->username)) {
+        if (!empty(request()->username)) {
             $user = User::whereUsername(request()->username)->first();
             $requests->whereUserId($user->id ?? 0);
         }
-        if(!empty(request()->filter_from_date)) {
-            $requests->where('created_at','>=', request()->filter_from_date . ' 00:00:00');
-        }else{
-            $requests->where('created_at','>=', $dateNow . ' 00:00:00');
+        if (!empty(request()->filter_from_date)) {
+            $requests->where('created_at', '>=', request()->filter_from_date . ' 00:00:00');
+        } else {
+            $requests->where('created_at', '>=', $dateNow . ' 00:00:00');
         }
-        if(!empty(request()->filter_to_date)) {
-            $requests->where('created_at','<=', request()->filter_to_date . ' 23:59:59');
-        }else{
-            $requests->where('created_at','<=', $dateNow . ' 23:59:59');
+        if (!empty(request()->filter_to_date)) {
+            $requests->where('created_at', '<=', request()->filter_to_date . ' 23:59:59');
+        } else {
+            $requests->where('created_at', '<=', $dateNow . ' 23:59:59');
         }
         $requests = $requests->orderBy('created_at', 'DESC')->get();
         return view('admin.buycard.request', compact('requests'));
@@ -260,19 +263,19 @@ class AdminController extends Controller
         session()->flash('menu-active', 'buycard-request.success');
         $dateNow = date('Y-m-d');
         $requests = CardStore::with('user')->whereTypeBuy('slow')->whereStatus(2);
-        if(!empty(request()->username)) {
+        if (!empty(request()->username)) {
             $user = User::whereUsername(request()->username)->first();
             $requests->whereUserId($user->id ?? 0);
         }
-        if(!empty(request()->filter_from_date)) {
-            $requests->where('created_at','>=', request()->filter_from_date . ' 00:00:00');
-        }else{
-            $requests->where('created_at','>=', $dateNow . ' 00:00:00');
+        if (!empty(request()->filter_from_date)) {
+            $requests->where('created_at', '>=', request()->filter_from_date . ' 00:00:00');
+        } else {
+            $requests->where('created_at', '>=', $dateNow . ' 00:00:00');
         }
-        if(!empty(request()->filter_to_date)) {
-            $requests->where('created_at','<=', request()->filter_to_date . ' 23:59:59');
-        }else{
-            $requests->where('created_at','<=', $dateNow . ' 23:59:59');
+        if (!empty(request()->filter_to_date)) {
+            $requests->where('created_at', '<=', request()->filter_to_date . ' 23:59:59');
+        } else {
+            $requests->where('created_at', '<=', $dateNow . ' 23:59:59');
         }
         $requests = $requests->orderBy('created_at', 'DESC')->get();
         return view('admin.buycard.request', compact('requests'));
@@ -288,19 +291,19 @@ class AdminController extends Controller
         session()->flash('menu-active', 'tradecard-request');
         $dateNow = date('Y-m-d');
         $requests = TradeCard::with('user')->whereTypeTrade('slow')->whereIn('status', [1, 2]);
-        if(!empty(request()->username)) {
+        if (!empty(request()->username)) {
             $user = User::whereUsername(request()->username)->first();
             $requests->whereUserId($user->id ?? 0);
         }
-        if(!empty(request()->filter_from_date)) {
-            $requests->where('created_at','>=', request()->filter_from_date . ' 00:00:00');
-        }else{
-            $requests->where('created_at','>=', $dateNow . ' 00:00:00');
+        if (!empty(request()->filter_from_date)) {
+            $requests->where('created_at', '>=', request()->filter_from_date . ' 00:00:00');
+        } else {
+            $requests->where('created_at', '>=', $dateNow . ' 00:00:00');
         }
-        if(!empty(request()->filter_to_date)) {
-            $requests->where('created_at','<=', request()->filter_to_date . ' 23:59:59');
-        }else{
-            $requests->where('created_at','<=', $dateNow . ' 23:59:59');
+        if (!empty(request()->filter_to_date)) {
+            $requests->where('created_at', '<=', request()->filter_to_date . ' 23:59:59');
+        } else {
+            $requests->where('created_at', '<=', $dateNow . ' 23:59:59');
         }
         $requests = $requests->orderBy('created_at', 'DESC')->get();
         return view('admin.tradecard.request', compact('requests'));
@@ -311,19 +314,19 @@ class AdminController extends Controller
         session()->flash('menu-active', 'tradecard-request.success');
         $dateNow = date('Y-m-d');
         $requests = TradeCard::with('user')->whereTypeTrade('slow')->whereStatus(3);
-        if(!empty(request()->username)) {
+        if (!empty(request()->username)) {
             $user = User::whereUsername(request()->username)->first();
             $requests->whereUserId($user->id ?? 0);
         }
-        if(!empty(request()->filter_from_date)) {
-            $requests->where('created_at','>=', request()->filter_from_date . ' 00:00:00');
-        }else{
-            $requests->where('created_at','>=', $dateNow . ' 00:00:00');
+        if (!empty(request()->filter_from_date)) {
+            $requests->where('created_at', '>=', request()->filter_from_date . ' 00:00:00');
+        } else {
+            $requests->where('created_at', '>=', $dateNow . ' 00:00:00');
         }
-        if(!empty(request()->filter_to_date)) {
-            $requests->where('created_at','<=', request()->filter_to_date . ' 23:59:59');
-        }else{
-            $requests->where('created_at','<=', $dateNow . ' 23:59:59');
+        if (!empty(request()->filter_to_date)) {
+            $requests->where('created_at', '<=', request()->filter_to_date . ' 23:59:59');
+        } else {
+            $requests->where('created_at', '<=', $dateNow . ' 23:59:59');
         }
         $requests = $requests->orderBy('created_at', 'DESC')->get();
         return view('admin.tradecard.request', compact('requests'));
@@ -334,19 +337,19 @@ class AdminController extends Controller
         session()->flash('menu-active', 'tradecard-request.fail');
         $dateNow = date('Y-m-d');
         $requests = TradeCard::with('user')->whereTypeTrade('slow')->whereStatus(4);
-        if(!empty(request()->username)) {
+        if (!empty(request()->username)) {
             $user = User::whereUsername(request()->username)->first();
             $requests->whereUserId($user->id ?? 0);
         }
-        if(!empty(request()->filter_from_date)) {
-            $requests->where('created_at','>=', request()->filter_from_date . ' 00:00:00');
-        }else{
-            $requests->where('created_at','>=', $dateNow . ' 00:00:00');
+        if (!empty(request()->filter_from_date)) {
+            $requests->where('created_at', '>=', request()->filter_from_date . ' 00:00:00');
+        } else {
+            $requests->where('created_at', '>=', $dateNow . ' 00:00:00');
         }
-        if(!empty(request()->filter_to_date)) {
-            $requests->where('created_at','<=', request()->filter_to_date . ' 23:59:59');
-        }else{
-            $requests->where('created_at','<=', $dateNow . ' 23:59:59');
+        if (!empty(request()->filter_to_date)) {
+            $requests->where('created_at', '<=', request()->filter_to_date . ' 23:59:59');
+        } else {
+            $requests->where('created_at', '<=', $dateNow . ' 23:59:59');
         }
         $requests = $requests->orderBy('created_at', 'DESC')->get();
         return view('admin.tradecard.request', compact('requests'));
@@ -471,7 +474,7 @@ class AdminController extends Controller
     public function deleteSystemBank($id): RedirectResponse
     {
         $bank = SystemBank::whereId($id)->first();
-        if($bank != null) {
+        if ($bank != null) {
             $bank->delete();
         }
         return redirect()->route('admin.system-bank');
@@ -479,8 +482,66 @@ class AdminController extends Controller
 
     public function getLogsUser(Request $request): JsonResponse
     {
-        $logs = UserLogs::getLogs($request->id);
-        $html = view('admin.user.table_log', compact('logs'))->render();
+        $activity = UserLogs::getLogs($request->id);
+        $tradeCard = TradeCard::whereUserId($request->id)->orderBy('created_at', 'DESC')->paginate($this->paginateLog);
+        $buyCard = CardStore::whereUserId($request->id)->orderBy('created_at', 'DESC')->paginate($this->paginateLog);
+        $recharge = BankMessenger::whereUserId($request->id)->orderBy('created_at', 'DESC')->paginate($this->paginateLog);
+        $withdraw = WithdrawModel::whereUserId($request->id)->orderBy('created_at', 'DESC')->paginate($this->paginateLog);
+        $histories = [
+            'activity' => $activity,
+            'trade_card' => $tradeCard,
+            'buy_card' => $buyCard,
+            'recharge' => $recharge,
+            'withdraw' => $withdraw
+        ];
+        $html = view('admin.user.table_log', compact('histories'))->render();
+        return response()->json([
+            'success' => true,
+            'html' => $html
+        ]);
+    }
+
+    public function getLogsUserWithType(Request $request): JsonResponse
+    {
+        $userId = $request->id;
+        $type = $request->type;
+        $page = $request->page;
+        if (empty($userId) || empty($type) || empty($page)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Dữ liệu gửi lên không đầy đủ!'
+            ]);
+        }
+        $html = '';
+        switch ($type) {
+            case 'activity':
+                $logs = UserLogs::getLogs($userId);
+                $html = view('admin.user.logs.activity', compact('logs'))->render();
+                break;
+            case 'trade_card':
+                $logs = TradeCard::whereUserId($request->id)->orderBy('created_at', 'DESC')->paginate($this->paginateLog);
+                $html = view('admin.user.logs.trade_card', compact('logs'))->render();
+                break;
+            case 'buy_card':
+                $logs = CardStore::whereUserId($request->id)->orderBy('created_at', 'DESC')->paginate($this->paginateLog);
+                $html = view('admin.user.logs.buy_card', compact('logs'))->render();
+                break;
+            case 'recharge':
+                $logs = BankMessenger::whereUserId($request->id)->orderBy('created_at', 'DESC')->paginate($this->paginateLog);
+                $html = view('admin.user.logs.recharge', compact('logs'))->render();
+                break;
+            case 'withdraw':
+                $logs = WithdrawModel::whereUserId($request->id)->orderBy('created_at', 'DESC')->paginate($this->paginateLog);
+                $html = view('admin.user.logs.withdraw', compact('logs'))->render();
+                break;
+        }
+
+        if (empty($html)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Không thể lấy data!'
+            ]);
+        }
         return response()->json([
             'success' => true,
             'html' => $html
@@ -489,17 +550,17 @@ class AdminController extends Controller
 
     public function changeLevelUser(Request $request): JsonResponse
     {
-        try{
+        try {
             $newType = $request->newValue;
             $username = $request->username;
-            if(!in_array($newType, ['nomal', 'daily', 'tongdaily'])) {
+            if (!in_array($newType, ['nomal', 'daily', 'tongdaily'])) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Level không chính xác!'
                 ]);
             }
             $user = User::whereUsername($username)->first();
-            if($user == null) {
+            if ($user == null) {
                 return response()->json([
                     'success' => false,
                     'message' => 'User có username là ' . ($request->username ?? 'unknow') . ' không còn tồn tại trên hệ thống!'
@@ -508,7 +569,7 @@ class AdminController extends Controller
             $user->type_user = $newType;
             $user->save();
             return response()->json(['success' => true]);
-        }catch(Exception $exception) {
+        } catch (Exception $exception) {
             return response()->json([
                 'success' => false,
                 'message' => 'Đã có lỗi xảy ra khi thay đổi level của user ' . ($request->username ?? 'unknow')

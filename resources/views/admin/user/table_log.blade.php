@@ -1,29 +1,37 @@
-<div class="table-responsive">
-    <table class="table table-striped table-vcenter text-center">
-        <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Ngày giờ</th>
-            <th scope="col">IP</th>
-            <th scope="col">Hành động</th>
-        </tr>
-        </thead>
-        <tbody>
-        @php($stt = 1)
-        @foreach($logs as $log)
-            <tr>
-                <td>{{ $stt++ }}</td>
-                <td style="min-width: 200px;">{{ date('H:i d/m/Y', strtotime($log->created_at)) }}</td>
-                <td style="min-width: 140px">{{ $log->ip }}</td>
-                <td>{{ $log->message }}</td>
-            </tr>
-        @endforeach
-        @if(count($logs) <= 0)
-            <tr>
-                <td colspan="4">Không có bản ghi log nào!</td>
-            </tr>
-        @endif
-        </tbody>
-    </table>
-    {!! $logs->links() !!}
+<!-- Nav tabs -->
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#logs_activity">Hoạt động</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#trade_card">Đổi thẻ</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#buy_card">Mua thẻ</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#recharge">Nạp tiền</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#withdraw">Chuyển tiền</a>
+    </li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+    <div class="tab-pane container-fluid active" id="logs_activity" data-tab="activity">
+        @include('admin.user.logs.activity', ['logs' => $histories['activity']])
+    </div>
+    <div class="tab-pane container-fluid fade" id="trade_card" data-tab="trade_card">
+        @include('admin.user.logs.trade_card', ['logs' => $histories['trade_card']])
+    </div>
+    <div class="tab-pane container-fluid fade" id="buy_card" data-tab="buy_card">
+        @include('admin.user.logs.buy_card', ['logs' => $histories['buy_card']])
+    </div>
+    <div class="tab-pane container-fluid fade" id="recharge" data-tab="recharge">
+        @include('admin.user.logs.recharge', ['logs' => $histories['recharge']])
+    </div>
+    <div class="tab-pane container-fluid fade" id="withdraw" data-tab="withdraw">
+        @include('admin.user.logs.withdraw', ['logs' => $histories['withdraw']])
+    </div>
 </div>
