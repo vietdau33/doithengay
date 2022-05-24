@@ -32,6 +32,45 @@
                     @endif
                 </div>
             </div>
+            <div class="mt-4">
+                <h3 class="font-weight-bold">Lịch sử nạp tiền</h3>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered table-vcenter text-center">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Thời gian</th>
+                        <th scope="col">Ngân hàng</th>
+                        <th scope="col">Số tài khoản</th>
+                        <th scope="col">Số tiền</th>
+                        <th scope="col">Nội dung</th>
+                        <th scope="col">Trạng thái</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @php($stt = 1)
+                    @foreach($histories as $history)
+                        @php($success = $history->status == 1)
+                        <tr>
+                            <td>{{ $stt++ }}</td>
+                            <td style="max-width: 100px">{{ date('H:i d/m/Y', strtotime($history->created_at)) }}</td>
+                            <td>{{ $history->bank }}</td>
+                            <td>{{ $history->number }}</td>
+                            <td>{{ number_format($history->recharge) }}</td>
+                            <td>{{ $history->messenger }}</td>
+                            <td><span class="text-{{ $success ? 'success' : 'danger' }}">{{ $success ? 'Thành công': 'Thất bại' }}</span></td>
+                        </tr>
+                    @endforeach
+                    @if(count($histories) <= 0)
+                        <tr>
+                            <td colspan="7">Không có lịch sử nào!</td>
+                        </tr>
+                    @endif
+                    </tbody>
+                </table>
+                {!! $histories->links() !!}
+            </div>
         </div>
     </div>
 @endsection

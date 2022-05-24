@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\TransferRequest;
 use App\Http\Requests\WithdrawRequest;
 use App\Http\Services\MoneyService;
+use App\Models\BankMessenger;
 use App\Models\BankModel;
 use App\Models\OtpData;
 use App\Models\SystemBank;
@@ -27,8 +28,9 @@ class MoneyController extends Controller
     public function recharge(): Factory|View|Application
     {
         $banks = SystemBank::all();
+        $histories = BankMessenger::orderBy('created_at', 'DESC')->paginate(5);
         session()->flash('menu-active', 'menu-recharge');
-        return view('money.recharge', compact('banks'));
+        return view('money.recharge', compact('banks', 'histories'));
     }
 
     public function withdraw(): Factory|View|Application
