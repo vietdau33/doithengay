@@ -159,11 +159,24 @@
             let money = r.price;
             let tempEl = $("<option />");
             let id = 'money-' + money;
+            let rateUse = 0;
+            let rateSlow = 0;
+            @if(logined() && user()->type_user == 'nomal')
+            let rateUse = r.rate_use;
+            let rateSlow = r.rate_slow;
+            @elseif(logined() && user()->type_user == 'daily')
+            let rateUse = r.rate_daily;
+            let rateSlow = r.rate_daily;
+            @elseif(logined() && user()->type_user == 'tongdaily')
+            let rateUse = r.rate_tongdaily;
+            let rateSlow = r.rate_tongdaily;
+            @endif
+
             tempEl.text(App.setPriceFormat(money));
             tempEl.attr('data-id', id)
                 .attr('data-value', money)
-                .attr('data-rate', r.rate_use)
-                .attr('data-rate-slow', r.rate_slow);
+                .attr('data-rate', rateUse)
+                .attr('data-rate-slow', rateSlow);
             areaMoney.append(tempEl);
         });
     });

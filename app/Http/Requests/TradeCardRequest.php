@@ -74,7 +74,7 @@ class TradeCardRequest extends FormRequest
             'card_serial.regex' => 'Số Seri thẻ không hợp lệ!',
             'card_number.required' => 'Phải nhập mã thẻ!',
             'card_number.regex' => 'Mã thẻ không hợp lệ',
-            'type_trade.required' => 'Phải nhập mã thẻ!',
+            'type_trade.required' => 'Phải chọn phương thức gạch thẻ!',
         ];
     }
 }
