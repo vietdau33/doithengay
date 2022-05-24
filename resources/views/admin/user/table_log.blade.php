@@ -13,7 +13,7 @@
         <a class="nav-link" data-toggle="tab" href="#recharge">Nạp tiền</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#withdraw">Chuyển tiền</a>
+        <a class="nav-link" data-toggle="tab" href="#withdraw">Rút tiền</a>
     </li>
 </ul>
 
