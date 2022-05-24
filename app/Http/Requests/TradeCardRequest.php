@@ -26,8 +26,8 @@ class TradeCardRequest extends FormRequest
         return [
             'card_type' => 'required',
             'card_money' => 'required',
-            'card_serial' => 'required|regex:/^\d+$/i',
-            'card_number' => 'required|regex:/^\d+$/i',
+            'card_serial' => 'required',
+            'card_number' => 'required',
             'type_trade' => 'required',
         ];
     }
