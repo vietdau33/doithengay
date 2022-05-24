@@ -28,7 +28,7 @@ class MoneyController extends Controller
     public function recharge(): Factory|View|Application
     {
         $banks = SystemBank::all();
-        $histories = BankMessenger::orderBy('created_at', 'DESC')->paginate(5);
+        $histories = BankMessenger::whereUserId(user()->id)->orderBy('created_at', 'DESC')->paginate(5);
         session()->flash('menu-active', 'menu-recharge');
         return view('money.recharge', compact('banks', 'histories'));
     }
