@@ -106,6 +106,7 @@ Route::middleware('authenticated')->group(function () {
         Route::get('', [MoneyController::class, 'transfer'])->name('home');
         Route::post('get-name-user', [MoneyController::class, 'transferGetUserFulleName'])->name('get-user-name');
         Route::post('', [MoneyController::class, 'transferPost'])->name('post');
+        Route::post('filter', [MoneyController::class, 'transferHistoryFilter'])->name('history.filter');
     });
 });
 

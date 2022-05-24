@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\TransferRequest;
 use App\Http\Requests\WithdrawRequest;
+use App\Http\Services\ModelService;
 use App\Http\Services\MoneyService;
 use App\Models\BankMessenger;
 use App\Models\BankModel;
@@ -11,6 +12,7 @@ use App\Models\OtpData;
 use App\Models\SystemBank;
 use App\Models\SystemSetting;
 use App\Models\TraceSystem;
+use App\Models\TransferMoney;
 use App\Models\User;
 use App\Models\UserLogs;
 use App\Models\WithdrawModel;
@@ -158,8 +160,19 @@ class MoneyController extends Controller
     public function transfer(): Factory|View|Application
     {
         session()->flash('menu-active', 'menu-transfer');
+        $date = date('Y-m-d');
         $fee = SystemSetting::getSettingWithFeature('transfer');
-        return view('money.transfer', compact('fee'));
+        $histories = TransferMoney::with(['user', 'receive'])
+            ->where(function($query){
+                $query
+                    ->where('user_id', user()->id)
+                    ->orWhere('user_receive', user()->id);
+            })
+            ->where('created_at', '>=', $date . ' 00:00:00')
+            ->where('created_at', '<=', $date . ' 23:59:59')
+            ->orderBy('created_at', 'DESC')
+            ->get();
+        return view('money.transfer', compact('fee', 'histories'));
     }
 
     public function transferGetUserFulleName(Request $request): JsonResponse
@@ -174,21 +187,28 @@ class MoneyController extends Controller
         try {
             $param = $request->validated();
             $money = (int)$param['money'];
-            $user = User::whereUsername($param['user_receive'])->first();
-            if($user->role == 'admin') {
+            $userReceive = User::whereUsername($param['user_receive'])->first();
+            if($userReceive->role == 'admin') {
                 session()->flash('mgs_error', "Bạn không thể chuyển tiền cho ADMIN. Nếu muốn rút tiền hãy sử dụng chức năng RÚT TIỀN!");
                 DB::commit();
                 return back();
             }
 
-            $user->money = (int)$user->money + $money;
-            $user->save();
+            $userReceive->money = (int)$userReceive->money + $money;
+            $userReceive->save();
 
             $user = user();
             $user->money = (int)$user->money - $request->total_money;
             $user->count_number_trasnfer++;
             $user->save();
             DB::commit();
+
+            ModelService::insert(TransferMoney::class, [
+                'user_id' => user()->id,
+                'user_receive' => $userReceive->id,
+                'money' => $money,
+                'content' => $param['content']
+            ]);
 
             session()->flash('notif', "Chuyển tiền cho $request->user_receive thành công!");
             UserLogs::addLogs(
@@ -202,5 +222,32 @@ class MoneyController extends Controller
             session()->flash('mgs_error', 'Đã có lỗi xảy ra. Hãy liên hệ với admin để được giải quyết!');
             return back();
         }
+    }
+
+    public function transferHistoryFilter(Request $request): JsonResponse
+    {
+        $from_date = $request->filter_from_date;
+        $to_date = $request->filter_to_date;
+        if(empty($from_date) || empty($to_date)){
+            return response()->json([
+                'success' => false,
+                'message' => 'Data filter không đầy đủ!'
+            ]);
+        }
+        $histories = TransferMoney::with(['user', 'receive'])
+            ->where(function($query){
+                $query
+                    ->where('user_id', user()->id)
+                    ->orWhere('user_receive', user()->id);
+            })
+            ->where('created_at', '>=', $from_date . ' 00:00:00')
+            ->where('created_at', '<=', $to_date . ' 23:59:59')
+            ->orderBy('created_at', 'DESC')
+            ->get();
+        $html = view('money.transfer_history_table', compact('histories'))->render();
+        return response()->json([
+            'success' => true,
+            'html' => $html
+        ]);
     }
 }

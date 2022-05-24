@@ -87,9 +87,25 @@
             </div>
         </div>
     </div>
+    <div class="container-fluid mt-5">
+        <h3 class="mt-3 font-weight-bold">Lịch sử chuyển tiền</h3>
+        <div class="row-filter d-flex">
+            <input type="text" style="max-width: 200px" name="filter_from_date" class="form-control mr-2" value="{{ date('Y-m-d') }}" data-date-picker>
+            <input type="text" style="max-width: 200px" name="filter_to_date" class="form-control mr-2" value="{{ date('Y-m-d') }}" data-date-picker>
+            <button class="btn btn-success btn-filter" style="min-width: 150px;">Lọc dữ liệu</button>
+        </div>
+        <div class="table-filter mt-2">
+            @include('money.transfer_history_table')
+        </div>
+    </div>
 @endsection
 @section('script')
     <script>
+        $(document).ready(function(){
+            $("[data-date-picker]").datepicker({
+                dateFormat : 'yy-mm-dd'
+            });
+        });
         window.GetFullName = function(el) {
             const username = el.value.trim();
             Request.ajax('{{ route('transfer.get-user-name') }}', { username }, function(result) {
@@ -117,5 +133,16 @@
             });
         });
         $('#user_receive').trigger('change');
+        $('.btn-filter').on('click', function(){
+            const filter_from_date = $('[name="filter_from_date"]').val().trim();
+            const filter_to_date = $('[name="filter_to_date"]').val().trim();
+            const url = '{{ route('transfer.history.filter') }}';
+            Request.ajax(url, { filter_from_date, filter_to_date }, function(result) {
+                if(result.success == false){
+                    return alert(result.message);
+                }
+                $(".table-filter").html(result.html);
+            });
+        });
     </script>
 @endsection
