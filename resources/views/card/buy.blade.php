@@ -1,4 +1,22 @@
 @extends('layout')
+@section('style')
+<style>
+    #area-money .div-box-card label {
+        flex-wrap: wrap;
+        min-width: 3.9em;
+        height: auto;
+    }
+
+    #area-money .div-box-card label img {
+        position: initial;
+        transform: initial;
+    }
+
+    #area-money .div-box-card label span {
+        line-height: initial;
+    }
+</style>
+@endsection
 @section('contents')
     <div class="container-fluid">
         <h4 class="font-weight-bold mb-0 mt-4 text-center">Mua thẻ cào</h4>
@@ -123,6 +141,7 @@
     </div>
     <div data-template="label-money" class="div-box-card d-none">
         <label class="box-card mb-1" for="">
+            <img src="" alt="vinaphone">
             <input type="checkbox" id="" name="money_buy" value="">
             <span class="money-show"></span>
             <span class="checkbox-custom"></span>
@@ -148,6 +167,7 @@
         }
 
         $('[name="card_buy"]').on('change', function(){
+            const imgSrc = $(this).prev().attr('src');
             let val = $(this).val();
             let rate = rates[val];
             areaMoney.empty();
@@ -163,6 +183,8 @@
                     .attr('for', id);
                 tempEl.find('label').find('.money-show')
                     .text(App.setPriceFormat(money));
+                tempEl.find('label').find('img')
+                    .attr('src', imgSrc);
                 tempEl.find('label').find('input')
                     .attr('id', id)
                     .attr('value', money)
