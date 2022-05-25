@@ -122,7 +122,7 @@ class MoneyController extends Controller
         if (!preg_match('/^(([1-9]\d*)|(-[1-9]\d*))$/i', $money_plus)) {
             return response()->json([
                 'success' => false,
-                'message' => 'DM nhập cái số tiền ngu vc!',
+                'message' => 'Số tiền bạn nhập không chính xác!',
                 'data' => []
             ]);
         }

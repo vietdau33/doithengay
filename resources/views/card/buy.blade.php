@@ -79,9 +79,13 @@
                             </div>
                             <div class="cart-type-buy mt-2" style="width: 70%">
                                 <select name="" id="" class="form-control">
+                                    @if(user()->type_user == 'nomal')
                                     <option value="">Phương thức mua thẻ</option>
                                     <option value="slow">Mua chậm - Chiết khấu: 0%</option>
                                     <option value="fast">Mua nhanh - Chiết khấu: 0%</option>
+                                    @else
+                                    <option value="slow">Chiết khấu: 0%</option>
+                                    @endif
                                 </select>
                             </div>
                             <div class="cart-money text-right" style="width: 30%"></div>
@@ -112,12 +116,14 @@
                 </div>
             </div>
         </div>
-        <div class="alert alert-warning mt-3">
-            <ul style="list-style: decimal; padding-left: 20px">
-                <li>Đối với <b>mua chậm</b>, thời gian xác minh thẻ tối đa là <b>2 phút</b>.</li>
-                <li>Sau <b>2 phút</b>, nếu hệ thống không xử lý được thẻ thì thẻ sẽ bị đẩy sang <b>mua nhanh</b>.</li>
-            </ul>
-        </div>
+        @if(user()->type_user == 'nomal')
+            <div class="alert alert-warning mt-3">
+                <ul style="list-style: decimal; padding-left: 20px">
+                    <li>Đối với <b>mua chậm</b>, thời gian xác minh thẻ tối đa là <b>2 phút</b>.</li>
+                    <li>Sau <b>2 phút</b>, nếu hệ thống không xử lý được thẻ thì thẻ sẽ bị đẩy sang <b>mua nhanh</b>.</li>
+                </ul>
+            </div>
+        @endif
     </div>
     <div class="container-fluid">
         <h5>Lịch sử mua thẻ</h5>
@@ -178,7 +184,13 @@
                 let tempEl  = template.clone().removeClass('d-none').removeAttr('data-template');
                 let money = r.price;
                 let id = 'money-' + money;
-                let moneySlow = parseInt(money) - (parseInt(money) * parseFloat(r.rate_slow) / 100);
+                let rate_use = r.rate;
+                let rate_slow = r.rate_slow;
+                @if(in_array(user()->type_user, ['daily', 'tongdaily']))
+                    rate_use = r.rate_{{ user()->type_user }};
+                    rate_slow = r.rate_{{ user()->type_user }};
+                @endif
+                let moneySlow = parseInt(money) - (parseInt(money) * parseFloat(rate_slow) / 100);
                 tempEl.find('label')
                     .attr('for', id);
                 tempEl.find('label').find('.money-show')
@@ -189,8 +201,8 @@
                     .attr('id', id)
                     .attr('value', money)
                     .attr('data-card', val)
-                    .attr('data-rate', r.rate)
-                    .attr('data-rate-slow', r.rate_slow);
+                    .attr('data-rate', rate_use)
+                    .attr('data-rate-slow', rate_slow);
                 tempEl.find('.real-money-slow span').text(App.setPriceFormat(moneySlow) + 'đ');
                 areaMoney.append(tempEl);
             });
@@ -288,8 +300,12 @@
             cartTemplate.attr('data-rate', rate);
             cartTemplate.attr('data-rate-slow', rateSlow);
             cartTemplate.find('.cart-info').text(App.ucFirst(card) + ' - ' + App.setPriceFormat(money) + 'đ');
+            @if(user()->type_user == 'nomal')
             cartTemplate.find('option[value="slow"]').text('Mua chậm - chiết khấu: ' + rateSlow + '%');
             cartTemplate.find('option[value="fast"]').text('Mua nhanh - chiết khấu: ' + rate + '%');
+            @else
+            cartTemplate.find('option[value="slow"]').text('Chiết khấu: ' + rateSlow + '%');
+            @endif
             cartTemplate.find('.cart-type-buy select').val('slow');
             setTimeout(function(){
                 cartTemplate.find('.cart-type-buy select').trigger('change');

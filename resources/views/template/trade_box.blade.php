@@ -65,9 +65,13 @@
             <option value="">Mệnh giá</option>
         </select>
         <select name="type_trade" class="form-control mb-1 mr-1 select_type_trade">
-            <option value="">Phương thức gạch thẻ</option>
-            <option value="slow" data-type="slow">Gạch chậm: 0% - 0VNĐ</option>
-            <option value="fast" data-type="fast">Gạch nhanh: 0% - 0VNĐ</option>
+            @if(!logined() || user()->type_user == 'nomal')
+                <option value="">Phương thức gạch thẻ</option>
+                <option value="slow" data-type="slow">Gạch chậm: 0% - 0VNĐ</option>
+                <option value="fast" data-type="fast">Gạch nhanh: 0% - 0VNĐ</option>
+            @else
+                <option value="slow" data-type="slow">Chiết khấu: 0% - 0VNĐ</option>
+            @endif
         </select>
         <input type="text" name="card_serial" class="form-control mb-1 mr-1" placeholder="Số serial">
         <input type="text" name="card_number" class="form-control mb-1 mr-1" placeholder="Mã thẻ">
@@ -78,7 +82,7 @@
         <div class="alert alert-info alert-status w-100 mb-1 p-1 d-none mr-1"><img src="{{ asset('image/loading.svg') }}" style="width: 24px" alt="Loading"> Đang thực hiện gạch thẻ...</div>
     </div>
     <div id="row_save_position_add_trade">
-        @if(logined())
+        @if(logined() && user()->type_user == 'nomal')
             <div class="alert alert-warning">
                 <ul class="mb-0" style="list-style: decimal; padding-left: 20px">
                     <li>Đối với gạch chậm, thời gian xác minh thẻ tối đa là 2 phút.</li>
@@ -129,8 +133,12 @@
             parentBox = $('.container-trade-card-home');
         }
         parentBox.find('[name="type_trade"]').each(function () {
+            @if(!logined() || user()->type_user == 'nomal')
             $(this).find('[data-type="slow"]').text('Gạch chậm: 0% - 0VNĐ');
             $(this).find('[data-type="fast"]').text('Gạch nhanh: 0% - 0VNĐ');
+            @else
+            $(this).find('[data-type="slow"]').text('Chiết khấu: 0% - 0VNĐ');
+            @endif
         });
     }
 
@@ -172,6 +180,9 @@
                     rateUse = r.rate_tongdaily;
                     rateSlow = r.rate_tongdaily;
                 @endif
+            @else
+                rateUse = r.rate_use;
+                rateSlow = r.rate_slow;
             @endif
 
             tempEl.text(App.setPriceFormat(money));
@@ -193,8 +204,12 @@
         const moneyFast = App.setPriceFormat(money - (money * rate / 100));
 
         resetTradeCard(parentBox);
+        @if(!logined() || user()->type_user == 'nomal')
         parentBox.find('[data-type="slow"]').text('Gạch chậm: ' + rateSlow + '% - ' + moneySlow + 'VNĐ');
         parentBox.find('[data-type="fast"]').text('Gạch nhanh: ' + rate + '% - ' + moneyFast + 'VNĐ');
+        @else
+        parentBox.find('[data-type="slow"]').text('Chiết khấu: ' + rateSlow + '% - ' + moneySlow + 'VNĐ');
+        @endif
     });
 
     $('.btn-trade-card-all').on('click', async function () {

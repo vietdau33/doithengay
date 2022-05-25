@@ -7,7 +7,9 @@
         <th scope="row">Mệnh giá</th>
 		<th scope="col">Số lượng</th>
         <th scope="row">Trạng thái</th>
+        @if(user()->type_user == 'nomal')
 		<th scope="row">Mua</th>
+        @endif
 		<th scope="row">Message</th>
         <th scope="row">Chiết khẩu (%)</th>
         <th scope="row">Tổng tiền</th>
@@ -26,7 +28,9 @@
             <td>{{ number_format($history->money_buy) }}</td>
 			<td>{{ $history->quantity }}</td>
             <td>{!! $history->getStatus() !!}</td>
+            @if(user()->type_user == 'nomal')
 			<td>{{ $history->type_buy == 'fast' ? 'Mua nhanh' : 'Mua chậm' }}</td>
+            @endif
 			<td>{{ $history->message }}</td>
             <td>{{ $history->rate_buy }}%</td>
             <td>{{ number_format($history->money_after_rate) }}đ</td>

@@ -6,7 +6,9 @@
         <th scope="row">Loại thẻ</th>
         <th scope="row">Mệnh giá</th>
         <th scope="row">Trạng thái</th>
-		<th scope="row">Mua</th>
+        @if(!logined() || user()->type_user == 'nomal')
+		<th scope="row">Loại ggạch</th>
+        @endif
         <th scope="row">Chiết khẩu (%)</th>
         <th scope="row">Tiền nhận</th>
         <th scope="row">Số serial</th>
@@ -22,7 +24,9 @@
             <td>{{ $history->getNameTelco() }}</td>
             <td>{{ number_format($history->card_money) }}</td>
             <td>{!! $history->getStatusHtml() !!}</td>
-			<td>{{ $history->type_trade }}</td>
+            @if(!logined() || user()->type_user == 'nomal')
+			<td>{{ $history->type_trade == 'fast' ? 'Gạch nhanh' : 'Gạch chậm' }}</td>
+            @endif
             <td>{{ $history->rate_use ?? 0 }}%</td>
             <td>{{ number_format($history->money_real) }}đ</td>
             <td>{{ $history->card_serial }}</td>
