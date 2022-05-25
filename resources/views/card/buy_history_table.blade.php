@@ -9,8 +9,9 @@
         <th scope="row">Trạng thái</th>
 		<th scope="row">Mua</th>
 		<th scope="row">Message</th>
-        <th scope="row">Chiết khẩu (%)</th>
+        <th scope="row">Chiết khẩu</th>
         <th scope="row">Tổng tiền</th>
+		<th scope="row">Hoàn thành</th>
     </tr>
     </thead>
     <tbody>
@@ -30,6 +31,7 @@
 			<td>{{ $history->message }}</td>
             <td>{{ $history->rate_buy }}%</td>
             <td>{{ number_format($history->money_after_rate) }}đ</td>
+			<td>{{ $history->completion }}</td>
         </tr>
     @endforeach
     @if($histories->count() <= 0)
