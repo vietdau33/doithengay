@@ -161,15 +161,17 @@
             let id = 'money-' + money;
             let rateUse = 0;
             let rateSlow = 0;
-            @if(logined() && user()->type_user == 'nomal')
-            let rateUse = r.rate_use;
-            let rateSlow = r.rate_slow;
-            @elseif(logined() && user()->type_user == 'daily')
-            let rateUse = r.rate_daily;
-            let rateSlow = r.rate_daily;
-            @elseif(logined() && user()->type_user == 'tongdaily')
-            let rateUse = r.rate_tongdaily;
-            let rateSlow = r.rate_tongdaily;
+            @if(logined())
+                @if(user()->type_user == 'nomal')
+                    rateUse = r.rate_use;
+                    rateSlow = r.rate_slow;
+                @elseif(user()->type_user == 'daily')
+                    rateUse = r.rate_daily;
+                    rateSlow = r.rate_daily;
+                @elseif(user()->type_user == 'tongdaily')
+                    rateUse = r.rate_tongdaily;
+                    rateSlow = r.rate_tongdaily;
+                @endif
             @endif
 
             tempEl.text(App.setPriceFormat(money));
