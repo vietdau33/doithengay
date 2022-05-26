@@ -43,9 +43,13 @@
             <option value="">Mệnh giá</option>
         </select>
         <select name="type_trade" class="form-control mb-1 mr-1 select_type_trade">
-            <option value="">Phương thức gạch thẻ</option>
-            <option value="slow" data-type="slow">Gạch chậm: 0% - 0VNĐ</option>
-            <option value="fast" data-type="fast">Gạch nhanh: 0% - 0VNĐ</option>
+            @if(!logined() || user()->type_user == 'nomal')
+                <option value="">Phương thức gạch thẻ</option>
+                <option value="slow" data-type="slow">Gạch chậm: 0% - 0VNĐ</option>
+                <option value="fast" data-type="fast">Gạch nhanh: 0% - 0VNĐ</option>
+            @else
+                <option value="slow" data-type="slow">Chiết khấu: 0% - 0VNĐ</option>
+            @endif
         </select>
         <input type="text" name="card_serial" class="form-control mb-1 mr-1" placeholder="Số serial">
         <input type="text" name="card_number" class="form-control mb-1 mr-1" placeholder="Mã thẻ">

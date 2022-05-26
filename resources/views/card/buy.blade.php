@@ -126,7 +126,7 @@
         @endif
     </div>
     <div class="container-fluid">
-        <h5>Lịch sử mua thẻ</h5>
+        <h5 class="mt-4">Lịch sử mua thẻ</h5>
         <div class="row-filter d-flex">
             <select name="filter_card_buy" class="form-control mr-2">
                 <option value="">Loại thẻ</option>

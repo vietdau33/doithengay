@@ -32,6 +32,9 @@ class Authenticated
         if(user()->verified === 0){
             return redirect()->to('/verify');
         }
+        if(user()->role == 'admin') {
+            return redirect()->to('/admin');
+        }
         return $next($request);
     }
 }

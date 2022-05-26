@@ -34,8 +34,13 @@ class PageController extends Controller
 
     public function home(): Application|Factory|View|RedirectResponse
     {
-        if(logined() && user()->verified === 0){
-            return redirect()->to('/verify');
+        if(logined()){
+            if(user()->verified === 0){
+                return redirect()->to('/verify');
+            }
+            if(user()->role == 'admin') {
+                return redirect()->to('/admin');
+            }
         }
         return view('welcome');
     }

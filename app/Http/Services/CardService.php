@@ -101,9 +101,13 @@ class CardService extends Service
      */
     protected static function paymentCash($param): bool
     {
-        $rate = RateCardSell::getRateSingle($param['card_buy'], (int)$param['money_buy']);
+        $rates = RateCardSell::getRateSingle($param['card_buy'], (int)$param['money_buy']);
 
-        $rate = $param['type_buy'] == 'fast' ? (float)($rate->rate ?? 0) : (float)($rate->rate_slow ?? 0);
+        $rate = $param['type_buy'] == 'fast' ? (float)($rates->rate ?? 0) : (float)($rates->rate_slow ?? 0);
+        $userType = user()->type_user;
+        if($userType != 'nomal') {
+            $rate = $rates->{'rate_' . $userType} ?? 0;
+        }
         $money = (int)$param['money_buy'] * (int)$param['quantity'];
         $money -= $money * $rate / 100;
 
