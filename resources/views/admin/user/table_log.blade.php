@@ -7,6 +7,9 @@
         <a class="nav-link" data-toggle="tab" href="#trade_card">Đổi thẻ</a>
     </li>
     <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#trade_total">Thống kê đổi thẻ</a>
+    </li>
+    <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#buy_card">Mua thẻ</a>
     </li>
     <li class="nav-item">
@@ -27,6 +30,9 @@
     </div>
     <div class="tab-pane container-fluid fade" id="trade_card" data-tab="trade_card">
         @include('admin.user.logs.trade_card', ['logs' => $histories['trade_card']])
+    </div>
+    <div class="tab-pane container-fluid fade" id="trade_total" data-tab="trade_total">
+        @include('admin.user.logs.trade_total', ['total' => $histories['trade_total']])
     </div>
     <div class="tab-pane container-fluid fade" id="buy_card" data-tab="buy_card">
         @include('admin.user.logs.buy_card', ['logs' => $histories['buy_card']])

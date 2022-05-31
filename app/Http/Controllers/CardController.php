@@ -323,6 +323,24 @@ class CardController extends Controller
         }
     }
 
+    public function tradeCardTotalFilter(Request $request) {
+        $start = $request->start ?? null;
+        $end = $request->end ?? null;
+        $cardType = $request->card_type ?? null;
+        if($start == null || $end == null) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data filter không chính xác!'
+            ]);
+        }
+        $totals = TradeCard::getTotals($start, $end, $cardType);
+        $html = view('card.trade_total_table', compact('totals'))->render();
+        return response()->json([
+            'success' => true,
+            'html' => $html
+        ]);
+    }
+
     public function buyCardHistory(): Factory|View|Application
     {
         $histories = CardStore::whereUserId(user()->id)->orderBy('created_at', 'DESC')->get();

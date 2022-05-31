@@ -37,7 +37,7 @@
     @endforeach
     @if($histories->count() <= 0)
         <tr>
-            <td colspan="9" class="text-center">Không có dữ liệu</td>
+            <td colspan="{{ !logined() || user()->type_user == 'nomal' ? '11' : '10' }}" class="text-center">Không có dữ liệu</td>
         </tr>
     @endif
     </tbody>

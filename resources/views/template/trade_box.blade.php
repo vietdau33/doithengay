@@ -4,6 +4,7 @@
     $listNotAuto = array_column($listNotAuto, 'name');
     $listCard = getListCardTrade($rates);
     $histories = \App\Models\TradeCard::getTodayHistory();
+    $totals = \App\Models\TradeCard::getTotals();
 @endphp
 
 <div class="container mt-4 mb-4">
@@ -125,6 +126,23 @@
         </div>
         <div class="table-filter mt-2">
             @include('card.trade_history_table')
+        </div>
+    </div>
+    <div class="container-fluid">
+        <h3 class="mt-3 font-weight-bold">Thống kê đổi thẻ</h3>
+        <div class="row-filter d-flex">
+            <select name="filter_card_type_total" class="form-control mr-2">
+                <option value="">Loại thẻ</option>
+                @foreach($rates as $card)
+                    <option data-type="{{ end($card)['name'] }}" value="{{ end($card)['rate_id'] ?? '0' }}">{{ ucfirst(end($card)['name']) }}</option>
+                @endforeach
+            </select>
+            <input type="text" name="filter_from_date_total" class="form-control mr-2" value="{{ date('Y-m-d') }}" data-date-picker>
+            <input type="text" name="filter_to_date_total" class="form-control mr-2" value="{{ date('Y-m-d') }}" data-date-picker>
+            <button class="btn btn-success btn-filter-total" style="min-width: 150px;">Lọc dữ liệu</button>
+        </div>
+        <div class="table-filter-total mt-2">
+            @include('card.trade_total_table')
         </div>
     </div>
 @endif
@@ -314,6 +332,20 @@
         Request.ajax(url, { filter_card_type, filter_money, filter_status, filter_from_date, filter_to_date }, function(result) {
             if(result.success) {
                 $('.table-filter').empty().append(result.html)
+            }
+        })
+    });
+
+    $('.btn-filter-total').on('click', function(){
+        const url = '{{ route('trade-card.total.filter') }}';
+        const card_type = $('[name="filter_card_type_total"]').val();
+        const start = $('[name="filter_from_date_total"]').val();
+        const end = $('[name="filter_to_date_total"]').val();
+        Request.ajax(url, { card_type, start, end }, function(result) {
+            if(result.success) {
+                $('.table-filter-total').empty().append(result.html)
+            }else{
+                alert(result.message);
             }
         })
     });

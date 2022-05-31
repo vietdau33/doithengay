@@ -176,7 +176,8 @@ class CardService extends Service
             session()->flash('mgs_error', 'Nhà mạng không tồn tại!');
             return false;
         }
-
+        
+		$params['card_name'] = $cardType->name;
         $params['card_type'] = $cardType->rate_id;
 
         $urlTrade = self::getUrlApi('trade');
@@ -218,7 +219,8 @@ class CardService extends Service
             session()->flash('Nhà mạng không tồn tại!');
             return false;
         }
-
+		
+        $params['card_name'] = $cardType->name;
         $params['card_type'] = $cardType->rate_id;
         $params['money_user_before'] = user()->money;
         return ModelService::insert(TradeCard::class, $params) !== false;

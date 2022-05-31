@@ -59,6 +59,7 @@ Route::middleware('authenticated')->group(function () {
         Route::post('ajax', [CardController::class, 'tradeCardPostAjax'])->name('trade-card.post.ajax');
         Route::get('/history', [CardController::class, 'tradeCardHistory'])->name('trade-card.history');
         Route::post('/history/filter', [CardController::class, 'tradeCardHistoryFilter'])->name('trade-card.history.filter');
+        Route::post('/total/filter', [CardController::class, 'tradeCardTotalFilter'])->name('trade-card.total.filter');
     });
 
     Route::get('/chiet-khau', [CardController::class, 'showDiscount'])->name('chiet-khau');

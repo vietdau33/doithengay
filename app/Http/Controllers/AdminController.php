@@ -488,6 +488,7 @@ class AdminController extends Controller
         $buyCard = CardStore::whereUserId($request->id)->orderBy('created_at', 'DESC')->paginate($this->paginateLog);
         $recharge = BankMessenger::whereUserId($request->id)->orderBy('created_at', 'DESC')->paginate($this->paginateLog);
         $withdraw = WithdrawModel::whereUserId($request->id)->orderBy('created_at', 'DESC')->paginate($this->paginateLog);
+        $total = TradeCard::getTotalAll($request->id);
         $transfer = TransferMoney::with(['user', 'receive'])
             ->where('user_id', $request->id)
             ->orWhere('user_receive', $request->id)
@@ -499,7 +500,8 @@ class AdminController extends Controller
             'buy_card' => $buyCard,
             'recharge' => $recharge,
             'withdraw' => $withdraw,
-            'transfer' => $transfer
+            'transfer' => $transfer,
+            'trade_total' => $total
         ];
         $html = view('admin.user.table_log', compact('histories'))->render();
         return response()->json([
